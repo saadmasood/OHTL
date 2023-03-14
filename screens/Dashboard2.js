@@ -123,241 +123,30 @@ function Dashboard({navigation}) {
         setPostCount('');
       });
     });
-
-    //logindata
-
-    //getapi();
-
-    let a = [1, 2, 3, 4, 5, 6];
-    let b = [1, 2, 3, 8];
-
-    for (let i = 0; i < a.length; i++) {
-      var bl = false;
-      for (let j = 0; j < b.length; j++) {
-        if (b[j] == a[i]) {
-          // bl = true;
-        } else {
-        }
-      }
-    }
   }, []);
 
-  const updateSingleRecord = (singleRecord, singleRecordCount) => {
-    if (singleRecord.Vertrag == undefined) {
-      console.log('*** cases completed ****');
-    }
-    console.log('******************');
-    console.log('Vertrag: ' + singleRecord.Vertrag);
-    console.log('******************');
-
-    console.log('Post');
-    console.log('pnumber: ' + singleRecord.Pnumber);
-    console.log('imUser: ' + LINEMAN);
-    console.log('MeterReading: ' + singleRecord.MeterReading);
-    console.log('MrNote: ' + singleRecord.MrNote);
-    console.log('savedDate: ' + singleRecord.SavedDate);
-    console.log('savedTime: ' + singleRecord.SavedTime);
-    console.log('Latitude: ' + singleRecord.ImLati);
-    console.log('Longitude: ' + singleRecord.ImLong);
-    console.log('PayDate: ' + singleRecord.PayDate);
-    console.log('PayAmount: ' + singleRecord.PayAmount);
-    console.log('ImPnumber: ' + singleRecord.Pnumber);
-    console.log('Discno: ' + singleRecord.Discno);
-    console.log('PicLink1: ' + singleRecord.PicLink1);
-    console.log('PicLink2: ' + singleRecord.PicLink2);
-    console.log('PicLink3: ' + singleRecord.PicLink3);
-
-    axios({
-      method: 'POST',
-      url: 'https://fioriprd.ke.com.pk:44300/sap/opu/odata/sap/ZDCRC_SERVICES_SRV/DCRC_UPDATESet',
-      headers: {
-        Authorization: 'Basic ' + base64.encode('mobility_rfc:Z@p12345'),
-        'Content-Type': 'application/json',
-        Accept: 'application/json',
-        'X-CSRFToken': '',
-        'X-Requested-With': 'XMLHttpRequest',
-      },
-      data: JSON.stringify({
-        d: {
-          ImPnumber: singleRecord.Pnumber,
-          ImUser: LINEMAN,
-          ImMeterReading: singleRecord.MeterReading,
-          MrNote: singleRecord.MrNote,
-          SaveDate: singleRecord.SavedDate,
-          SaveTime: singleRecord.SavedTime,
-          ImLati: singleRecord.ImLati,
-          ImLong: singleRecord.ImLong,
-          PicLink1: singleRecord.PicLink1,
-          PicLink2: singleRecord.PicLink2,
-          PicLink3: singleRecord.PicLink3,
-        },
-      }),
-    })
-      .then(res => {
-        //console.log("singleRecord.Vertrag: " + singleRecord.Vertrag + " ::: " + res.d.ImMessage);
-        if (res.data.d.ImMessage == 'RECORD UPDATED!!') {
-          console.log('res.data.d.ImMessage: ' + res.data.d.ImMessage);
-          AsyncStorage.getItem('DCRCRecord').then(async items => {
-            let data = JSON.parse(items);
-            data.filter((item, index) => {
-              if (item.Vertrag == singleRecord.Vertrag) {
-                data[index].RecordStatus = 'Post';
-                if (singleRecordCount <= totalSavedCases)
-                  setPostCount(singleRecordCount + '/' + totalSavedCases);
-                if (savedData.length > singleRecordCount) {
-                  //console.log('savedCasesCount: ' + savedCasesCount);
-                  console.log('singleRecordCount: ' + singleRecordCount);
-                  updateSingleRecord(
-                    savedData[singleRecordCount],
-                    singleRecordCount + 1,
-                  );
-                }
-                AsyncStorage.setItem('DCRCRecord', JSON.stringify(data));
-                console.log(
-                  'Record Updated: ' +
-                    singleRecord.Vertrag +
-                    ' :data[index].RecordStatus: ' +
-                    data[index].RecordStatus,
-                );
-              }
-            });
-          });
-          if (singleRecord.ImageCount > 0) {
-            console.log(
-              'Vertrag: ' +
-                singleRecord.Vertrag +
-                ' :imageCount: ' +
-                singleRecord.ImageCount,
-            );
-            insertImage(singleRecord);
-          } else {
-            navigation.navigate('Dashboard2');
-            return;
-          }
-        }
-      })
-      .catch(error => {
-        console.error('consle.error:: ', error);
-        alert(error);
-      });
-  };
-
-  const insertImage = singleRecord => {
-    console.log('IMAGE 1 Posting started: ');
-    axios({
-      method: 'POST',
-      url: 'https://dc-rc.ke.com.pk:8001/MMR/api/Service/PostImageData',
-      headers: {
-        'Content-Type': 'application/json',
-        Accept: 'application/json',
-        'X-CSRFToken': '',
-        'X-Requested-With': 'XMLHttpRequest',
-      },
-      data: JSON.stringify({
-        imageName: 'BFDC.jpg',
-        imageData: singleRecord.Image[0].base64,
-        accountNumber: singleRecord.Vertrag,
-        dcOrderNumber: singleRecord.Discno,
-        ibc: singleRecord.ImIbc,
-      }),
-    })
-      .then(resp => {
-        //console.log("POST IMAGE 1 RESPONSE: " + resp.StatusMessage + ": singleRecord.Vertrag: " + singleRecord.Vertrag);
-
-        if (singleRecord.ImageCount > 1) {
-          console.log('IMAGE 2 Posting started: ');
-          axios({
-            method: 'POST',
-            url: 'https://dc-rc.ke.com.pk:8001/MMR/api/Service/PostImageData',
-            headers: {
-              'Content-Type': 'application/json',
-              Accept: 'application/json',
-              'X-CSRFToken': '',
-              'X-Requested-With': 'XMLHttpRequest',
-            },
-            data: JSON.stringify({
-              imageName: 'AFDC.jpg',
-              imageData: singleRecord.Image[1].base64,
-              accountNumber: singleRecord.Vertrag,
-              dcOrderNumber: singleRecord.Discno,
-              ibc: singleRecord.ImIbc,
-            }),
-          })
-            .then(resp => {
-              //console.log("POST IMAGE 2 RESPONSE: " + resp.StatusMessage + ": singleRecord.Vertrag: " + singleRecord.Vertrag);
-
-              if (singleRecord.ImageCount > 2) {
-                console.log('IMAGE 3 Posting started: ');
-                axios({
-                  method: 'POST',
-                  url: 'https://dc-rc.ke.com.pk:8001/MMR/api/Service/PostImageData',
-                  headers: {
-                    'Content-Type': 'application/json',
-                    Accept: 'application/json',
-                    'X-CSRFToken': '',
-                    'X-Requested-With': 'XMLHttpRequest',
-                  },
-                  data: JSON.stringify({
-                    imageName: 'PRDC.jpg',
-                    imageData: singleRecord.Image[2].base64,
-                    accountNumber: singleRecord.Vertrag,
-                    dcOrderNumber: singleRecord.Discno,
-                    ibc: singleRecord.ImIbc,
-                  }),
-                })
-                  .then(resp => {
-                    //console.log("POST IMAGE 3 RESPONSE: " + resp.StatusMessage + ": singleRecord.Vertrag: " + singleRecord.Vertrag);
-                    //navigation.navigate('Dashboard2');
-                    //return;
-                  })
-                  .catch(error => {});
-              } else {
-                //navigation.navigate('Dashboard2');
-                //return;
-                setLoading(false);
-              }
-            })
-            .catch(error => {});
-        } else {
-          //navigation.navigate('Dashboard2');
-          // return;
-          setLoading(false);
-        }
-      })
-      .then(resp => {
-        setLoading(false);
-      })
-      .catch(error => {});
-  };
-
   const getRecord = () => {
-    console.log('getRecord: date: ' + ImDate);
-    console.log('ibc: ' + imIbc);
-    console.log('gang: ' + imGang);
-    console.log('User: ' + imUser);
-
+    let FLSTR_NAV = [];
     axios({
       method: 'get',
-      url:
-        'https://fioriprd.ke.com.pk:44300/sap/opu/odata/sap/ZDCRC_SRV/DCRCListSet?$filter=%20ImDate%20eq%20%27' +
-        ImDate +
-        '%27%20and%20ImIbc%20eq%20%27' +
-        imIbc +
-        '%27%20and%20ImGang%20eq%20%27' +
-        imGang +
-        '%27%20and%20ImUser%20eq%20%27' +
-        imUser +
-        '%27%20and%20ImHistory%20eq%20%27%27&$format=json',
+      url: 'https://fioridev.ke.com.pk:44300/sap/opu/odata/sap/ZPATROLLING_SRV/GET_FLsSet?$filter=(User%20eq%20%27TOOBA%27)&$expand=FLSTR_NAV&$format=json',
       headers: {
         'Content-Type': 'application/json',
-        Authorization: 'Basic ' + base64.encode('mobility_rfc:Z@p12345'),
+        Authorization: 'Basic ' + base64.encode('tooba:sapsap12'),
       },
     })
       .then(res => {
-        console.log(res.data);
         if (res.data.d.results != []) {
-          console.log('res.data.d.result' + res.data.d.results);
-          _storeData(res.data.d.results);
+          res.data.d.results.forEach(singleResult => {
+            singleResult.FLSTR_NAV.results.forEach(subSingleResult => {
+              FLSTR_NAV.push({
+                StrFl: subSingleResult.StrFl,
+                StrDescr: subSingleResult.StrDescr,
+              });
+            });
+            _storeData(singleResult.Fl, singleResult.FlDescr, FLSTR_NAV);
+            FLSTR_NAV = [];
+          });
         } else {
           alert('No Record found');
         }
@@ -367,102 +156,38 @@ function Dashboard({navigation}) {
       });
   };
 
-  const _storeData = async sapData => {
+  const _storeData = async (fl, flDescr, FLSTR_NAV) => {
     let count = 0;
     var data = [],
       flag = false;
-    console.log(
-      '_storeData:sapData: ' + typeof sapData + ' length: ' + sapData.length,
-    );
-
+    console.log('fl: ' + fl);
     try {
-      await AsyncStorage.getItem('DCRCRecord')
+      await AsyncStorage.getItem('FunctionalLocation')
         .then(items => {
           data = items ? JSON.parse(items) : [];
-          //             data = data.filter(x => (x.Status == null));
 
-          console.log(
-            'async:getItem:sapData: ' +
-              typeof sapData +
-              ' length: ' +
-              sapData.length,
-          );
-          console.log(
-            'after filter :data : ' + typeof data + ' length: ' + data.length,
-          );
-
-          sapData.forEach(parent => {
-            //console.log("parent" + parent);
-            data.forEach(child => {
-              //console.log("child" + child);
-              if (child.Vertrag == parent.Vertrag) {
-                flag = true;
-                //console.log("matched" + parent);
-              }
-            });
-            //console.log("flag:" + flag);
-            if (flag == false) {
-              //data.push(parent); commented
-              data.push({
-                ConsumerNo: parent.ConsumerNo,
-                Vertrag: parent.Vertrag,
-                Vkont: parent.Vkont,
-                Mtno: parent.Mtno,
-                Mru: parent.Mru,
-                CurrentDues: parent.CurrentDues,
-                TotDues: parent.TotDues,
-                Tariff: parent.Tariff,
-                ImDate: parent.ImDate,
-                ConsumerName: parent.ConsumerName,
-                ConsumerAdd: parent.ConsumerAdd,
-                AsonPaydt: parent.AsonPaydt,
-                AsonDues: parent.AsonDues,
-                Discno: parent.Discno,
-                ImIbc: parent.ImIbc,
-                Pnumber: parent.Pnumber,
-                ImUser: parent.ImUser,
-                ImageCount: 0,
-                MeterReading: '',
-                PayAmount: 0,
-                RecordStatus: '',
-                LinemanPayamnt: 0,
-                LinemanPaydate: '',
-                //Image:[{Image1:{uri:'',url:'', fileName:'',base64:''},Image2:{},Image3:{}}]
-                Image: [{}, {}, {}, {}],
-              });
-              console.log('New Addded' + parent);
-              count++;
+          data.forEach(child => {
+            if (child.Fl == fl) {
+              flag = true;
             }
-            flag = false;
           });
+
+          if (flag == false) {
+            data.push({
+              Fl: fl,
+              FlDescr: flDescr,
+              FLSTR_NAV: FLSTR_NAV,
+            });
+          }
+          flag == false;
         })
         .then(res => {
-          console.log('final:data: ' + typeof data + ' length: ' + data.length);
-          alert('Total new cases downloaded: ' + count);
-          AsyncStorage.setItem('DCRCRecord', JSON.stringify(data));
+          AsyncStorage.setItem('FunctionalLocation', JSON.stringify(data));
         });
     } catch (error) {
       // Error saving data
     }
   };
-
-  function getapi() {
-    console.log('-getapi function---');
-
-    //console.log("loopCount: " + loopCount);
-    loadData();
-
-    setLoading(true);
-
-    if (savedData.length >= 1) {
-      updateSingleRecord(savedData[savedCasesCount], 1);
-    } else {
-      alert('No Record found');
-      //setModalVisible(true);
-      setLoading(false);
-      return;
-    }
-  }
 
   return (
     <View style={styles.container}>
@@ -486,20 +211,17 @@ function Dashboard({navigation}) {
               <TouchableOpacity
                 onPress={() => {
                   console.log('Employee Info');
-                  /*   
-                                    navigation.reset({
-                                        index: 0,
-                                        routes: [{ name: 'EmployeeInfo' }],
-                                    });
-                                    */
-                  navigation.navigate('EmployeeInfo');
+                  navigation.navigate('WorkSchedule', {
+                    otherParam: 'NewCases',
+                  });
+                  //navigation.navigate('EmployeeInfo');
                 }}>
                 <Image
                   style={styles.tinyLogo}
                   source={require('../assets/images/personal.png')}
                 />
               </TouchableOpacity>
-              <Text style={styles.text_header}>Employee Info</Text>
+              <Text style={styles.text_header}>New Petrolling</Text>
             </View>
             <View style={styles.downleft}>
               <TouchableOpacity
@@ -514,7 +236,7 @@ function Dashboard({navigation}) {
                   source={require('../assets/images/abc.png')}
                 />
               </TouchableOpacity>
-              <Text style={styles.text_header}>Work Schedule</Text>
+              <Text style={styles.text_header}>Edit Petrolling Report</Text>
             </View>
             <View style={styles.downleft}>
               <TouchableOpacity
@@ -529,35 +251,35 @@ function Dashboard({navigation}) {
                   source={require('../assets/images/calender.png')}
                 />
               </TouchableOpacity>
-              <Text style={styles.text_header}>Saved Cases</Text>
+              <Text style={styles.text_header}>Reply Queries</Text>
             </View>
           </View>
           <View style={{flex: 1}}>
             <View style={styles.topright}>
               <TouchableOpacity
                 onPress={() => {
-                  console.log('Work Location');
-                  navigation.navigate('WorkLocation');
+                  console.log('Discrepency Screen');
+                  navigation.navigate('DiscrepencyScreen');
                 }}>
                 <Image
                   style={styles.tinyLogo}
                   source={require('../assets/images/location.png')}
                 />
               </TouchableOpacity>
-              <Text style={styles.text_header}>Work Location</Text>
+              <Text style={styles.text_header}>Discrepency</Text>
             </View>
             <View style={styles.downright}>
               <TouchableOpacity
                 onPress={() => {
-                  console.log('Work Summary');
-                  navigation.navigate('WorkSummary');
+                  console.log('Discrepency Screen');
+                  navigation.navigate('DiscrepencyScreen');
                 }}>
                 <Image
                   style={styles.tinyLogo}
                   source={require('../assets/images/graph.png')}
                 />
               </TouchableOpacity>
-              <Text style={styles.text_header}>Work Summary</Text>
+              <Text style={styles.text_header}>Share Reports</Text>
             </View>
             <View style={styles.downright}>
               <TouchableOpacity
@@ -572,7 +294,7 @@ function Dashboard({navigation}) {
                   source={require('../assets/images/post.png')}
                 />
               </TouchableOpacity>
-              <Text style={styles.text_header}>Completed Cases</Text>
+              <Text style={styles.text_header}>Close Discrepancies</Text>
             </View>
           </View>
         </View>
@@ -606,60 +328,10 @@ function Dashboard({navigation}) {
               }}
               onPress={() => {
                 IsConnected == true
-                  ? getapi()
-                  : setError('No Internet connection');
-              }}>
-              <Text>{postCount}</Text>
-              <Image
-                style={{width: 20, height: 20}}
-                source={require('../assets/sync.png')}
-              />
-              <Text
-                style={{
-                  color: 'rgba(93,45,145,255)',
-                }}>
-                {' '}
-                Post to Server
-              </Text>
-              {loading ? (
-                <ActivityIndicator color="black" style={{marginLeft: 8}} />
-              ) : null}
-            </TouchableOpacity>
-          )}
-        </View>
-
-        {/* ****** Saad Code  ** 02-Feb-2023***** */}
-        <View
-          style={{
-            position: 'absolute',
-            top: 20,
-            right: 170,
-            alignItems: 'center',
-            justifyContent: 'center',
-          }}>
-          {downloadloader ? (
-            <View
-              style={{
-                alignItems: 'center',
-                justifyContent: 'center',
-                width: 70,
-                height: 40,
-              }}>
-              <ActivityIndicator color="#0D90D0" />
-              <Text>Loading</Text>
-            </View>
-          ) : (
-            <TouchableOpacity
-              style={{
-                alignItems: 'center',
-                justifyContent: 'center',
-              }}
-              onPress={() => {
-                IsConnected == true
                   ? getRecord()
                   : setError('No Internet connection');
               }}>
-              <Text>{downloadCount}</Text>
+              <Text>{postCount}</Text>
               <Image
                 style={{width: 20, height: 20}}
                 source={require('../assets/sync.png')}
@@ -677,7 +349,6 @@ function Dashboard({navigation}) {
             </TouchableOpacity>
           )}
         </View>
-        {/* ****** Saad Code  ******* */}
 
         <View
           style={{

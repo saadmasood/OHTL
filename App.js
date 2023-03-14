@@ -19,11 +19,11 @@ import Login from './screens/Login';
 import SplashScreen from './screens/SplashScreen';
 
 import FirstScreen from './screens/FirstScreen';
-import Dashboard from './screens/Dashboard';
 import EmployeeInfo from './screens/EmployeeInfo';
 import WorkSchedule from './screens/WorkSchedule';
 import WorkSummary from './screens/WorkSummary';
-import WorkScheduleDetail from './screens/WorkScheduleDetail';
+import PatrollingScreen from './screens/PatrollingScreen';
+import DiscrepencyScreen from './screens/DiscrepencyScreen';
 import WorkLocation from './screens/WorkLocation';
 import Dashboard2 from './screens/Dashboard2';
 import LocationEnabler from 'react-native-location-enabler';
@@ -68,13 +68,6 @@ const App = ({navigation}) => {
         />
 
         <Stack.Screen
-          key="Dashboard"
-          name="Dashboard"
-          component={Dashboard}
-          options={{headerShown: false}}
-        />
-
-        <Stack.Screen
           key="Dashboard2"
           name="Dashboard2"
           component={Dashboard2}
@@ -108,11 +101,16 @@ const App = ({navigation}) => {
           component={WorkSummary}
           options={{headerShown: false}}
         />
-
         <Stack.Screen
-          key="WorkScheduleDetail"
-          name="WorkScheduleDetail"
-          component={WorkScheduleDetail}
+          key="PatrollingScreen"
+          name="PatrollingScreen"
+          component={PatrollingScreen}
+          options={{headerShown: false}}
+        />
+        <Stack.Screen
+          key="DiscrepencyScreen"
+          name="DiscrepencyScreen"
+          component={DiscrepencyScreen}
           options={{headerShown: false}}
         />
 

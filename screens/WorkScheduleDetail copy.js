@@ -1129,7 +1129,7 @@ const WorkScheduleDetail = ({navigation, route}) => {
     <ScrollView style={styles.container}>
       <View style={{paddingTop: 10}}></View>
       <View style={styles.header}>
-        <Text style={[styles.logo]}> Work Schedule Detail</Text>
+        <Text style={[styles.logo]}> New Patrolling</Text>
       </View>
       {/*
             <Image

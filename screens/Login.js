@@ -48,6 +48,83 @@ function Login({navigation}) {
 
   const [isLoginServiceCall, setIsLoginServiceCall] = useState(true);
 
+  var manualData = [
+    {
+      ConsumerNo: 'LA982001',
+      AccountNo: '400002718535',
+      MeterNo: 'SCA24438',
+      CurrentBill: '2,214.58',
+      TotalDues: '6869.84',
+      Tariff: 'A1-R',
+      LoginDate: '20220227',
+      ConsumerName: 'A. Y. Builders',
+      ConsumerAddress: 'FLAT No. 202-A Block-A Gulshan-e-Iqbal',
+      Contract: '30490615',
+      LastPaidAmount: '3090.00',
+      RecordStatus: '',
+      ImDate: '20230227',
+      CurrentDues: '1000',
+      TotDues: '1000',
+      Image: [{}, {}, {}, {}],
+      AsonDues: '1000',
+      Status: 'Pending',
+    },
+    {
+      ConsumerNo: 'LA982002',
+      AccountNo: '400002718535',
+      MeterNo: 'SCA24438',
+      CurrentBill: '2,214.58',
+      TotalDues: '6869.84',
+      Tariff: 'A1-R',
+      LoginDate: '20220227',
+      ConsumerName: 'A. Y. Builders',
+      ConsumerAddress: 'FLAT No. 202-A Block-A Gulshan-e-Iqbal',
+      Contract: '30490615',
+      LastPaidAmount: '3090.00',
+      RecordStatus: '',
+      ImDate: '20230227',
+      CurrentDues: '1000',
+      TotDues: '1000',
+      Image: [{}, {}, {}, {}],
+      AsonDues: '1000',
+      Status: 'Pending',
+    },
+    {
+      ConsumerNo: 'LA982003',
+      AccountNo: '400002718535',
+      MeterNo: 'SCA24438',
+      CurrentBill: '2,214.58',
+      TotalDues: '6869.84',
+      Tariff: 'A1-R',
+      LoginDate: '20230227',
+      ConsumerName: 'A. Y. Builders',
+      ConsumerAddress: 'FLAT No. 202-A Block-A Gulshan-e-Iqbal',
+      Contract: '30490615',
+      LastPaidAmount: '3090.00',
+      RecordStatus: '',
+      ImDate: '20220227',
+      CurrentDues: '1000',
+      TotDues: '1000',
+      Image: [{}, {}, {}, {}],
+      AsonDues: '1000',
+      Status: 'Pending',
+    },
+  ];
+
+  AsyncStorage.setItem('DCRCRecord', JSON.stringify(manualData));
+
+  var LoginData = [
+    {
+      EMP_NAME: 'Shahid Akhtar',
+      LINEMAN: '400002718535',
+      ImageCount: 'SCA24438',
+      GANG_NAME: 'SCA24438',
+      IBC_CODE: 'SCA24438',
+      userName: 'SCA24438',
+    },
+  ];
+  AsyncStorage.setItem('UserDetail', JSON.stringify(LoginData));
+
   useEffect(() => {
     /*
     AsyncStorage.setItem(
@@ -55,6 +132,7 @@ function Login({navigation}) {
       JSON.stringify([])
     );
     */
+    AsyncStorage.setItem('OHTL', JSON.stringify([]));
     console.log('****IMDATE***' + ImDate);
     AsyncStorage.getItem('UserDetail').then(items => {
       var userData = items ? JSON.parse(items) : {};
