@@ -12,7 +12,7 @@ import {
   ImageBackground,
 } from 'react-native';
 
-import AsyncStorage from 'react-native-encrypted-storage';
+import AsyncStorage from '@react-native-community/async-storage';
 import moment from 'moment';
 
 const WorkSummary = ({navigation}) => {

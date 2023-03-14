@@ -15,7 +15,7 @@ import {
   Image,
   ImageBackground,
 } from 'react-native';
-import AsyncStorage from 'react-native-encrypted-storage';
+import AsyncStorage from '@react-native-community/async-storage';
 import Modal from 'react-native-modal';
 import {
   useNetInfo,

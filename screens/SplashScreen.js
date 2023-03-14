@@ -9,7 +9,7 @@ import {
 } from 'react-native';
 //import {Icon} from 'react-native-elements';
 
-import AsyncStorage from 'react-native-encrypted-storage';
+import AsyncStorage from '@react-native-community/async-storage';
 import Moment from 'moment';
 
 const SplashScreen = ({navigation}) => {

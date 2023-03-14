@@ -17,7 +17,7 @@ import {
 } from 'react-native';
 import Modal from 'react-native-modal';
 import SplashScreen from 'react-native-splash-screen';
-import AsyncStorage from 'react-native-encrypted-storage';
+import AsyncStorage from '@react-native-community/async-storage';
 
 //import Config from 'react-native-config';
 import Moment from 'moment';

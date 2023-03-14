@@ -14,7 +14,7 @@ import {
   ImageBackground,
   LogBox,
 } from 'react-native';
-import AsyncStorage from 'react-native-encrypted-storage';
+import AsyncStorage from '@react-native-community/async-storage';
 
 import DateTimePickerModal from 'react-native-modal-datetime-picker';
 import moment from 'moment';

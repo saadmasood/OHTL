@@ -12,7 +12,7 @@ import {
   LogBox,
 } from 'react-native';
 
-import AsyncStorage from 'react-native-encrypted-storage';
+import AsyncStorage from '@react-native-community/async-storage';
 import DropDownPicker from 'react-native-dropdown-picker';
 import {ScrollView} from 'react-native-gesture-handler';
 import ImageView from 'react-native-image-viewing';
