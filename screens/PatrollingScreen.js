@@ -15,13 +15,19 @@ import {
 import {ScrollView} from 'react-native-gesture-handler';
 import DropDownPicker from 'react-native-dropdown-picker';
 import SegmentedControlTab from 'react-native-segmented-control-tab';
+import CheckBox from '@react-native-community/checkbox';
+import AsyncStorage from '@react-native-community/async-storage';
 
 const PatrollingScreen = ({navigation, route}) => {
+  const [isEditable, setIsEditable] = useState(true);
   const [isMeterReadingEditable, setIsMeterReadingEditable] = useState(true);
   const [isDCRemarksEditable, setIsDCRemarksEditable] = useState(false);
 
   const [selectedIndex, setSelectedIndex] = useState(0);
   const [MeterReading, setMeterReading] = useState();
+  const [btnBackgroundColor, setBtnBackgroundColor] = useState(
+    'rgba(93,45,145,255)',
+  );
 
   const [openStructure, setOpenStructure] = useState(false);
   const [valueStructure, setValueStructure] = useState();
@@ -130,6 +136,42 @@ const PatrollingScreen = ({navigation, route}) => {
     },
   ]);
 
+  const [openInsulationTypeJumperRed, setOpenInsulationTypeJumperRed] =
+    useState(false);
+  const [valueInsulationTypeJumperRed, setValueInsulationTypeJumperRed] =
+    useState();
+  const [itemsInsulationTypeJumperRed, setItemsInsulationTypeJumperRed] =
+    useState([
+      {
+        label: 'Disc',
+        value: 'Disc',
+      },
+      {
+        label: 'Brown Long Rod',
+        value: 'Brown Long Rod',
+      },
+      {
+        label: 'Grey Long Rod',
+        value: 'Grey Long Rod',
+      },
+      {
+        label: 'White Long Rod',
+        value: 'White Long Rod',
+      },
+      {
+        label: 'RTV Coated Disc',
+        value: 'RTV Coated Disc',
+      },
+      {
+        label: 'RTV Coated Long Rod',
+        value: 'RTV Coated Long Rod',
+      },
+      {
+        label: 'Composite Long Rod',
+        value: 'Composite Long Rod',
+      },
+    ]);
+
   const [openInsulatorSchemeRed, setOpenInsulatorSchemeRed] = useState(false);
   const [valueInsulatorSchemeRed, setValueInsulatorSchemeRed] = useState();
   const [itemsInsulatorSchemeRed, setItemsInsulatorSchemeRed] = useState([
@@ -158,6 +200,39 @@ const PatrollingScreen = ({navigation, route}) => {
       value: 'TTS',
     },
   ]);
+
+  const [openInsulatorSchemeJumperRed, setOpenInsulatorSchemeJumperRed] =
+    useState(false);
+  const [valueInsulatorSchemeJumperRed, setValueInsulatorSchemeJumperRed] =
+    useState();
+  const [itemsInsulatorSchemeJumperRed, setItemsInsulatorSchemeJumperRed] =
+    useState([
+      {
+        label: 'SSS',
+        value: 'SSS',
+      },
+      {
+        label: 'DSS',
+        value: 'DSS',
+      },
+      {
+        label: 'TSS',
+        value: 'TSS',
+      },
+      {
+        label: 'STS',
+        value: 'STS',
+      },
+      {
+        label: 'DTS',
+        value: 'DTS',
+      },
+      {
+        label: 'TTS',
+        value: 'TTS',
+      },
+    ]);
+
   const [openInsulationTypeYellow, setOpenInsulationTypeYellow] =
     useState(false);
   const [valueInsulationTypeYellow, setValueInsulationTypeYellow] = useState();
@@ -192,6 +267,42 @@ const PatrollingScreen = ({navigation, route}) => {
     },
   ]);
 
+  const [openInsulationTypeJumperYellow, setOpenInsulationTypeJumperYellow] =
+    useState(false);
+  const [valueInsulationTypeJumperYellow, setValueInsulationTypeJumperYellow] =
+    useState();
+  const [itemsInsulationTypeJumperYellow, setItemsInsulationTypeJumperYellow] =
+    useState([
+      {
+        label: 'Disc',
+        value: 'Disc',
+      },
+      {
+        label: 'Brown Long Rod',
+        value: 'Brown Long Rod',
+      },
+      {
+        label: 'Grey Long Rod',
+        value: 'Grey Long Rod',
+      },
+      {
+        label: 'White Long Rod',
+        value: 'White Long Rod',
+      },
+      {
+        label: 'RTV Coated Disc',
+        value: 'RTV Coated Disc',
+      },
+      {
+        label: 'RTV Coated Long Rod',
+        value: 'RTV Coated Long Rod',
+      },
+      {
+        label: 'Composite Long Rod',
+        value: 'Composite Long Rod',
+      },
+    ]);
+
   const [openInsulatorSchemeYellow, setOpenInsulatorSchemeYellow] =
     useState(false);
   const [valueInsulatorSchemeYellow, setValueInsulatorSchemeYellow] =
@@ -222,6 +333,43 @@ const PatrollingScreen = ({navigation, route}) => {
       value: 'TTS',
     },
   ]);
+
+  const [openInsulatorSchemeJumperYellow, setOpenInsulatorSchemeJumperYellow] =
+    useState(false);
+  const [
+    valueInsulatorSchemeJumperYellow,
+    setValueInsulatorSchemeJumperYellow,
+  ] = useState();
+  const [
+    itemsInsulatorSchemeJumperYellow,
+    setItemsInsulatorSchemeJumperYellow,
+  ] = useState([
+    {
+      label: 'SSS',
+      value: 'SSS',
+    },
+    {
+      label: 'DSS',
+      value: 'DSS',
+    },
+    {
+      label: 'TSS',
+      value: 'TSS',
+    },
+    {
+      label: 'STS',
+      value: 'STS',
+    },
+    {
+      label: 'DTS',
+      value: 'DTS',
+    },
+    {
+      label: 'TTS',
+      value: 'TTS',
+    },
+  ]);
+
   const [openInsulationTypeBlue, setOpenInsulationTypeBlue] = useState(false);
   const [valueInsulationTypeBlue, setValueInsulationTypeBlue] = useState();
   const [itemsInsulationTypeBlue, setItemsInsulationTypeBlue] = useState([
@@ -255,6 +403,42 @@ const PatrollingScreen = ({navigation, route}) => {
     },
   ]);
 
+  const [openInsulationTypeJumperBlue, setOpenInsulationTypeJumperBlue] =
+    useState(false);
+  const [valueInsulationTypeJumperBlue, setValueInsulationTypeJumperBlue] =
+    useState();
+  const [itemsInsulationTypeJumperBlue, setItemsInsulationTypeJumperBlue] =
+    useState([
+      {
+        label: 'Disc',
+        value: 'Disc',
+      },
+      {
+        label: 'Brown Long Rod',
+        value: 'Brown Long Rod',
+      },
+      {
+        label: 'Grey Long Rod',
+        value: 'Grey Long Rod',
+      },
+      {
+        label: 'White Long Rod',
+        value: 'White Long Rod',
+      },
+      {
+        label: 'RTV Coated Disc',
+        value: 'RTV Coated Disc',
+      },
+      {
+        label: 'RTV Coated Long Rod',
+        value: 'RTV Coated Long Rod',
+      },
+      {
+        label: 'Composite Long Rod',
+        value: 'Composite Long Rod',
+      },
+    ]);
+
   const [openInsulatorSchemeBlue, setOpenInsulatorSchemeBlue] = useState(false);
   const [valueInsulatorSchemeBlue, setValueInsulatorSchemeBlue] = useState();
   const [itemsInsulatorSchemeBlue, setItemsInsulatorSchemeBlue] = useState([
@@ -284,10 +468,203 @@ const PatrollingScreen = ({navigation, route}) => {
     },
   ]);
 
+  const [openInsulatorSchemeJumperBlue, setOpenInsulatorSchemeJumperBlue] =
+    useState(false);
+  const [valueInsulatorSchemeJumperBlue, setValueInsulatorSchemeJumperBlue] =
+    useState();
+  const [itemsInsulatorSchemeJumperBlue, setItemsInsulatorSchemeJumperBlue] =
+    useState([
+      {
+        label: 'SSS',
+        value: 'SSS',
+      },
+      {
+        label: 'DSS',
+        value: 'DSS',
+      },
+      {
+        label: 'TSS',
+        value: 'TSS',
+      },
+      {
+        label: 'STS',
+        value: 'STS',
+      },
+      {
+        label: 'DTS',
+        value: 'DTS',
+      },
+      {
+        label: 'TTS',
+        value: 'TTS',
+      },
+    ]);
+
+  const [strFL, setStrFL] = useState();
+
+  const [isCheckedRed, setIsCheckedRed] = useState(false);
+  const [isCheckedYellow, setIsCheckedYellow] = useState(false);
+  const [isCheckedBlue, setIsCheckedBlue] = useState(false);
+
+  const handleCheckBoxRed = () => {
+    setIsCheckedRed(!isCheckedRed);
+  };
+
+  const handleCheckBoxYellow = () => {
+    setIsCheckedYellow(!isCheckedYellow);
+  };
+
+  const handleCheckBoxBlue = () => {
+    setIsCheckedBlue(!isCheckedBlue);
+  };
+
   const handleIndexChange = index => {
     setSelectedIndex(index);
     console.log(index);
   };
+
+  const StoreInDevice = isDescripancyList => {
+    AsyncStorage.getItem(route.params.otherParam)
+      .then(async items => {
+        var dataslice = items ? JSON.parse(items) : {};
+
+        dataslice.filter((item, index) => {
+          if (item.StrFl == strFL) {
+            dataslice[index].Status = 'Saved';
+            dataslice[index].valueStructureType = valueStructureType;
+            dataslice[index].valueStructureSide = valueStructureSide;
+
+            dataslice[index].valueInsulationTypeRed = valueInsulationTypeRed;
+            dataslice[index].valueInsulationTypeJumperRed =
+              valueInsulationTypeJumperRed;
+            dataslice[index].isCheckedRed = isCheckedRed;
+            dataslice[index].valueInsulatorSchemeRed = valueInsulatorSchemeRed;
+            dataslice[index].valueInsulatorSchemeJumperRed =
+              valueInsulatorSchemeJumperRed;
+
+            dataslice[index].valueInsulationTypeYellow =
+              valueInsulationTypeYellow;
+            dataslice[index].valueInsulationTypeJumperYellow =
+              valueInsulationTypeJumperYellow;
+            dataslice[index].isCheckedYellow = isCheckedYellow;
+            dataslice[index].valueInsulatorSchemeYellow =
+              valueInsulatorSchemeYellow;
+            dataslice[index].valueInsulatorSchemeJumperYellow =
+              valueInsulatorSchemeJumperYellow;
+
+            dataslice[index].valueInsulationTypeBlue = valueInsulationTypeBlue;
+            dataslice[index].valueInsulationTypeJumperBlue =
+              valueInsulationTypeJumperBlue;
+            dataslice[index].isCheckedBlue = isCheckedBlue;
+            dataslice[index].valueInsulatorSchemeBlue =
+              valueInsulatorSchemeBlue;
+            dataslice[index].valueInsulatorSchemeJumperBlue =
+              valueInsulatorSchemeJumperBlue;
+
+            console.log(strFL);
+
+            AsyncStorage.setItem(
+              route.params.otherParam,
+              JSON.stringify(dataslice),
+            );
+          }
+        });
+      })
+      .then(item => {
+        AsyncStorage.getItem('FunctionalLocation')
+          .then(async items => {
+            var data1 = items ? JSON.parse(items) : {};
+            console.log(route.params.data.PtlSnro);
+            console.log('***************');
+            data1.filter((item, index) => {
+              if (item.PtlSnro == route.params.data.PtlSnro) {
+                data1[index].Status = 'Saved';
+
+                AsyncStorage.setItem(
+                  'FunctionalLocation',
+                  JSON.stringify(data1),
+                );
+              }
+            });
+          })
+          .then(item => {
+            if (!isDescripancyList) {
+              navigation.navigate('StrFLListView', {
+                data: route.params.data,
+                otherParam: route.params.data.PtlSnro,
+              });
+            } else {
+              navigation.navigate('DiscrepancyListView', {
+                PtlSnro: route.params.data.PtlSnro,
+                StrSnro: route.params.data.StrSnro,
+              });
+            }
+          });
+      });
+  };
+
+  useEffect(() => {
+    //console.log(route.params.data);
+    setStrFL(route.params.data.StrFl);
+
+    AsyncStorage.getItem(route.params.data.PtlSnro).then(items => {
+      var localData = items ? JSON.parse(items) : [];
+      var filterData = localData.filter(item => {
+        if (item.StrFl == route.params.data.StrFl) {
+          console.log('item.StrDescr: ' + item.StrDescr);
+          console.log('item.valueStructureType: ' + item.valueStructureType);
+
+          if (item.valueStructureType != undefined)
+            setValueStructureType(item.valueStructureType);
+          if (item.valueStructureSide != undefined)
+            setValueStructureSide(item.valueStructureSide);
+
+          if (item.valueInsulationTypeRed != undefined)
+            setValueInsulationTypeRed(item.valueInsulationTypeRed);
+          if (item.valueInsulationTypeJumperRed != undefined)
+            setValueInsulationTypeJumperRed(item.valueInsulationTypeJumperRed);
+          if (item.isCheckedRed != undefined)
+            setIsCheckedRed(item.isCheckedRed);
+          if (item.valueInsulatorSchemeRed != undefined)
+            setValueInsulatorSchemeRed(item.valueInsulatorSchemeRed);
+          if (item.valueInsulatorSchemeJumperRed != undefined)
+            setValueInsulatorSchemeJumperRed(
+              item.valueInsulatorSchemeJumperRed,
+            );
+
+          if (item.valueInsulationTypeYellow != undefined)
+            setValueInsulationTypeYellow(item.valueInsulationTypeYellow);
+          if (item.valueInsulationTypeJumperYellow != undefined)
+            setValueInsulationTypeJumperYellow(
+              item.valueInsulationTypeJumperYellow,
+            );
+          if (item.isCheckedYellow != undefined)
+            setIsCheckedYellow(item.isCheckedYellow);
+          if (item.valueInsulatorSchemeYellow != undefined)
+            setValueInsulatorSchemeYellow(item.valueInsulatorSchemeYellow);
+          if (item.valueInsulatorSchemeJumperYellow != undefined)
+            setValueInsulatorSchemeJumperYellow(
+              item.valueInsulatorSchemeJumperYellow,
+            );
+
+          if (item.valueInsulationTypeBlue != undefined)
+            setValueInsulationTypeBlue(item.valueInsulationTypeBlue);
+          if (item.valueInsulationTypeJumperBlue != undefined)
+            setValueInsulationTypeJumperBlue(
+              item.valueInsulationTypeJumperBlue,
+            );
+          if (item.isCheckedBlue != undefined)
+            setIsCheckedBlue(item.isCheckedBlue);
+          if (item.valueInsulatorSchemeBlue != undefined)
+            setValueInsulatorSchemeBlue(item.valueInsulatorSchemeBlue);
+          if (item.valueInsulatorSchemeJumperBlue != undefined)
+            setValueInsulatorSchemeJumperBlue(
+              item.valueInsulatorSchemeJumperBlue,
+            );
+        }
+      });
+    });
+  }, []);
 
   return (
     <ScrollView style={styles.container}>
@@ -325,6 +702,7 @@ const PatrollingScreen = ({navigation, route}) => {
             <Text style={styles.pic_text_left}>Structure:</Text>
           </View>
           <View style={{flex: 1, alignItems: 'flex-start'}}>
+            {/*
             <DropDownPicker
               open={openStructure}
               value={valueStructure}
@@ -338,6 +716,12 @@ const PatrollingScreen = ({navigation, route}) => {
               onChangeValue={item => {
                 console.log(item);
               }}
+            />
+            */}
+            <TextInput
+              style={{color: 'black', fontSize: 17}}
+              value={strFL}
+              editable={false}
             />
           </View>
         </View>
@@ -399,7 +783,7 @@ const PatrollingScreen = ({navigation, route}) => {
         )}
 
         <View style={styles.header}>
-          <Text style={[styles.logo]}> Record Jumper Phase Insulation</Text>
+          <Text style={[styles.logo]}> Record Phase Insulation</Text>
         </View>
 
         <SegmentedControlTab
@@ -461,6 +845,89 @@ const PatrollingScreen = ({navigation, route}) => {
                 />
               </View>
             </View>
+
+            <View
+              style={{
+                flexDirection: 'row',
+                flex: 0.1,
+                width: '96%',
+                top: 1,
+                paddingTop: 10,
+              }}>
+              <View style={{flex: 1, alignItems: 'flex-start'}}>
+                <Text style={styles.pic_text_left}>Jumper String Seen?:</Text>
+              </View>
+              <View style={{flex: 1, alignItems: 'flex-start'}}>
+                <CheckBox
+                  value={isCheckedRed}
+                  onValueChange={handleCheckBoxRed}
+                />
+                <Text>{isCheckedRed ? 'Checked' : 'Unchecked'}</Text>
+              </View>
+            </View>
+
+            {isCheckedRed == true && (
+              <View>
+                <View style={styles.header}>
+                  <Text style={[styles.logo]}>
+                    {' '}
+                    Record Jumper Phase Insulation
+                  </Text>
+                </View>
+                <View
+                  style={{
+                    flexDirection: 'row',
+                    flex: 0.1,
+                    width: '96%',
+                    top: 1,
+                    paddingTop: 10,
+                  }}>
+                  <View style={{flex: 1, alignItems: 'flex-start'}}>
+                    <Text style={styles.pic_text_left}>Insulation Type:</Text>
+                  </View>
+                  <View style={{flex: 1, alignItems: 'flex-start'}}>
+                    <DropDownPicker
+                      open={openInsulationTypeJumperRed}
+                      value={valueInsulationTypeJumperRed}
+                      items={itemsInsulationTypeJumperRed}
+                      setOpen={setOpenInsulationTypeJumperRed}
+                      setValue={setValueInsulationTypeJumperRed}
+                      setItems={setItemsInsulationTypeJumperRed}
+                      listMode="MODAL"
+                      searchable
+                      //disabled={isDCRemarksEditable}
+                      //onChangeValue={item => {}}
+                    />
+                  </View>
+                </View>
+                <View
+                  style={{
+                    flexDirection: 'row',
+                    flex: 0.1,
+                    width: '96%',
+                    top: 1,
+                    paddingTop: 10,
+                  }}>
+                  <View style={{flex: 1, alignItems: 'flex-start'}}>
+                    <Text style={styles.pic_text_left}>Insulator Scheme:</Text>
+                  </View>
+                  <View style={{flex: 1, alignItems: 'flex-start'}}>
+                    <DropDownPicker
+                      open={openInsulatorSchemeJumperRed}
+                      value={valueInsulatorSchemeJumperRed}
+                      items={itemsInsulatorSchemeJumperRed}
+                      setOpen={setOpenInsulatorSchemeJumperRed}
+                      setValue={setValueInsulatorSchemeJumperRed}
+                      setItems={setItemsInsulatorSchemeJumperRed}
+                      listMode="MODAL"
+                      searchable
+                      //disabled={isDCRemarksEditable}
+                      //onChangeValue={item => {}}
+                    />
+                  </View>
+                </View>
+              </View>
+            )}
           </View>
         )}
         {selectedIndex == '1' && (
@@ -517,6 +984,89 @@ const PatrollingScreen = ({navigation, route}) => {
                 />
               </View>
             </View>
+
+            <View
+              style={{
+                flexDirection: 'row',
+                flex: 0.1,
+                width: '96%',
+                top: 1,
+                paddingTop: 10,
+              }}>
+              <View style={{flex: 1, alignItems: 'flex-start'}}>
+                <Text style={styles.pic_text_left}>Jumper String Seen?:</Text>
+              </View>
+              <View style={{flex: 1, alignItems: 'flex-start'}}>
+                <CheckBox
+                  value={isCheckedYellow}
+                  onValueChange={handleCheckBoxYellow}
+                />
+                <Text>{isCheckedYellow ? 'Checked' : 'Unchecked'}</Text>
+              </View>
+            </View>
+
+            {isCheckedYellow == true && (
+              <View>
+                <View style={styles.header}>
+                  <Text style={[styles.logo]}>
+                    {' '}
+                    Record Jumper Phase Insulation
+                  </Text>
+                </View>
+                <View
+                  style={{
+                    flexDirection: 'row',
+                    flex: 0.1,
+                    width: '96%',
+                    top: 1,
+                    paddingTop: 10,
+                  }}>
+                  <View style={{flex: 1, alignItems: 'flex-start'}}>
+                    <Text style={styles.pic_text_left}>Insulation Type:</Text>
+                  </View>
+                  <View style={{flex: 1, alignItems: 'flex-start'}}>
+                    <DropDownPicker
+                      open={openInsulationTypeJumperYellow}
+                      value={valueInsulationTypeJumperYellow}
+                      items={itemsInsulationTypeJumperYellow}
+                      setOpen={setOpenInsulationTypeJumperYellow}
+                      setValue={setValueInsulationTypeJumperYellow}
+                      setItems={setItemsInsulationTypeJumperYellow}
+                      listMode="MODAL"
+                      searchable
+                      //disabled={isDCRemarksEditable}
+                      //onChangeValue={item => {}}
+                    />
+                  </View>
+                </View>
+                <View
+                  style={{
+                    flexDirection: 'row',
+                    flex: 0.1,
+                    width: '96%',
+                    top: 1,
+                    paddingTop: 10,
+                  }}>
+                  <View style={{flex: 1, alignItems: 'flex-start'}}>
+                    <Text style={styles.pic_text_left}>Insulator Scheme:</Text>
+                  </View>
+                  <View style={{flex: 1, alignItems: 'flex-start'}}>
+                    <DropDownPicker
+                      open={openInsulatorSchemeJumperYellow}
+                      value={valueInsulatorSchemeJumperYellow}
+                      items={itemsInsulatorSchemeJumperYellow}
+                      setOpen={setOpenInsulatorSchemeJumperYellow}
+                      setValue={setValueInsulatorSchemeJumperYellow}
+                      setItems={setItemsInsulatorSchemeJumperYellow}
+                      listMode="MODAL"
+                      searchable
+                      //disabled={isDCRemarksEditable}
+                      //onChangeValue={item => {}}
+                    />
+                  </View>
+                </View>
+              </View>
+            )}
           </View>
         )}
         {selectedIndex == '2' && (
@@ -573,8 +1123,114 @@ const PatrollingScreen = ({navigation, route}) => {
                 />
               </View>
             </View>
+            <View
+              style={{
+                flexDirection: 'row',
+                flex: 0.1,
+                width: '96%',
+                top: 1,
+                paddingTop: 10,
+              }}>
+              <View style={{flex: 1, alignItems: 'flex-start'}}>
+                <Text style={styles.pic_text_left}>Jumper String Seen?:</Text>
+              </View>
+              <View style={{flex: 1, alignItems: 'flex-start'}}>
+                <CheckBox
+                  value={isCheckedBlue}
+                  onValueChange={handleCheckBoxBlue}
+                />
+                <Text>{isCheckedBlue ? 'Checked' : 'Unchecked'}</Text>
+              </View>
+            </View>
+
+            {isCheckedBlue == true && (
+              <View>
+                <View style={styles.header}>
+                  <Text style={[styles.logo]}>
+                    {' '}
+                    Record Jumper Phase Insulation
+                  </Text>
+                </View>
+                <View
+                  style={{
+                    flexDirection: 'row',
+                    flex: 0.1,
+                    width: '96%',
+                    top: 1,
+                    paddingTop: 10,
+                  }}>
+                  <View style={{flex: 1, alignItems: 'flex-start'}}>
+                    <Text style={styles.pic_text_left}>Insulation Type:</Text>
+                  </View>
+                  <View style={{flex: 1, alignItems: 'flex-start'}}>
+                    <DropDownPicker
+                      open={openInsulationTypeJumperBlue}
+                      value={valueInsulationTypeJumperBlue}
+                      items={itemsInsulationTypeJumperBlue}
+                      setOpen={setOpenInsulationTypeJumperBlue}
+                      setValue={setValueInsulationTypeJumperBlue}
+                      setItems={setItemsInsulationTypeJumperBlue}
+                      listMode="MODAL"
+                      searchable
+                      //disabled={isDCRemarksEditable}
+                      //onChangeValue={item => {}}
+                    />
+                  </View>
+                </View>
+                <View
+                  style={{
+                    flexDirection: 'row',
+                    flex: 0.1,
+                    width: '96%',
+                    top: 1,
+                    paddingTop: 10,
+                  }}>
+                  <View style={{flex: 1, alignItems: 'flex-start'}}>
+                    <Text style={styles.pic_text_left}>Insulator Scheme:</Text>
+                  </View>
+                  <View style={{flex: 1, alignItems: 'flex-start'}}>
+                    <DropDownPicker
+                      open={openInsulatorSchemeJumperBlue}
+                      value={valueInsulatorSchemeJumperBlue}
+                      items={itemsInsulatorSchemeJumperBlue}
+                      setOpen={setOpenInsulatorSchemeJumperBlue}
+                      setValue={setValueInsulatorSchemeJumperBlue}
+                      setItems={setItemsInsulatorSchemeJumperBlue}
+                      listMode="MODAL"
+                      searchable
+                      //disabled={isDCRemarksEditable}
+                      //onChangeValue={item => {}}
+                    />
+                  </View>
+                </View>
+              </View>
+            )}
           </View>
         )}
+        <View style={{alignItems: 'center'}}>
+          <TouchableOpacity
+            disabled={!isEditable}
+            style={[styles.loginBtn, {backgroundColor: btnBackgroundColor}]}
+            onPress={() => {
+              StoreInDevice('No');
+            }}>
+            <Text style={{color: 'white', fontSize: 18}}>
+              Save Insulation Details
+            </Text>
+          </TouchableOpacity>
+        </View>
+        <View style={{alignItems: 'center'}}>
+          <TouchableOpacity
+            disabled={!isEditable}
+            style={[styles.loginBtn, {backgroundColor: btnBackgroundColor}]}
+            onPress={() => {
+              StoreInDevice('Yes');
+            }}>
+            <Text style={{color: 'white', fontSize: 18}}>
+              Add Discrepancies
+            </Text>
+          </TouchableOpacity>
+        </View>
       </View>
     </ScrollView>
   );
@@ -640,7 +1296,7 @@ const styles = StyleSheet.create({
   },
 
   loginBtn: {
-    width: '50%',
+    width: '60%',
     borderRadius: 25,
     height: 40,
     alignItems: 'center',

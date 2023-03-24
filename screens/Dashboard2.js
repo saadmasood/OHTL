@@ -90,46 +90,28 @@ function Dashboard({navigation}) {
     setIsConnected(state.isConnected);
   });
 
+  const [currenDate, setCurrentDate] = useState([]);
+
   useEffect(() => {
-    AsyncStorage.getItem('UserDetail').then(items => {
-      var data = items ? JSON.parse(items) : [];
-      // var datatable = [];
-      logindata = data;
-
-      setEmpName(data[0].EMP_NAME);
-      setLINEMAN(data[0].LINEMAN);
-      setImageCount(data[0].ImageCount);
-
-      console.log(data[0].GANG_NAME);
-      console.log(data[0].IBC_CODE);
-      console.log(data[0].LINEMAN);
-      console.log(data[0].EMP_NAME);
-
-      setImIbc(data[0].IBC_CODE);
-      setImGang(data[0].GANG_NAME);
-      setImUser(data[0].LINEMAN);
-    });
-
+    setCurrentDate(moment().format('DD.MM.YYYY'));
     navigation.addListener('focus', payload => {
-      AsyncStorage.getItem('DCRCRecord').then(items => {
+      AsyncStorage.getItem('UserDetail').then(items => {
         var data1 = items ? JSON.parse(items) : [];
-        var count1 = 0;
 
-        data1 = data1.filter(x => x.RecordStatus == 'Saved');
-
-        setTotalSavedCases(data1.length);
-        setSavedData(data1);
-        console.log('savedData::' + data1);
-        setPostCount('');
+        data1.forEach(singleResult => {
+          setEmpName(singleResult.userName);
+        });
       });
     });
   }, []);
 
   const getRecord = () => {
     let FLSTR_NAV = [];
+    let SIRCount = 1000;
+    let funtionallocData = [];
     axios({
       method: 'get',
-      url: 'https://fioridev.ke.com.pk:44300/sap/opu/odata/sap/ZPATROLLING_SRV/GET_FLsSet?$filter=(User%20eq%20%27TOOBA%27)&$expand=FLSTR_NAV&$format=json',
+      url: 'https://fioridev.ke.com.pk:44300/sap/opu/odata/sap/ZPATROLLING_SRV/GET_FLsSet?$filter=(User%20eq%20%27SAAD%27)&$expand=FLSTR_NAV&$format=json',
       headers: {
         'Content-Type': 'application/json',
         Authorization: 'Basic ' + base64.encode('tooba:sapsap12'),
@@ -140,46 +122,79 @@ function Dashboard({navigation}) {
           res.data.d.results.forEach(singleResult => {
             singleResult.FLSTR_NAV.results.forEach(subSingleResult => {
               FLSTR_NAV.push({
+                PtlSnro: SIRCount.toString(),
+                StrSnro: SIRCount.toString() + '-' + subSingleResult.StrFl,
                 StrFl: subSingleResult.StrFl,
                 StrDescr: subSingleResult.StrDescr,
+                Status: 'New',
               });
             });
-            _storeData(singleResult.Fl, singleResult.FlDescr, FLSTR_NAV);
+            funtionallocData.push({
+              PtlSnro: SIRCount.toString(),
+              Fl: singleResult.Fl,
+              FlDescr: singleResult.FlDescr,
+              AssignedDate: singleResult.AssignedDate,
+              AssignedTime: singleResult.AssignedTime,
+              PtlStatus: singleResult.PtlStatus,
+              FLSTR_NAV: FLSTR_NAV,
+              Status: 'New',
+            });
             FLSTR_NAV = [];
+            SIRCount++;
           });
         } else {
           alert('No Record found');
         }
+      })
+      .then(res => {
+        _storeData(funtionallocData);
       })
       .catch(error => {
         console.error('axios:error: ' + error);
       });
   };
 
-  const _storeData = async (fl, flDescr, FLSTR_NAV) => {
-    let count = 0;
-    var data = [],
-      flag = false;
-    console.log('fl: ' + fl);
+  const _storeData = async funtionallocData => {
+    let flag = false;
+    var data = [];
+
+    console.log(funtionallocData);
+
     try {
       await AsyncStorage.getItem('FunctionalLocation')
         .then(items => {
           data = items ? JSON.parse(items) : [];
-
-          data.forEach(child => {
-            if (child.Fl == fl) {
-              flag = true;
-            }
-          });
-
-          if (flag == false) {
-            data.push({
-              Fl: fl,
-              FlDescr: flDescr,
-              FLSTR_NAV: FLSTR_NAV,
+          console.log(
+            '_storeData:data: ' + typeof data + ' length: ' + data.length,
+          );
+          funtionallocData.forEach(parent => {
+            console.log(parent.Fl);
+            data.forEach(child => {
+              if (child.Fl == parent.Fl) {
+                flag = true;
+              }
             });
-          }
-          flag == false;
+            //console.log(flag);
+            if (flag == false) {
+              data.push({
+                PtlSnro: parent.PtlSnro,
+                Fl: parent.Fl,
+                FlDescr: parent.FlDescr,
+                AssignedDate: parent.AssignedDate,
+                AssignedTime: parent.AssignedTime,
+                PtlStatus: parent.PtlStatus,
+                Status: 'New',
+              });
+
+              AsyncStorage.setItem(
+                parent.PtlSnro,
+                JSON.stringify(parent.FLSTR_NAV),
+              );
+
+              //console.log(parent.Fl);
+            }
+            flag == false;
+          });
         })
         .then(res => {
           AsyncStorage.setItem('FunctionalLocation', JSON.stringify(data));
@@ -211,7 +226,7 @@ function Dashboard({navigation}) {
               <TouchableOpacity
                 onPress={() => {
                   console.log('Employee Info');
-                  navigation.navigate('WorkSchedule', {
+                  navigation.navigate('FLListView', {
                     otherParam: 'NewCases',
                   });
                   //navigation.navigate('EmployeeInfo');
@@ -226,8 +241,8 @@ function Dashboard({navigation}) {
             <View style={styles.downleft}>
               <TouchableOpacity
                 onPress={() => {
-                  console.log('Work Schedule');
-                  navigation.navigate('WorkSchedule', {
+                  console.log('FL List View');
+                  navigation.navigate('FLListView', {
                     otherParam: 'NewCases',
                   });
                 }}>
@@ -241,8 +256,8 @@ function Dashboard({navigation}) {
             <View style={styles.downleft}>
               <TouchableOpacity
                 onPress={() => {
-                  console.log('Work Schedule');
-                  navigation.navigate('WorkSchedule', {
+                  console.log('FL List View');
+                  navigation.navigate('FLListView', {
                     otherParam: 'SavedCases',
                   });
                 }}>
@@ -284,8 +299,8 @@ function Dashboard({navigation}) {
             <View style={styles.downright}>
               <TouchableOpacity
                 onPress={() => {
-                  console.log('Work Summary');
-                  navigation.navigate('WorkSchedule', {
+                  console.log('FL List View');
+                  navigation.navigate('FLListView', {
                     otherParam: 'PostCases',
                   });
                 }}>

@@ -28,7 +28,7 @@ let i = 0;
 let j = 10;
 let dataslice;
 
-function WorkSchedule({route, navigation}) {
+function StrFLListView({route, navigation}) {
   const data3 = {
     DAssignedDC: '0',
     DDCPerformed: '0',
@@ -58,63 +58,29 @@ function WorkSchedule({route, navigation}) {
   const [caseTypeHeading, setCaseTypeHeading] = useState();
 
   const loadData = val => {
-    console.log('values == >', i, j);
-    setLoading(true);
-    let data1;
-    AsyncStorage.getItem('DCRCRecord').then(items => {
-      var data = [];
-      data = items ? JSON.parse(items) : {};
+    //console.log(route.params.otherParam);
 
-      console.log('startOfMonth: ' + startOfMonth);
-      console.log('endOfMonth: ' + endOfMonth);
+    AsyncStorage.getItem(route.params.otherParam).then(items => {
+      var dataslice = [];
+      dataslice = items ? JSON.parse(items) : {};
 
-      //            console.log('data', data[0].ImageCount);
-      console.log('route.params.otherParam:::', route.params.otherParam);
-      //            console.log('*******', data);
-      console.log('data: ' + typeof data + ' length: ' + data.length);
+      console.log('******ST *data1************');
+      console.log(dataslice);
+      console.log('*******EN *data1************');
 
-      data1 = data.filter(x =>
-        moment(moment(x.ImDate).format('YYYYMMDD')).isBetween(
-          startOfMonth,
-          endOfMonth,
-        ),
-      );
-
-      data1.sort((a, b) => b.ImDate - a.ImDate);
-
-      if (route.params.otherParam == 'PostCases')
-        data1 = data1.filter(x => x.RecordStatus == 'Post');
-      else if (route.params.otherParam == 'SavedCases')
-        data1 = data1.filter(x => x.RecordStatus == 'Saved');
-      else if (route.params.otherParam == 'NewCases')
-        data1 = data1.filter(x => x.RecordStatus == '');
-      //                data1 = data.filter(x => (x.Status == null && x.DcStatus == ''));
-
-      if (val) {
-        i += 30;
-
-        dataslice = data1.splice(i, j);
-        //                console.log('if', dataslice);
-
-        setLoading(false);
-      } else {
-        i = 0;
-        j = 30;
-
-        dataslice = data1.splice(i, j);
-        //                console.log('else', dataslice);
-        setLoading(false);
-      }
-
-      console.log('data', i, j);
       settableData([...tableData, ...dataslice]);
       settemptableData([...temptableData, ...dataslice]);
+
       setLoader(false);
     });
   };
 
+  const [currenDate, setCurrentDate] = useState([]);
+
   useEffect(() => {
     setLoader(true);
+
+    setCurrentDate(moment().format('DD.MM.YYYY'));
 
     navigation.addListener('focus', payload => {
       loadData();
@@ -123,14 +89,6 @@ function WorkSchedule({route, navigation}) {
     LogBox.ignoreLogs(['Animated.event ']);
 
     loadData();
-
-    if (route.params.otherParam == 'NewCases') {
-      setCaseTypeHeading('NEW CASES');
-    } else if (route.params.otherParam == 'SavedCases') {
-      setCaseTypeHeading('SAVED CASES');
-    } else {
-      setCaseTypeHeading('COMPLETED CASES');
-    }
   }, []);
 
   const showDatePicker = () => {
@@ -250,6 +208,7 @@ function WorkSchedule({route, navigation}) {
           {caseTypeHeading}
         </TextInput>
       </View>
+      {/*
       <View>
         <Button
           title="Search by Date"
@@ -263,6 +222,7 @@ function WorkSchedule({route, navigation}) {
           onCancel={hideDatePicker}
         />
       </View>
+        */}
       {loader ? (
         <ActivityIndicator />
       ) : (
@@ -322,17 +282,10 @@ function WorkSchedule({route, navigation}) {
                 <TouchableOpacity
                   // disabled={true}
                   onPress={() => {
-                    //  alert('asdfasd');
-                    /*
-                                        navigation.reset({
-                                            index: 0,
-                                            routes: [{ name: 'PatrollingScreen' }],
-                                        });
-                                        */
                     navigation.navigate('PatrollingScreen', {
                       data: item,
                       index: index,
-                      otherParam: item.Vertrag,
+                      otherParam: item.PtlSnro,
                     });
                   }}
                   style={{
@@ -358,7 +311,7 @@ function WorkSchedule({route, navigation}) {
                   <View style={{flex: 1, flexDirection: 'row'}}>
                     <View
                       style={{
-                        backgroundColor: 'rgba(248,147,30,255)',
+                        backgroundColor: '#fff',
                         flexDirection: 'row',
                         // paddingHorizontal: 6,
                         alignItems: 'center',
@@ -381,30 +334,60 @@ function WorkSchedule({route, navigation}) {
                         {item.MrNote}
                       </Text>
                     </View>
-                    <View
-                      style={{
-                        backgroundColor: 'rgba(248,147,30,255)',
-                        flexDirection: 'row',
-                        // paddingHorizontal: 6,
-                        alignItems: 'center',
-                        justifyContent: 'center',
-                        paddingHorizontal: 15,
-                        height: 34,
-                        position: 'absolute',
-                        borderBottomLeftRadius: 15,
-                        left: -1,
-                        bottom: 0,
-                      }}>
-                      <Text
-                        style={{
-                          // marginLeft: 5,
-                          fontSize: 14,
-                          fontWeight: 'bold',
-                          color: '#FFFFFF', //'#FFFFFF',
-                          marginBottom: 4,
-                        }}>
-                        {index + 1}
-                      </Text>
+                    <View>
+                      {item.Status == 'Saved' ? (
+                        <View
+                          style={{
+                            backgroundColor: 'rgb(0, 100, 0)',
+                            flexDirection: 'row',
+                            // paddingHorizontal: 6,
+                            alignItems: 'center',
+                            justifyContent: 'center',
+                            paddingHorizontal: 15,
+                            height: 34,
+                            position: 'absolute',
+                            borderBottomLeftRadius: 15,
+                            left: -1,
+                            bottom: 0,
+                          }}>
+                          <Text
+                            style={{
+                              // marginLeft: 5,
+                              fontSize: 14,
+                              fontWeight: 'bold',
+                              color: '#FFFFFF', //'#FFFFFF',
+                              marginBottom: 4,
+                            }}>
+                            {index + 1}
+                          </Text>
+                        </View>
+                      ) : (
+                        <View
+                          style={{
+                            backgroundColor: 'rgba(248,147,30,255)',
+                            flexDirection: 'row',
+                            // paddingHorizontal: 6,
+                            alignItems: 'center',
+                            justifyContent: 'center',
+                            paddingHorizontal: 15,
+                            height: 34,
+                            position: 'absolute',
+                            borderBottomLeftRadius: 15,
+                            left: -1,
+                            bottom: 0,
+                          }}>
+                          <Text
+                            style={{
+                              // marginLeft: 5,
+                              fontSize: 14,
+                              fontWeight: 'bold',
+                              color: '#FFFFFF', //'#FFFFFF',
+                              marginBottom: 4,
+                            }}>
+                            {index + 1}
+                          </Text>
+                        </View>
+                      )}
                     </View>
                     <View
                       style={{
@@ -414,6 +397,20 @@ function WorkSchedule({route, navigation}) {
                         paddingVertical: 10,
                         //backgroundColor: "red",
                       }}>
+                      <Text
+                        style={{
+                          fontSize: 10,
+                          //fontWeight: 'bold',
+                          color: '#0873C3',
+                        }}
+                      />
+                      <Text
+                        style={{
+                          fontSize: 10,
+                          //fontWeight: 'bold',
+                          color: '#0873C3',
+                        }}
+                      />
                       <View
                         style={{
                           flexDirection: 'row',
@@ -425,7 +422,7 @@ function WorkSchedule({route, navigation}) {
                             fontSize: 13,
                             fontWeight: 'bold',
                           }}>
-                          Consumer No:
+                          Structure:
                         </Text>
                         <Text
                           style={{
@@ -433,7 +430,7 @@ function WorkSchedule({route, navigation}) {
                             color: 'black',
                             fontSize: 13,
                           }}>
-                          {item.ConsumerNo}
+                          {item.StrFl}
                         </Text>
                       </View>
                       <View
@@ -447,7 +444,7 @@ function WorkSchedule({route, navigation}) {
                             fontSize: 13,
                             fontWeight: 'bold',
                           }}>
-                          Acc No:
+                          Description:
                         </Text>
                         <Text
                           style={{
@@ -455,122 +452,7 @@ function WorkSchedule({route, navigation}) {
                             fontSize: 13,
                             color: 'black',
                           }}>
-                          {item.Vkont}
-                        </Text>
-                      </View>
-                      <View
-                        style={{
-                          flexDirection: 'row',
-                        }}>
-                        <Text
-                          style={{
-                            marginLeft: 5,
-                            color: 'black',
-                            fontSize: 13,
-                            fontWeight: 'bold',
-                          }}>
-                          Meter No:
-                        </Text>
-                        <Text
-                          style={{
-                            marginLeft: 5,
-                            fontSize: 13,
-                            color: 'black',
-                          }}>
-                          {item.Mtno}
-                        </Text>
-                      </View>
-                      <View
-                        style={{
-                          flexDirection: 'row',
-                        }}>
-                        <Text
-                          style={{
-                            marginLeft: 5,
-                            color: 'black',
-                            fontSize: 13,
-                            fontWeight: 'bold',
-                          }}>
-                          Current Bill:
-                        </Text>
-                        <Text
-                          style={{
-                            marginLeft: 5,
-                            fontSize: 13,
-                            color: 'black',
-                            fontWeight: 'bold',
-                          }}>
-                          {item.CurrentDues.replace(
-                            /\B(?=(\d{3})+(?!\d))/g,
-                            ',',
-                          )}
-                        </Text>
-                      </View>
-                      <View
-                        style={{
-                          flexDirection: 'row',
-                        }}>
-                        <Text
-                          style={{
-                            marginLeft: 5,
-                            color: 'black',
-                            fontSize: 13,
-                            fontWeight: 'bold',
-                          }}>
-                          Total Dues:
-                        </Text>
-                        <Text
-                          style={{
-                            marginLeft: 5,
-                            fontSize: 13,
-                            color: 'black',
-                            fontWeight: 'bold',
-                          }}>
-                          {item.TotDues.replace(/\B(?=(\d{3})+(?!\d))/g, ',')}
-                        </Text>
-                      </View>
-                      <View
-                        style={{
-                          flexDirection: 'row',
-                        }}>
-                        <Text
-                          style={{
-                            marginLeft: 5,
-                            color: 'black',
-                            fontSize: 13,
-                            fontWeight: 'bold',
-                          }}>
-                          MRU:
-                        </Text>
-                        <Text
-                          style={{
-                            marginLeft: 5,
-                            fontSize: 13,
-                            color: 'black',
-                          }}>
-                          {item.Mru}
-                        </Text>
-                      </View>
-                      <View
-                        style={{
-                          flexDirection: 'row',
-                        }}>
-                        <Text
-                          style={{
-                            marginLeft: 5,
-                            color: 'black',
-                            fontSize: 13,
-                            fontWeight: 'bold',
-                          }}>
-                          Tariff:
-                        </Text>
-                        <Text
-                          style={{
-                            marginLeft: 5,
-                            fontSize: 13,
-                            color: 'black',
-                          }}>
-                          {item.Tariff}
+                          {item.StrDescr}
                         </Text>
                       </View>
 
@@ -588,40 +470,6 @@ function WorkSchedule({route, navigation}) {
                           color: '#0873C3',
                         }}
                       />
-                    </View>
-                    <View
-                      style={{
-                        flex: 0.55,
-                        alignItems: 'center',
-                        justifyContent: 'flex-end',
-                        // marginBottom: 6,
-                      }}>
-                      <View
-                        style={{
-                          // backgroundColor: '#0873C3',
-                          alignItems: 'center',
-                          justifyContent: 'center',
-                          height: 90,
-                          width: 140,
-                          marginRight: 10,
-                          borderRadius: 15,
-                        }}>
-                        <Text
-                          style={{
-                            marginLeft: 70,
-                            fontSize: 13,
-                            color: 'black',
-                          }}>
-                          {item.ActionType1}
-                        </Text>
-                        <Text
-                          style={{
-                            fontSize: 15,
-                            //fontWeight: 'bold',
-                            color: '#0873C3',
-                          }}
-                        />
-                      </View>
                     </View>
 
                     <View
@@ -639,72 +487,7 @@ function WorkSchedule({route, navigation}) {
                           height: 65,
                           width: 180,
                           borderRadius: 15,
-                        }}>
-                        <View
-                          style={{
-                            //backgroundColor: '#0873C3',
-                            alignItems: 'center',
-                            justifyContent: 'center',
-                            height: 90,
-                            width: 140,
-                            marginRight: 10,
-                            borderRadius: 15,
-                            display: 'none',
-                          }}>
-                          <Text
-                            style={{
-                              marginLeft: 70,
-                              fontSize: 13,
-                              color: 'black',
-                            }}>
-                            {item.filterkey}
-                          </Text>
-                          <Text
-                            style={{
-                              fontSize: 15,
-                              //fontWeight: 'bold',
-                              color: '#0873C3',
-                            }}
-                          />
-                        </View>
-                        {/*
-                                                <TouchableOpacity
-                                                    // disabled={loader}
-
-                                                    style={styles.loginBtn}
-                                                    onPress={() => {
-                                                        //alert('asfasf');
-
-                                                        navigation.navigate('EditRecordDetails', {
-                                                            data: item,
-                                                            index: index,
-                                                            otherParam: item.filterkey,
-                                                        });
-                                                    }}>
-                                                    <View
-                                                        style={{
-                                                            height: 30,
-                                                            //width: '97%',
-                                                            borderColor: 'white',
-                                                            // height: 15,
-                                                            width: 140,
-                                                            borderRadius: 30,
-                                                            //  borderWidth: 2,
-                                                            alignItems: 'center',
-                                                            justifyContent: 'center',
-                                                        }}>
-                                                        <Text
-                                                            style={{
-                                                                color: 'white',
-                                                                fontSize: 12,
-                                                                fontWeight: 'bold',
-                                                            }}>
-                                                            Edit Record
-                                                        </Text>
-                                                    </View>
-                                                </TouchableOpacity>
-                                                */}
-                      </View>
+                        }}></View>
                     </View>
                     <View
                       style={{
@@ -713,7 +496,7 @@ function WorkSchedule({route, navigation}) {
                         paddingHorizontal: 6,
                         alignItems: 'center',
                         justifyContent: 'center',
-                        width: 140,
+                        width: 100,
                         height: 34,
                         position: 'absolute',
                         borderTopRightRadius: 15,
@@ -722,12 +505,11 @@ function WorkSchedule({route, navigation}) {
                       <Text
                         style={{
                           // marginLeft: 5,
-                          fontSize: 11,
+                          fontSize: 9,
                           fontWeight: 'bold',
                           color: '#FFFFFF',
                         }}>
-                        {'Dated : ' +
-                          moment(item.ImDate, 'YYYYMMDD').format('DD MM YYYY')}
+                        {'Dated : ' + currenDate}
                       </Text>
                     </View>
                   </View>
@@ -831,4 +613,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default WorkSchedule;
+export default StrFLListView;

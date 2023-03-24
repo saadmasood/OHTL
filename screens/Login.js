@@ -48,83 +48,6 @@ function Login({navigation}) {
 
   const [isLoginServiceCall, setIsLoginServiceCall] = useState(true);
 
-  var manualData = [
-    {
-      ConsumerNo: 'LA982001',
-      AccountNo: '400002718535',
-      MeterNo: 'SCA24438',
-      CurrentBill: '2,214.58',
-      TotalDues: '6869.84',
-      Tariff: 'A1-R',
-      LoginDate: '20220227',
-      ConsumerName: 'A. Y. Builders',
-      ConsumerAddress: 'FLAT No. 202-A Block-A Gulshan-e-Iqbal',
-      Contract: '30490615',
-      LastPaidAmount: '3090.00',
-      RecordStatus: '',
-      ImDate: '20230227',
-      CurrentDues: '1000',
-      TotDues: '1000',
-      Image: [{}, {}, {}, {}],
-      AsonDues: '1000',
-      Status: 'Pending',
-    },
-    {
-      ConsumerNo: 'LA982002',
-      AccountNo: '400002718535',
-      MeterNo: 'SCA24438',
-      CurrentBill: '2,214.58',
-      TotalDues: '6869.84',
-      Tariff: 'A1-R',
-      LoginDate: '20220227',
-      ConsumerName: 'A. Y. Builders',
-      ConsumerAddress: 'FLAT No. 202-A Block-A Gulshan-e-Iqbal',
-      Contract: '30490615',
-      LastPaidAmount: '3090.00',
-      RecordStatus: '',
-      ImDate: '20230227',
-      CurrentDues: '1000',
-      TotDues: '1000',
-      Image: [{}, {}, {}, {}],
-      AsonDues: '1000',
-      Status: 'Pending',
-    },
-    {
-      ConsumerNo: 'LA982003',
-      AccountNo: '400002718535',
-      MeterNo: 'SCA24438',
-      CurrentBill: '2,214.58',
-      TotalDues: '6869.84',
-      Tariff: 'A1-R',
-      LoginDate: '20230227',
-      ConsumerName: 'A. Y. Builders',
-      ConsumerAddress: 'FLAT No. 202-A Block-A Gulshan-e-Iqbal',
-      Contract: '30490615',
-      LastPaidAmount: '3090.00',
-      RecordStatus: '',
-      ImDate: '20220227',
-      CurrentDues: '1000',
-      TotDues: '1000',
-      Image: [{}, {}, {}, {}],
-      AsonDues: '1000',
-      Status: 'Pending',
-    },
-  ];
-
-  AsyncStorage.setItem('DCRCRecord', JSON.stringify(manualData));
-
-  var LoginData = [
-    {
-      EMP_NAME: 'Shahid Akhtar',
-      LINEMAN: '400002718535',
-      ImageCount: 'SCA24438',
-      GANG_NAME: 'SCA24438',
-      IBC_CODE: 'SCA24438',
-      userName: 'SCA24438',
-    },
-  ];
-  AsyncStorage.setItem('UserDetail', JSON.stringify(LoginData));
-
   useEffect(() => {
     /*
     AsyncStorage.setItem(
@@ -133,6 +56,7 @@ function Login({navigation}) {
     );
     */
     AsyncStorage.setItem('OHTL', JSON.stringify([]));
+
     console.log('****IMDATE***' + ImDate);
     AsyncStorage.getItem('UserDetail').then(items => {
       var userData = items ? JSON.parse(items) : {};
@@ -146,6 +70,7 @@ function Login({navigation}) {
       setName(userData[0].userName);
       setUserPassword(userData[0].userPassword);
       console.log('userData[0].userName: ' + userData[0].userName);
+      console.log('userData[0].userPassword: ' + userData[0].userPassword);
       if (userData[0].userName != '' && userData[0].userPassword != '') {
         setIsLoginServiceCall(false);
       }
@@ -282,13 +207,7 @@ function Login({navigation}) {
   ) => {
     console.log('name' + name);
 
-    navigation.reset({
-      index: 0,
-      routes: [{name: 'Dashboard2'}],
-    });
-    return;
-
-    //console.log('password' + userPassword);
+    console.log('password' + userPassword);
 
     /*    
         if (name == '') {
@@ -314,29 +233,26 @@ function Login({navigation}) {
 
     if (isLoginServiceCall) {
       axios({
-        method: 'POST',
-        url: 'https://fioriprd.ke.com.pk:44300/sap/opu/odata/sap/ZDCRC_SRV/AuthSet',
+        method: 'GET',
+        url:
+          "https://fioridev.ke.com.pk:44300/sap/opu/odata/sap/ZPATROLLING_SRV/ValidateUserSet(Pass='" +
+          userPassword +
+          "',Swid='" +
+          UniqueId.toUpperCase() +
+          "',User='" +
+          name +
+          "')?$format=json",
         headers: {
-          Authorization: 'Basic ' + base64.encode('mobility_rfc:Z@p12345'),
+          Authorization: 'Basic ' + base64.encode('tooba:sapsap12'),
           'Content-Type': 'application/json',
-          Accept: 'application/json',
-          'X-CSRFToken': '',
-          'X-Requested-With': 'XMLHttpRequest',
         },
-        data: JSON.stringify({
-          d: {
-            Username: name, //name,//"130-GANG-E", //name,
-            Password: userPassword, //userPassword,//"KE@123E", //userPassword,
-            Imei: UniqueId.toUpperCase(), //"2B1368244937B681"
-          },
-        }),
       })
         .then(resp => {
-          //console.log("res", resp);
+          //console.log('res', resp);
           loader();
           var response = resp.data;
-          console.log('response.d.ERROR::: ', response.d.ERROR);
-          if (response.d.ERROR == 'X') {
+          console.log('response.d.Result::: ', response.d.Result);
+          if (response.d.Result == 'False') {
             setError('Please insert correct informmation');
             setModalVisible(true);
             return;
@@ -344,21 +260,11 @@ function Login({navigation}) {
             let arr = [];
 
             arr.push({
-              GANG_NAME: response.d.GANG_NAME,
-              IBC_CODE: response.d.IBC_CODE,
-              LINEMAN: response.d.LINEMAN,
-              EMP_NAME: response.d.EMP_NAME,
               IMEI: UniqueId.toUpperCase(),
               userName: name,
               userPassword: userPassword,
             });
             //console.log("arr" + arr[0]);
-
-            getRecord(
-              response.d.IBC_CODE,
-              response.d.GANG_NAME,
-              response.d.LINEMAN,
-            );
 
             AsyncStorage.setItem('UserDetail', JSON.stringify(arr));
 

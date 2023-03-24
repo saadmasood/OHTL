@@ -20,10 +20,12 @@ import SplashScreen from './screens/SplashScreen';
 
 import FirstScreen from './screens/FirstScreen';
 import EmployeeInfo from './screens/EmployeeInfo';
-import WorkSchedule from './screens/WorkSchedule';
+import FLListView from './screens/FLListView';
+import StrFLListView from './screens/StrFLListView';
+import DiscrepancyListView from './screens/DiscrepancyListView';
 import WorkSummary from './screens/WorkSummary';
 import PatrollingScreen from './screens/PatrollingScreen';
-import DiscrepencyScreen from './screens/DiscrepencyScreen';
+import DiscrepancyScreen from './screens/DiscrepancyScreen';
 import WorkLocation from './screens/WorkLocation';
 import Dashboard2 from './screens/Dashboard2';
 import LocationEnabler from 'react-native-location-enabler';
@@ -89,9 +91,23 @@ const App = ({navigation}) => {
         />
 
         <Stack.Screen
-          key="WorkSchedule"
-          name="WorkSchedule"
-          component={WorkSchedule}
+          key="FLListView"
+          name="FLListView"
+          component={FLListView}
+          options={{headerShown: false}}
+        />
+
+        <Stack.Screen
+          key="StrFLListView"
+          name="StrFLListView"
+          component={StrFLListView}
+          options={{headerShown: false}}
+        />
+
+        <Stack.Screen
+          key="DiscrepancyListView"
+          name="DiscrepancyListView"
+          component={DiscrepancyListView}
           options={{headerShown: false}}
         />
 
@@ -108,9 +124,9 @@ const App = ({navigation}) => {
           options={{headerShown: false}}
         />
         <Stack.Screen
-          key="DiscrepencyScreen"
-          name="DiscrepencyScreen"
-          component={DiscrepencyScreen}
+          key="DiscrepancyScreen"
+          name="DiscrepancyScreen"
+          component={DiscrepancyScreen}
           options={{headerShown: false}}
         />
 

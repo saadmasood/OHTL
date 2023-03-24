@@ -317,15 +317,15 @@ const WorkScheduleDetail = ({navigation, route}) => {
         console.log('POST IMAGE 4 RESPONSE: ' + resp.data.StatusMessage);
 
         if (caseType == 'Post') {
-          navigation.navigate('WorkSchedule', {
+          navigation.navigate('FLListView', {
             otherParam: 'PostCases',
           });
         } else if (caseType == 'SavedCases') {
-          navigation.navigate('WorkSchedule', {
+          navigation.navigate('FLListView', {
             otherParam: 'Saved',
           });
         } else {
-          navigation.navigate('WorkSchedule', {
+          navigation.navigate('FLListView', {
             otherParam: 'NewCases',
           });
         }
@@ -407,15 +407,15 @@ const WorkScheduleDetail = ({navigation, route}) => {
                     console.log('POST IMAGE 3 RESPONSE: ' + resp.StatusMessage);
 
                     if (caseType == 'Post') {
-                      navigation.navigate('WorkSchedule', {
+                      navigation.navigate('FLListView', {
                         otherParam: 'PostCases',
                       });
                     } else if (caseType == 'SavedCases') {
-                      navigation.navigate('WorkSchedule', {
+                      navigation.navigate('FLListView', {
                         otherParam: 'Saved',
                       });
                     } else {
-                      navigation.navigate('WorkSchedule', {
+                      navigation.navigate('FLListView', {
                         otherParam: 'NewCases',
                       });
                     }
@@ -425,15 +425,15 @@ const WorkScheduleDetail = ({navigation, route}) => {
                   .catch(error => {});
               } else {
                 if (caseType == 'Post') {
-                  navigation.navigate('WorkSchedule', {
+                  navigation.navigate('FLListView', {
                     otherParam: 'PostCases',
                   });
                 } else if (caseType == 'SavedCases') {
-                  navigation.navigate('WorkSchedule', {
+                  navigation.navigate('FLListView', {
                     otherParam: 'Saved',
                   });
                 } else {
-                  navigation.navigate('WorkSchedule', {
+                  navigation.navigate('FLListView', {
                     otherParam: 'NewCases',
                   });
                 }
@@ -443,15 +443,15 @@ const WorkScheduleDetail = ({navigation, route}) => {
             .catch(error => {});
         } else {
           if (caseType == 'Post') {
-            navigation.navigate('WorkSchedule', {
+            navigation.navigate('FLListView', {
               otherParam: 'PostCases',
             });
           } else if (caseType == 'SavedCases') {
-            navigation.navigate('WorkSchedule', {
+            navigation.navigate('FLListView', {
               otherParam: 'Saved',
             });
           } else {
-            navigation.navigate('WorkSchedule', {
+            navigation.navigate('FLListView', {
               otherParam: 'NewCases',
             });
           }
@@ -559,15 +559,15 @@ const WorkScheduleDetail = ({navigation, route}) => {
         }
       }
       if (caseType == 'Post') {
-        navigation.navigate('WorkSchedule', {
+        navigation.navigate('FLListView', {
           otherParam: 'PostCases',
         });
       } else if (caseType == 'SavedCases') {
-        navigation.navigate('WorkSchedule', {
+        navigation.navigate('FLListView', {
           otherParam: 'Saved',
         });
       } else {
-        navigation.navigate('WorkSchedule', {
+        navigation.navigate('FLListView', {
           otherParam: 'NewCases',
         });
       }
@@ -670,15 +670,15 @@ const WorkScheduleDetail = ({navigation, route}) => {
               insertImage();
             } else {
               if (caseType == 'Post') {
-                navigation.navigate('WorkSchedule', {
+                navigation.navigate('FLListView', {
                   otherParam: 'PostCases',
                 });
               } else if (caseType == 'SavedCases') {
-                navigation.navigate('WorkSchedule', {
+                navigation.navigate('FLListView', {
                   otherParam: 'Saved',
                 });
               } else {
-                navigation.navigate('WorkSchedule', {
+                navigation.navigate('FLListView', {
                   otherParam: 'NewCases',
                 });
               }

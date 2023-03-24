@@ -72,7 +72,6 @@ const DiscrepancyScreen = ({navigation, route}) => {
   const [itemsDiscrepancyPhase, setItemsDiscrepancyPhase] = useState([
     {label: 'Bird Nest', value: 'Bird Nest'},
     {label: 'Corona Ring', value: 'Corona Ring'},
-    {label: '', value: ''},
     {label: 'Earth wire/ OPGW', value: 'Earth wire/ OPGW'},
     {label: 'Foundation', value: 'Foundation'},
     {label: 'Terrain/ Topography', value: 'Terrain/ Topography'},
@@ -153,6 +152,11 @@ const DiscrepancyScreen = ({navigation, route}) => {
   const flatListRef = useRef();
   const {width} = Dimensions.get('window');
   const [indexSelected, setIndexSelected] = useState(0);
+
+  useEffect(() => {
+    console.log('route.params.PtlSnro:::', route.params.PtlSnro);
+    console.log('route.params.StrSnro:::', route.params.StrSnro);
+  }, []);
 
   const onTouchThumbnail = touched => {
     if (touched === indexSelected) return;
