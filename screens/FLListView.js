@@ -58,44 +58,29 @@ function FLListView({route, navigation}) {
   const [caseTypeHeading, setCaseTypeHeading] = useState();
 
   const loadData = val => {
-    console.log('values == >', i, j);
-    setLoading(true);
     let data1;
     AsyncStorage.getItem('FunctionalLocation').then(items => {
       var data = [];
-      data = items ? JSON.parse(items) : {};
+      data = items ? JSON.parse(items) : [];
 
-      console.log('route.params.otherParam:::', route.params.otherParam);
+      //console.log('route.params.otherParam:::', route.params.otherParam);
 
       console.log('data: ' + typeof data + ' length: ' + data.length);
 
-      data1 = data;
-
-      if (val) {
-        i += 30;
-
-        dataslice = data1.splice(i, j);
-        //                console.log('if', dataslice);
-
-        setLoading(false);
-      } else {
-        i = 0;
-        j = 30;
-
-        dataslice = data1.splice(i, j);
-        console.log('else', dataslice);
-        setLoading(false);
+      if (data.length == 0) {
+        alert('There is no item against the list');
       }
 
-      console.log('data', i, j);
-      settableData([...tableData, ...dataslice]);
-      settemptableData([...temptableData, ...dataslice]);
+      settableData([...tableData, ...data]);
+      settemptableData([...temptableData, ...data]);
+
       setLoader(false);
     });
   };
 
   useEffect(() => {
     setLoader(true);
+    console.log(route.params.otherParam);
 
     navigation.addListener('focus', payload => {
       loadData();
@@ -110,7 +95,7 @@ function FLListView({route, navigation}) {
     } else if (route.params.otherParam == 'SavedCases') {
       setCaseTypeHeading('SAVED CASES');
     } else {
-      setCaseTypeHeading('COMPLETED CASES');
+      setCaseTypeHeading('Functional Location List');
     }
   }, []);
 
@@ -197,6 +182,55 @@ function FLListView({route, navigation}) {
           alignItems: 'center',
           justifyContent: 'center',
         }}> */}
+      <View
+        style={{
+          //position: 'absolute',
+          top: 10,
+          right: 10,
+          alignItems: 'flex-end',
+          marginBottom: 15,
+          //justifyContent: 'center',
+        }}>
+        <TouchableOpacity
+          style={{
+            alignItems: 'center',
+            justifyContent: 'center',
+            flexDirection: 'column',
+          }}
+          onPress={() => {
+            navigation.reset({
+              index: 0,
+              routes: [{name: 'Dashboard2'}],
+            });
+          }}>
+          <Image
+            style={{width: 20, height: 20}}
+            source={require('../assets/home.png')}
+          />
+          <Text
+            style={{
+              color: 'rgba(93,45,145,255)',
+            }}>
+            {' '}
+            Home
+          </Text>
+        </TouchableOpacity>
+      </View>
+      <View
+        style={{
+          backgroundColor: '#371A80', //rgba(93,45,145,255)
+        }}>
+        <TextInput
+          style={{
+            textAlign: 'center',
+            fontWeight: 'bold',
+            color: 'white',
+            //height:405,
+            //fontSize:,
+          }}>
+          {caseTypeHeading}
+        </TextInput>
+      </View>
       <TextInput
         onChangeText={text => searchFilterFunction(text)}
         autoCorrect={false}
@@ -216,21 +250,7 @@ function FLListView({route, navigation}) {
           elevation: 4,
         }}
       />
-      <View
-        style={{
-          backgroundColor: '#371A80', //rgba(93,45,145,255)
-        }}>
-        <TextInput
-          style={{
-            textAlign: 'center',
-            fontWeight: 'bold',
-            color: 'white',
-            //height:405,
-            //fontSize:,
-          }}>
-          {caseTypeHeading}
-        </TextInput>
-      </View>
+
       {/*
       <View>
         <Button
@@ -309,6 +329,7 @@ function FLListView({route, navigation}) {
                       data: item,
                       index: index,
                       otherParam: item.PtlSnro,
+                      isDiscrepancyScreenRequest: route.params.otherParam,
                     });
                   }}
                   style={{

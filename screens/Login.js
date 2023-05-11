@@ -205,9 +205,9 @@ function Login({navigation}) {
     userPassword,
     loader,
   ) => {
-    console.log('name' + name);
+    console.log('name: ' + name);
 
-    console.log('password' + userPassword);
+    console.log('password: ' + userPassword);
 
     /*    
         if (name == '') {
@@ -263,6 +263,7 @@ function Login({navigation}) {
               IMEI: UniqueId.toUpperCase(),
               userName: name,
               userPassword: userPassword,
+              regionName: response.d.Region,
             });
             //console.log("arr" + arr[0]);
 
@@ -328,7 +329,7 @@ function Login({navigation}) {
   return (
     <View style={styles.container}>
       <ImageBackground
-        source={require('../assets/images/kebackground.jpg')}
+        source={require('../assets/images/background.jpg')}
         style={{
           width: '100%',
           resizeMode: 'contain',

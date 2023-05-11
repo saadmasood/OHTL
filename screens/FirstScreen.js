@@ -129,7 +129,7 @@ function FirstScreen({navigation}) {
   return (
     <View style={styles.container}>
       <ImageBackground
-        source={require('../assets/images/kebackground.jpg')}
+        source={require('../assets/images/background.jpg')}
         style={{
           width: '100%',
           resizeMode: 'contain',

@@ -23,9 +23,12 @@ import EmployeeInfo from './screens/EmployeeInfo';
 import FLListView from './screens/FLListView';
 import StrFLListView from './screens/StrFLListView';
 import DiscrepancyListView from './screens/DiscrepancyListView';
+import QueriesListView from './screens/QueriesListView';
 import WorkSummary from './screens/WorkSummary';
 import PatrollingScreen from './screens/PatrollingScreen';
 import DiscrepancyScreen from './screens/DiscrepancyScreen';
+import RectificationScreen from './screens/RectificationScreen';
+import QueriesScreen from './screens/QueriesScreen';
 import WorkLocation from './screens/WorkLocation';
 import Dashboard2 from './screens/Dashboard2';
 import LocationEnabler from 'react-native-location-enabler';
@@ -112,6 +115,12 @@ const App = ({navigation}) => {
         />
 
         <Stack.Screen
+          key="QueriesListView"
+          name="QueriesListView"
+          component={QueriesListView}
+          options={{headerShown: false}}
+        />
+        <Stack.Screen
           key="WorkSummary"
           name="WorkSummary"
           component={WorkSummary}
@@ -127,6 +136,20 @@ const App = ({navigation}) => {
           key="DiscrepancyScreen"
           name="DiscrepancyScreen"
           component={DiscrepancyScreen}
+          options={{headerShown: false}}
+        />
+
+        <Stack.Screen
+          key="RectificationScreen"
+          name="RectificationScreen"
+          component={RectificationScreen}
+          options={{headerShown: false}}
+        />
+
+        <Stack.Screen
+          key="QueriesScreen"
+          name="QueriesScreen"
+          component={QueriesScreen}
           options={{headerShown: false}}
         />
 

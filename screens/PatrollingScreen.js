@@ -17,6 +17,8 @@ import DropDownPicker from 'react-native-dropdown-picker';
 import SegmentedControlTab from 'react-native-segmented-control-tab';
 import CheckBox from '@react-native-community/checkbox';
 import AsyncStorage from '@react-native-community/async-storage';
+import axios from 'axios';
+import base64 from 'react-native-base64';
 
 const PatrollingScreen = ({navigation, route}) => {
   const [isEditable, setIsEditable] = useState(true);
@@ -51,43 +53,31 @@ const PatrollingScreen = ({navigation, route}) => {
   ]);
 
   const [openStructureType, setOpenStructureType] = useState(false);
-  const [valueStructureType, setValueStructureType] = useState();
+  const [valueStructureType, setValueStructureType] = useState('');
   const [itemsStructureType, setItemsStructureType] = useState([
-    {label: 'RCC Gantry', value: 'RCC Gantry'},
-    {label: 'Lattice Steel Gantry', value: 'Lattice Steel Gantry'},
-    {label: 'PS- RCC (N)', value: 'PS- RCC (N)'},
-    {label: 'PS- RCC (S)', value: 'PS- RCC (S)'},
-    {label: 'PS- RCC (LA)', value: 'PS- RCC (LA)'},
-    {label: 'PS- RCC (LB)', value: 'PS- RCC (LB)'},
-    {label: 'PS- RCC (OFF)', value: 'PS- RCC (OFF)'},
-    {label: 'PS- STP (N)', value: 'PS- STP (N)'},
-    {label: 'PS- STP (S)', value: 'PS- STP (S)'},
-    {label: 'PS- STP (LA)', value: 'PS- STP (LA)'},
-    {label: 'PS- STP (LB)', value: 'PS- STP (LB)'},
-    {label: 'PS- STP (Off)', value: 'PS- STP (Off)'},
-    {label: 'PS- RCC+ STP (N)', value: 'PS- RCC+ STP (N)'},
-    {label: 'PS- RCC+ STP (S)', value: 'PS- RCC+ STP (S)'},
-    {label: 'PS- RCC+ STP (LA)', value: 'PS- RCC+ STP (LA)'},
-    {label: 'PS- RCC+ STP (LB)', value: 'PS- RCC+ STP (LB)'},
-    {label: 'PS- RCC+ STP (OFF)', value: 'PS- RCC+ STP (OFF)'},
-    {label: 'J', value: 'J'},
-    {label: 'DE', value: 'DE'},
-    {label: 'T', value: 'T'},
-    {label: 'TS', value: 'TS'},
-    {label: 'TLA', value: 'TLA'},
-    {label: 'TLB', value: 'TLB'},
-    {label: 'TLB (DE)', value: 'TLB (DE)'},
-    {label: 'T-OFF (T)', value: 'T-OFF (T)'},
-    {label: 'PT', value: 'PT'},
-    {label: 'PS', value: 'PS'},
-    {label: 'PLA', value: 'PLA'},
-    {label: 'PLB', value: 'PLB'},
-    {label: 'PLDP', value: 'PLDP'},
-    {label: 'PLT', value: 'PLT'},
-    {label: '2PLA', value: '2PLA'},
-    {label: '2PLB', value: '2PLB'},
-    {label: '2PLT', value: '2PLT'},
-    {label: 'Angle', value: 'Angle'},
+    {label: 'Tower (Angle)', value: 'Tower (Angle)'},
+    {label: 'Tower (Normal)', value: 'Tower (Normal)'},
+    {label: 'Monopole (Angle)', value: 'Monopole (Angle)'},
+    {label: 'Monopole (Normal)', value: 'Monopole (Normal)'},
+    {label: 'PLDP (Angle)', value: 'PLDP (Angle)'},
+    {
+      label: 'Pole Structure (RCC- Angle)',
+      value: 'Pole Structure (RCC- Angle)',
+    },
+    {
+      label: 'Pole Structure (STP- Angle)',
+      value: 'Pole Structure (STP- Angle)',
+    },
+    {
+      label: 'Pole Structure (RCC- Normal)',
+      value: 'Pole Structure (RCC- Normal)',
+    },
+    {
+      label: 'Pole Structure (STP- Normal)',
+      value: 'Pole Structure (STP- Normal)',
+    },
+    {label: 'Gantry (RCC)', value: 'Gantry (RCC)'},
+    {label: 'Gantry (Lattice Steel)', value: 'Gantry (Lattice Steel)'},
   ]);
 
   const [openStructureSide, setOpenStructureSide] = useState(false);
@@ -119,16 +109,16 @@ const PatrollingScreen = ({navigation, route}) => {
       value: 'Grey Long Rod',
     },
     {
-      label: 'White Long Rod',
-      value: 'White Long Rod',
-    },
-    {
       label: 'RTV Coated Disc',
       value: 'RTV Coated Disc',
     },
     {
-      label: 'RTV Coated Long Rod',
-      value: 'RTV Coated Long Rod',
+      label: 'RTV Coated Brown Long Rod',
+      value: 'RTV Coated Brown Long Rod',
+    },
+    {
+      label: 'RTV Coated Grey Long Rod',
+      value: 'RTV Coated Grey Long Rod',
     },
     {
       label: 'Composite Long Rod',
@@ -155,16 +145,16 @@ const PatrollingScreen = ({navigation, route}) => {
         value: 'Grey Long Rod',
       },
       {
-        label: 'White Long Rod',
-        value: 'White Long Rod',
-      },
-      {
         label: 'RTV Coated Disc',
         value: 'RTV Coated Disc',
       },
       {
-        label: 'RTV Coated Long Rod',
-        value: 'RTV Coated Long Rod',
+        label: 'RTV Coated Brown Long Rod',
+        value: 'RTV Coated Brown Long Rod',
+      },
+      {
+        label: 'RTV Coated Grey Long Rod',
+        value: 'RTV Coated Grey Long Rod',
       },
       {
         label: 'Composite Long Rod',
@@ -250,16 +240,16 @@ const PatrollingScreen = ({navigation, route}) => {
       value: 'Grey Long Rod',
     },
     {
-      label: 'White Long Rod',
-      value: 'White Long Rod',
-    },
-    {
       label: 'RTV Coated Disc',
       value: 'RTV Coated Disc',
     },
     {
-      label: 'RTV Coated Long Rod',
-      value: 'RTV Coated Long Rod',
+      label: 'RTV Coated Brown Long Rod',
+      value: 'RTV Coated Brown Long Rod',
+    },
+    {
+      label: 'RTV Coated Grey Long Rod',
+      value: 'RTV Coated Grey Long Rod',
     },
     {
       label: 'Composite Long Rod',
@@ -286,16 +276,16 @@ const PatrollingScreen = ({navigation, route}) => {
         value: 'Grey Long Rod',
       },
       {
-        label: 'White Long Rod',
-        value: 'White Long Rod',
-      },
-      {
         label: 'RTV Coated Disc',
         value: 'RTV Coated Disc',
       },
       {
-        label: 'RTV Coated Long Rod',
-        value: 'RTV Coated Long Rod',
+        label: 'RTV Coated Brown Long Rod',
+        value: 'RTV Coated Brown Long Rod',
+      },
+      {
+        label: 'RTV Coated Grey Long Rod',
+        value: 'RTV Coated Grey Long Rod',
       },
       {
         label: 'Composite Long Rod',
@@ -386,16 +376,16 @@ const PatrollingScreen = ({navigation, route}) => {
       value: 'Grey Long Rod',
     },
     {
-      label: 'White Long Rod',
-      value: 'White Long Rod',
-    },
-    {
       label: 'RTV Coated Disc',
       value: 'RTV Coated Disc',
     },
     {
-      label: 'RTV Coated Long Rod',
-      value: 'RTV Coated Long Rod',
+      label: 'RTV Coated Brown Long Rod',
+      value: 'RTV Coated Brown Long Rod',
+    },
+    {
+      label: 'RTV Coated Grey Long Rod',
+      value: 'RTV Coated Grey Long Rod',
     },
     {
       label: 'Composite Long Rod',
@@ -422,16 +412,16 @@ const PatrollingScreen = ({navigation, route}) => {
         value: 'Grey Long Rod',
       },
       {
-        label: 'White Long Rod',
-        value: 'White Long Rod',
-      },
-      {
         label: 'RTV Coated Disc',
         value: 'RTV Coated Disc',
       },
       {
-        label: 'RTV Coated Long Rod',
-        value: 'RTV Coated Long Rod',
+        label: 'RTV Coated Brown Long Rod',
+        value: 'RTV Coated Brown Long Rod',
+      },
+      {
+        label: 'RTV Coated Grey Long Rod',
+        value: 'RTV Coated Grey Long Rod',
       },
       {
         label: 'Composite Long Rod',
@@ -506,6 +496,8 @@ const PatrollingScreen = ({navigation, route}) => {
   const [isCheckedYellow, setIsCheckedYellow] = useState(false);
   const [isCheckedBlue, setIsCheckedBlue] = useState(false);
 
+  const [empName, setEmpName] = useState('');
+
   const handleCheckBoxRed = () => {
     setIsCheckedRed(!isCheckedRed);
   };
@@ -523,8 +515,65 @@ const PatrollingScreen = ({navigation, route}) => {
     console.log(index);
   };
 
+  const PostPatrollingRecord = () => {
+    console.log('route.params.data.PtlSnro: ' + route.params.data.PtlSnro);
+    console.log('route.params.data.StrSnro: ' + route.params.data.StrSnro);
+    console.log('route.params.data.Fl: ' + route.params.data.Fl);
+    console.log('route.params.data.Fl: ' + route.params.data.StrFl);
+    console.log('valueStructureSide: ' + valueStructureSide);
+
+    const isCheckedDataRed = isCheckedRed != true ? 'T' : 'F';
+    const isCheckedDataBlue = isCheckedBlue != true ? 'T' : 'F';
+    const isCheckedDataYellow = isCheckedYellow != true ? 'T' : 'F';
+
+    axios({
+      method: 'POST',
+      url: 'https://fioridev.ke.com.pk:44300/sap/opu/odata/sap/ZPATROLLING_SRV/FLHeaderSet',
+      headers: {
+        Authorization: 'Basic ' + base64.encode('tooba:sapsap12'),
+        'Content-Type': 'application/json',
+        Accept: 'application/json',
+        'X-CSRF-Token': '',
+        'X-Requested-With': 'X',
+      },
+      data: JSON.stringify({
+        Fl: route.params.data.Fl,
+        HEADERSTR_NAV: [
+          {
+            Qmnum: route.params.data.PtlSnro,
+            Fl: route.params.data.Fl,
+            Structure: route.params.data.StrFl,
+            Username: empName,
+            StrType: valueStructureType,
+            Side: valueStructureSide,
+            PhaseR: 'X',
+            InsulTypeR: valueInsulationTypeRed,
+            InsulSchemeR: valueInsulatorSchemeRed,
+            IsJumperR: isCheckedDataRed,
+            JumpInsulTypeR: valueInsulationTypeJumperRed,
+            JumpInsulSchemeR: valueInsulatorSchemeRed,
+            PhaseY: 'X',
+            InsulTypeY: valueInsulationTypeYellow,
+            InsulSchemeY: valueInsulatorSchemeYellow,
+            IsJumperY: isCheckedDataYellow,
+            JumpInsulTypeY: valueInsulationTypeJumperYellow,
+            JumpInsulSchemeY: valueInsulatorSchemeYellow,
+            PhaseB: 'X',
+            InsulTypeB: valueInsulationTypeBlue,
+            InsulSchemeB: valueInsulatorSchemeBlue,
+            IsJumperB: isCheckedDataBlue,
+            JumpInsulTypeB: valueInsulationTypeJumperBlue,
+            JumpInsulSchemeB: valueInsulatorSchemeBlue,
+          },
+        ],
+      }),
+    }).then(items => {
+      console.log('***** UPLOADED SUCCESFULLY');
+      StoreInDevice();
+    });
+  };
   const StoreInDevice = isDescripancyList => {
-    AsyncStorage.getItem(route.params.otherParam)
+    AsyncStorage.getItem(route.params.PtlSnro)
       .then(async items => {
         var dataslice = items ? JSON.parse(items) : {};
 
@@ -564,7 +613,7 @@ const PatrollingScreen = ({navigation, route}) => {
             console.log(strFL);
 
             AsyncStorage.setItem(
-              route.params.otherParam,
+              route.params.PtlSnro,
               JSON.stringify(dataslice),
             );
           }
@@ -591,12 +640,14 @@ const PatrollingScreen = ({navigation, route}) => {
             if (!isDescripancyList) {
               navigation.navigate('StrFLListView', {
                 data: route.params.data,
-                otherParam: route.params.data.PtlSnro,
+                PtlSnro: route.params.data.PtlSnro,
               });
             } else {
               navigation.navigate('DiscrepancyListView', {
                 PtlSnro: route.params.data.PtlSnro,
                 StrSnro: route.params.data.StrSnro,
+                Fl: route.params.data.Fl,
+                StrFl: strFL,
               });
             }
           });
@@ -664,6 +715,14 @@ const PatrollingScreen = ({navigation, route}) => {
         }
       });
     });
+
+    AsyncStorage.getItem('UserDetail').then(items => {
+      var data1 = items ? JSON.parse(items) : [];
+
+      data1.forEach(singleResult => {
+        setEmpName(singleResult.userName);
+      });
+    });
   }, []);
 
   return (
@@ -719,7 +778,7 @@ const PatrollingScreen = ({navigation, route}) => {
             />
             */}
             <TextInput
-              style={{color: 'black', fontSize: 17}}
+              style={{color: 'black', fontSize: 15}}
               value={strFL}
               editable={false}
             />
@@ -747,13 +806,18 @@ const PatrollingScreen = ({navigation, route}) => {
               setItems={setItemsStructureType}
               listMode="MODAL"
               searchable
+              onChangeValue={item => {
+                if (valueStructureType.indexOf('Angle') < 0) {
+                  setValueStructureSide('');
+                }
+              }}
               //disabled={isDCRemarksEditable}
               //onChangeValue={item => {}}
             />
           </View>
         </View>
 
-        {valueStructureType == 'Angle' && (
+        {valueStructureType.indexOf('Angle') >= 0 && (
           <View
             style={{
               flexDirection: 'row',
@@ -783,13 +847,14 @@ const PatrollingScreen = ({navigation, route}) => {
         )}
 
         <View style={styles.header}>
-          <Text style={[styles.logo]}> Record Phase Insulation</Text>
+          <Text style={[styles.logo]}> Phase Insulators Data Collection</Text>
         </View>
 
         <SegmentedControlTab
           values={['Red', 'Yellow', 'Blue']}
           selectedIndex={selectedIndex}
           onTabPress={handleIndexChange}
+          //activeTabStyle={{backgroundColor: 'green', marginTop: 2}}
         />
         {selectedIndex == '0' && (
           <View>
@@ -802,7 +867,7 @@ const PatrollingScreen = ({navigation, route}) => {
                 paddingTop: 10,
               }}>
               <View style={{flex: 1, alignItems: 'flex-start'}}>
-                <Text style={styles.pic_text_left}>Insulation Type:</Text>
+                <Text style={styles.pic_text_left}>Insulator Type:</Text>
               </View>
               <View style={{flex: 1, alignItems: 'flex-start'}}>
                 <DropDownPicker
@@ -855,7 +920,9 @@ const PatrollingScreen = ({navigation, route}) => {
                 paddingTop: 10,
               }}>
               <View style={{flex: 1, alignItems: 'flex-start'}}>
-                <Text style={styles.pic_text_left}>Jumper String Seen?:</Text>
+                <Text style={styles.pic_text_left}>
+                  Jumper string installed?:
+                </Text>
               </View>
               <View style={{flex: 1, alignItems: 'flex-start'}}>
                 <CheckBox
@@ -871,7 +938,7 @@ const PatrollingScreen = ({navigation, route}) => {
                 <View style={styles.header}>
                   <Text style={[styles.logo]}>
                     {' '}
-                    Record Jumper Phase Insulation
+                    Jumper Insulators Data Collection
                   </Text>
                 </View>
                 <View
@@ -883,7 +950,7 @@ const PatrollingScreen = ({navigation, route}) => {
                     paddingTop: 10,
                   }}>
                   <View style={{flex: 1, alignItems: 'flex-start'}}>
-                    <Text style={styles.pic_text_left}>Insulation Type:</Text>
+                    <Text style={styles.pic_text_left}>Insulator Type:</Text>
                   </View>
                   <View style={{flex: 1, alignItems: 'flex-start'}}>
                     <DropDownPicker
@@ -941,7 +1008,7 @@ const PatrollingScreen = ({navigation, route}) => {
                 paddingTop: 10,
               }}>
               <View style={{flex: 1, alignItems: 'flex-start'}}>
-                <Text style={styles.pic_text_left}>Insulation Type:</Text>
+                <Text style={styles.pic_text_left}>Insulator Type:</Text>
               </View>
               <View style={{flex: 1, alignItems: 'flex-start'}}>
                 <DropDownPicker
@@ -994,7 +1061,9 @@ const PatrollingScreen = ({navigation, route}) => {
                 paddingTop: 10,
               }}>
               <View style={{flex: 1, alignItems: 'flex-start'}}>
-                <Text style={styles.pic_text_left}>Jumper String Seen?:</Text>
+                <Text style={styles.pic_text_left}>
+                  Jumper string installed?:
+                </Text>
               </View>
               <View style={{flex: 1, alignItems: 'flex-start'}}>
                 <CheckBox
@@ -1010,7 +1079,7 @@ const PatrollingScreen = ({navigation, route}) => {
                 <View style={styles.header}>
                   <Text style={[styles.logo]}>
                     {' '}
-                    Record Jumper Phase Insulation
+                    Jumper Insulators Data Collection
                   </Text>
                 </View>
                 <View
@@ -1022,7 +1091,7 @@ const PatrollingScreen = ({navigation, route}) => {
                     paddingTop: 10,
                   }}>
                   <View style={{flex: 1, alignItems: 'flex-start'}}>
-                    <Text style={styles.pic_text_left}>Insulation Type:</Text>
+                    <Text style={styles.pic_text_left}>Insulator Type:</Text>
                   </View>
                   <View style={{flex: 1, alignItems: 'flex-start'}}>
                     <DropDownPicker
@@ -1080,7 +1149,7 @@ const PatrollingScreen = ({navigation, route}) => {
                 paddingTop: 10,
               }}>
               <View style={{flex: 1, alignItems: 'flex-start'}}>
-                <Text style={styles.pic_text_left}>Insulation Type:</Text>
+                <Text style={styles.pic_text_left}>Insulator Type:</Text>
               </View>
               <View style={{flex: 1, alignItems: 'flex-start'}}>
                 <DropDownPicker
@@ -1132,7 +1201,9 @@ const PatrollingScreen = ({navigation, route}) => {
                 paddingTop: 10,
               }}>
               <View style={{flex: 1, alignItems: 'flex-start'}}>
-                <Text style={styles.pic_text_left}>Jumper String Seen?:</Text>
+                <Text style={styles.pic_text_left}>
+                  Jumper string installed?:
+                </Text>
               </View>
               <View style={{flex: 1, alignItems: 'flex-start'}}>
                 <CheckBox
@@ -1148,7 +1219,7 @@ const PatrollingScreen = ({navigation, route}) => {
                 <View style={styles.header}>
                   <Text style={[styles.logo]}>
                     {' '}
-                    Record Jumper Phase Insulation
+                    Jumper Insulators Data Collection
                   </Text>
                 </View>
                 <View
@@ -1160,7 +1231,7 @@ const PatrollingScreen = ({navigation, route}) => {
                     paddingTop: 10,
                   }}>
                   <View style={{flex: 1, alignItems: 'flex-start'}}>
-                    <Text style={styles.pic_text_left}>Insulation Type:</Text>
+                    <Text style={styles.pic_text_left}>Insulator Type:</Text>
                   </View>
                   <View style={{flex: 1, alignItems: 'flex-start'}}>
                     <DropDownPicker
@@ -1215,7 +1286,19 @@ const PatrollingScreen = ({navigation, route}) => {
               StoreInDevice('No');
             }}>
             <Text style={{color: 'white', fontSize: 18}}>
-              Save Insulation Details
+              Save Insulator Details
+            </Text>
+          </TouchableOpacity>
+        </View>
+        <View style={{alignItems: 'center'}}>
+          <TouchableOpacity
+            disabled={!isEditable}
+            style={[styles.loginBtn, {backgroundColor: btnBackgroundColor}]}
+            onPress={() => {
+              PostPatrollingRecord('No');
+            }}>
+            <Text style={{color: 'white', fontSize: 18}}>
+              Post Insulator Details
             </Text>
           </TouchableOpacity>
         </View>

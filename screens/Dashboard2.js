@@ -39,7 +39,7 @@ function Dashboard({navigation}) {
   const [dataSource, setDataSource] = useState([]);
   const [loading, setLoading] = useState(false);
 
-  const [EmpName, setEmpName] = useState('');
+  const [empName, setEmpName] = useState('');
   const [LINEMAN, setLINEMAN] = useState('');
   const [imageCount, setImageCount] = useState('');
 
@@ -111,7 +111,7 @@ function Dashboard({navigation}) {
     let funtionallocData = [];
     axios({
       method: 'get',
-      url: 'https://fioridev.ke.com.pk:44300/sap/opu/odata/sap/ZPATROLLING_SRV/GET_FLsSet?$filter=(User%20eq%20%27SAAD%27)&$expand=FLSTR_NAV&$format=json',
+      url: 'https://fioridev.ke.com.pk:44300/sap/opu/odata/sap/ZPATROLLING_SRV/GET_FLsSet?$filter=(User%20eq%20%27AFFAF%27)&$expand=FLSTR_NAV&$format=json',
       headers: {
         'Content-Type': 'application/json',
         Authorization: 'Basic ' + base64.encode('tooba:sapsap12'),
@@ -122,7 +122,8 @@ function Dashboard({navigation}) {
           res.data.d.results.forEach(singleResult => {
             singleResult.FLSTR_NAV.results.forEach(subSingleResult => {
               FLSTR_NAV.push({
-                PtlSnro: SIRCount.toString(),
+                PtlSnro: singleResult.Qmnum,
+                Fl: singleResult.Fl,
                 StrSnro: SIRCount.toString() + '-' + subSingleResult.StrFl,
                 StrFl: subSingleResult.StrFl,
                 StrDescr: subSingleResult.StrDescr,
@@ -130,7 +131,7 @@ function Dashboard({navigation}) {
               });
             });
             funtionallocData.push({
-              PtlSnro: SIRCount.toString(),
+              Qmnum: singleResult.Qmnum,
               Fl: singleResult.Fl,
               FlDescr: singleResult.FlDescr,
               AssignedDate: singleResult.AssignedDate,
@@ -147,6 +148,7 @@ function Dashboard({navigation}) {
         }
       })
       .then(res => {
+        getGangs();
         _storeData(funtionallocData);
       })
       .catch(error => {
@@ -154,11 +156,134 @@ function Dashboard({navigation}) {
       });
   };
 
+  const getGangs = () => {
+    var GangData = [];
+    axios({
+      method: 'get',
+      url: 'https://fioridev.ke.com.pk:44300/sap/opu/odata/sap/ZPATROLLING_SRV/RECT_GANGSet?$format=json',
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: 'Basic ' + base64.encode('tooba:sapsap12'),
+      },
+    })
+      .then(res => {
+        let count = 0;
+        if (res.data.d.results != []) {
+          res.data.d.results.forEach(singleResult => {
+            GangData.push({
+              label: singleResult.GangNo,
+              value: singleResult.GangNo,
+            });
+            count++;
+          });
+        }
+      })
+      .then(res => {
+        AsyncStorage.setItem('GangList', JSON.stringify(GangData));
+        console.log('GangData.length' + GangData.length);
+        getQueries();
+      })
+      .catch(error => {
+        console.error('axios:error:getGangs: ' + error);
+      });
+  };
+
+  const getQueries = () => {
+    var QueriesData = [];
+    console.log('empName: ' + empName);
+    axios({
+      method: 'get',
+      url:
+        'https://fioridev.ke.com.pk:44300/sap/opu/odata/sap/ZPATROLLING_SRV/QueriesSet?$filter=(Username%20eq%20%27' +
+        empName +
+        '%27)&$format=json',
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: 'Basic ' + base64.encode('tooba:sapsap12'),
+      },
+    })
+      .then(res => {
+        let count = 0;
+        if (res.data.d.results != []) {
+          res.data.d.results.forEach(singleResult => {
+            QueriesData.push({
+              CreatedDate: moment().format('YYYYMMDD'),
+              MngrComment: singleResult.MngrComment,
+              UserComment: singleResult.UserComment,
+              QueryNo: singleResult.QueryNo,
+              Username: singleResult.Username,
+              Objnr: singleResult.Objnr,
+              QueryStatus: 'New',
+            });
+            count++;
+          });
+        }
+      })
+      .then(res => {
+        _storeQueriesData(QueriesData);
+        console.log('QueriesData.length' + QueriesData.length);
+      })
+      .catch(error => {
+        console.error('axios:error:getQueries: ' + error);
+      });
+  };
+
+  const _storeQueriesData = async queriesData => {
+    let flag = false;
+    var data = [];
+    var count = 0;
+
+    try {
+      await AsyncStorage.getItem('QueriesData')
+        .then(items => {
+          data = items ? JSON.parse(items) : [];
+          console.log(
+            '_storeQueriesData:data: ' +
+              typeof data +
+              ' length: ' +
+              data.length,
+          );
+          queriesData.forEach(parent => {
+            console.log(parent.Qmnum);
+            data.forEach(child => {
+              if (
+                child.Objnr == parent.Objnr &&
+                child.QueryNo == parent.QueryNo
+              ) {
+                flag = true;
+              }
+            });
+            if (flag == false) {
+              data.push({
+                CreatedDate: parent.CreatedDate,
+                MngrComment: parent.MngrComment,
+                UserComment: parent.UserComment,
+                QueryNo: parent.QueryNo,
+                Username: parent.Username,
+                Objnr: parent.Objnr,
+                QueryStatus: 'New',
+              });
+
+              count++;
+            }
+            flag == false;
+          });
+        })
+        .then(res => {
+          AsyncStorage.setItem('QueriesData', JSON.stringify(data));
+          alert('No of Record _storeQueriesData downloaded: ' + count);
+        });
+    } catch (error) {
+      // Error saving data
+    }
+  };
+
   const _storeData = async funtionallocData => {
     let flag = false;
     var data = [];
+    var count = 0;
 
-    console.log(funtionallocData);
+    //console.log(funtionallocData);
 
     try {
       await AsyncStorage.getItem('FunctionalLocation')
@@ -168,16 +293,15 @@ function Dashboard({navigation}) {
             '_storeData:data: ' + typeof data + ' length: ' + data.length,
           );
           funtionallocData.forEach(parent => {
-            console.log(parent.Fl);
+            console.log(parent.Qmnum);
             data.forEach(child => {
-              if (child.Fl == parent.Fl) {
+              if (child.PtlSnro == parent.Qmnum) {
                 flag = true;
               }
             });
-            //console.log(flag);
             if (flag == false) {
               data.push({
-                PtlSnro: parent.PtlSnro,
+                PtlSnro: parent.Qmnum,
                 Fl: parent.Fl,
                 FlDescr: parent.FlDescr,
                 AssignedDate: parent.AssignedDate,
@@ -187,17 +311,17 @@ function Dashboard({navigation}) {
               });
 
               AsyncStorage.setItem(
-                parent.PtlSnro,
+                parent.Qmnum,
                 JSON.stringify(parent.FLSTR_NAV),
               );
-
-              //console.log(parent.Fl);
+              count++;
             }
             flag == false;
           });
         })
         .then(res => {
           AsyncStorage.setItem('FunctionalLocation', JSON.stringify(data));
+          alert('No of Record downloaded: ' + count);
         });
     } catch (error) {
       // Error saving data
@@ -217,7 +341,7 @@ function Dashboard({navigation}) {
         }}>
         <View style={{marginTop: 100}}></View>
 
-        <Text style={styles.logo}> Welcome {EmpName} !</Text>
+        <Text style={styles.logo}> Welcome {empName} !</Text>
 
         {/* ****** Saad Code  ******* */}
         <View style={[styles.container, {}]}>
@@ -236,14 +360,14 @@ function Dashboard({navigation}) {
                   source={require('../assets/images/personal.png')}
                 />
               </TouchableOpacity>
-              <Text style={styles.text_header}>New Petrolling</Text>
+              <Text style={styles.text_header}>New Patrolling</Text>
             </View>
             <View style={styles.downleft}>
               <TouchableOpacity
                 onPress={() => {
                   console.log('FL List View');
                   navigation.navigate('FLListView', {
-                    otherParam: 'NewCases',
+                    otherParam: 'RectificationScreen',
                   });
                 }}>
                 <Image
@@ -251,14 +375,14 @@ function Dashboard({navigation}) {
                   source={require('../assets/images/abc.png')}
                 />
               </TouchableOpacity>
-              <Text style={styles.text_header}>Edit Petrolling Report</Text>
+              <Text style={styles.text_header}>Rectification</Text>
             </View>
             <View style={styles.downleft}>
               <TouchableOpacity
                 onPress={() => {
                   console.log('FL List View');
-                  navigation.navigate('FLListView', {
-                    otherParam: 'SavedCases',
+                  navigation.navigate('QueriesListView', {
+                    otherParam: 'RectificationScreen',
                   });
                 }}>
                 <Image
@@ -274,7 +398,9 @@ function Dashboard({navigation}) {
               <TouchableOpacity
                 onPress={() => {
                   console.log('Discrepency Screen');
-                  navigation.navigate('DiscrepencyScreen');
+                  navigation.navigate('FLListView', {
+                    otherParam: 'DiscrepancyScreen',
+                  });
                 }}>
                 <Image
                   style={styles.tinyLogo}

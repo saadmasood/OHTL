@@ -47,6 +47,7 @@ function DiscrepancyListView({route, navigation}) {
   const [temptableData, settemptableData] = useState([]);
   const [refresh, setRefresh] = useState(false);
   const [isDatePickerVisible, setDatePickerVisibility] = useState(false);
+  const [regionName, setRegionName] = useState('');
 
   const [startOfMonth, setstartOfMonth] = useState(
     moment().subtract(3, 'days').format('YYYYMMDD'),
@@ -62,22 +63,26 @@ function DiscrepancyListView({route, navigation}) {
   const [caseTypeHeading, setCaseTypeHeading] = useState();
 
   const loadData = val => {
-    setLoading(true);
+    //setLoading(true);
     let data1;
-    console.log('route.params.PtlSnro:::', route.params.PtlSnro);
-    console.log('route.params.StrSnro:::', route.params.StrSnro);
+    //console.log('route.params.PtlSnro:::', route.params.PtlSnro);
+    //console.log('route.params.StrSnro:::', route.params.StrSnro);
 
     AsyncStorage.getItem(route.params.StrSnro).then(items => {
-      var data = [];
-      data = items ? JSON.parse(items) : {};
+      var data1 = [];
+      data1 = items ? JSON.parse(items) : [];
 
-      console.log('data: ' + typeof data + ' length2: ' + data.length);
+      //console.log('data: ' + typeof data + ' length2: ' + data.length);
 
-      data1 = data;
-
+      /*
+      if (data1.length == 0) {
+        alert('There is no item against the list');
+      }
+*/
       settableData([...tableData, ...data1]);
       settemptableData([...temptableData, ...data1]);
       setLoader(false);
+      console.log(loader);
     });
   };
 
@@ -85,11 +90,33 @@ function DiscrepancyListView({route, navigation}) {
     navigation.navigate('DiscrepancyScreen', {
       PtlSnro: route.params.PtlSnro,
       StrSnro: route.params.StrSnro,
+      Fl: route.params.Fl,
+      StrFl: route.params.StrFl,
+      CaseType: 'New',
+      data: {},
+      regionName: regionName,
     });
   };
 
   useEffect(() => {
+    AsyncStorage.getItem('UserDetail').then(items => {
+      var data1 = items ? JSON.parse(items) : [];
+
+      data1.forEach(singleResult => {
+        setRegionName(singleResult.regionName);
+        console.log('singleResult.regionName: ' + singleResult.regionName);
+      });
+    });
+
     setLoader(true);
+    setCaseTypeHeading('Discrepancy List View');
+    console.log('**DiscrepancylistView');
+    console.log(
+      'route.params.isDiscrepancyScreenRequest: ' +
+        route.params.isDiscrepancyScreenRequest,
+    );
+    console.log('route.params.Fl: ' + route.params.Fl);
+    console.log('route.params.StrFl: ' + route.params.StrFl);
 
     navigation.addListener('focus', payload => {
       loadData();
@@ -291,11 +318,31 @@ function DiscrepancyListView({route, navigation}) {
                 <TouchableOpacity
                   // disabled={true}
                   onPress={() => {
-                    navigation.navigate('StrFLListView', {
-                      data: item,
-                      index: index,
-                      otherParam: item.PtlSnro,
-                    });
+                    if (
+                      route.params.isDiscrepancyScreenRequest !=
+                      'RectificationScreen'
+                    ) {
+                      navigation.navigate('DiscrepancyScreen', {
+                        PtlSnro: route.params.PtlSnro,
+                        StrSnro: route.params.StrSnro,
+                        Fl: route.params.Fl,
+                        StrFl: route.params.StrFl,
+                        CaseType: 'Edit',
+                        data: item,
+                        index: index,
+                        regionName: regionName,
+                      });
+                    } else {
+                      navigation.navigate('RectificationScreen', {
+                        PtlSnro: route.params.PtlSnro,
+                        StrSnro: route.params.StrSnro,
+                        Fl: route.params.Fl,
+                        StrFl: route.params.StrFl,
+                        data: item,
+                        index: index,
+                        regionName: regionName,
+                      });
+                    }
                   }}
                   style={{
                     backgroundColor: 'white',
@@ -431,7 +478,7 @@ function DiscrepancyListView({route, navigation}) {
                             fontSize: 13,
                             fontWeight: 'bold',
                           }}>
-                          SIR NO:
+                          Discrepancy No:
                         </Text>
                         <Text
                           style={{
@@ -439,29 +486,7 @@ function DiscrepancyListView({route, navigation}) {
                             color: 'black',
                             fontSize: 13,
                           }}>
-                          {item.PtlSnro}
-                        </Text>
-                      </View>
-                      <View
-                        style={{
-                          flexDirection: 'row',
-                        }}>
-                        <Text
-                          style={{
-                            marginLeft: 5,
-                            color: 'black',
-                            fontSize: 13,
-                            fontWeight: 'bold',
-                          }}>
-                          Functional Location:
-                        </Text>
-                        <Text
-                          style={{
-                            marginLeft: 5,
-                            color: 'black',
-                            fontSize: 13,
-                          }}>
-                          {item.Fl}
+                          {item.DiscrepancyID}
                         </Text>
                       </View>
                       <View
@@ -475,7 +500,29 @@ function DiscrepancyListView({route, navigation}) {
                             fontSize: 13,
                             fontWeight: 'bold',
                           }}>
-                          Description:
+                          Discrepancy Type:
+                        </Text>
+                        <Text
+                          style={{
+                            marginLeft: 5,
+                            color: 'black',
+                            fontSize: 13,
+                          }}>
+                          {item.valueDiscrepancyType}
+                        </Text>
+                      </View>
+                      <View
+                        style={{
+                          flexDirection: 'row',
+                        }}>
+                        <Text
+                          style={{
+                            marginLeft: 5,
+                            color: 'black',
+                            fontSize: 13,
+                            fontWeight: 'bold',
+                          }}>
+                          Discrepency:
                         </Text>
                         <Text
                           style={{
@@ -483,7 +530,9 @@ function DiscrepancyListView({route, navigation}) {
                             fontSize: 13,
                             color: 'black',
                           }}>
-                          {item.FlDescr}
+                          {item.valueDiscrepancyTower}
+                          {item.valueDiscrepancyPhase}
+                          {item.valueDiscrepancyRoute}
                         </Text>
                       </View>
 
@@ -541,7 +590,7 @@ function DiscrepancyListView({route, navigation}) {
                           color: '#FFFFFF',
                         }}>
                         {'Dated : ' +
-                          moment(item.AssignedDate, 'YYYYMMDD').format(
+                          moment(item.createdDate, 'YYYYMMDD').format(
                             'DD MM YYYY',
                           )}
                       </Text>
@@ -553,16 +602,22 @@ function DiscrepancyListView({route, navigation}) {
           }}
         />
       )}
-      <View style={{alignItems: 'center'}}>
-        <TouchableOpacity
-          //disabled={!isEditable}
-          style={[styles.loginBtn, {backgroundColor: btnBackgroundColor}]}
-          onPress={() => {
-            AddDiscrepancy();
-          }}>
-          <Text style={{color: 'white', fontSize: 18}}>Add Discrepancies</Text>
-        </TouchableOpacity>
-      </View>
+      {route.params.isDiscrepancyScreenRequest != 'RectificationScreen' ? (
+        <View style={{alignItems: 'center'}}>
+          <TouchableOpacity
+            //disabled={!isEditable}
+            style={[styles.loginBtn, {backgroundColor: btnBackgroundColor}]}
+            onPress={() => {
+              AddDiscrepancy();
+            }}>
+            <Text style={{color: 'white', fontSize: 18}}>
+              Add Discrepancies
+            </Text>
+          </TouchableOpacity>
+        </View>
+      ) : (
+        <View />
+      )}
       {/* </ImageBackground> */}
     </View>
   );

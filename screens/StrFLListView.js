@@ -58,16 +58,15 @@ function StrFLListView({route, navigation}) {
   const [caseTypeHeading, setCaseTypeHeading] = useState();
 
   const loadData = val => {
-    //console.log(route.params.otherParam);
+    console.log(route.params.otherParam);
 
     AsyncStorage.getItem(route.params.otherParam).then(items => {
       var dataslice = [];
-      dataslice = items ? JSON.parse(items) : {};
+      dataslice = items ? JSON.parse(items) : [];
 
-      console.log('******ST *data1************');
-      console.log(dataslice);
-      console.log('*******EN *data1************');
-
+      if (dataslice.length == 0) {
+        alert('There is no item against the list');
+      }
       settableData([...tableData, ...dataslice]);
       settemptableData([...temptableData, ...dataslice]);
 
@@ -79,6 +78,11 @@ function StrFLListView({route, navigation}) {
 
   useEffect(() => {
     setLoader(true);
+    console.log('**StrFLListView');
+    setCaseTypeHeading('Structure List');
+    console.log(route.params.isDiscrepancyScreenRequest);
+    console.log(route.params.data.Fl);
+    console.log(route.params.data.StrFl);
 
     setCurrentDate(moment().format('DD.MM.YYYY'));
 
@@ -282,11 +286,27 @@ function StrFLListView({route, navigation}) {
                 <TouchableOpacity
                   // disabled={true}
                   onPress={() => {
-                    navigation.navigate('PatrollingScreen', {
-                      data: item,
-                      index: index,
-                      otherParam: item.PtlSnro,
-                    });
+                    if (
+                      route.params.isDiscrepancyScreenRequest !=
+                        'DiscrepancyScreen' &&
+                      route.params.isDiscrepancyScreenRequest !=
+                        'RectificationScreen'
+                    ) {
+                      navigation.navigate('PatrollingScreen', {
+                        data: item,
+                        index: index,
+                        PtlSnro: item.PtlSnro,
+                      });
+                    } else {
+                      navigation.navigate('DiscrepancyListView', {
+                        Fl: route.params.data.Fl,
+                        StrFl: item.StrFl,
+                        PtlSnro: item.PtlSnro,
+                        StrSnro: item.StrSnro,
+                        isDiscrepancyScreenRequest:
+                          route.params.isDiscrepancyScreenRequest,
+                      });
+                    }
                   }}
                   style={{
                     backgroundColor: 'white',
