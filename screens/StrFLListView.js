@@ -178,6 +178,55 @@ function StrFLListView({route, navigation}) {
           alignItems: 'center',
           justifyContent: 'center',
         }}> */}
+      <View
+        style={{
+          //position: 'absolute',
+          top: 10,
+          right: 10,
+          alignItems: 'flex-end',
+          marginBottom: 15,
+          //justifyContent: 'center',
+        }}>
+        <TouchableOpacity
+          style={{
+            alignItems: 'center',
+            justifyContent: 'center',
+            flexDirection: 'column',
+          }}
+          onPress={() => {
+            navigation.reset({
+              index: 0,
+              routes: [{name: 'Dashboard2'}],
+            });
+          }}>
+          <Image
+            style={{width: 20, height: 20}}
+            source={require('../assets/home.png')}
+          />
+          <Text
+            style={{
+              color: 'rgba(93,45,145,255)',
+            }}>
+            {' '}
+            Home
+          </Text>
+        </TouchableOpacity>
+      </View>
+      <View
+        style={{
+          backgroundColor: '#371A80', //rgba(93,45,145,255)
+        }}>
+        <TextInput
+          style={{
+            textAlign: 'center',
+            fontWeight: 'bold',
+            color: 'white',
+            //height:405,
+            //fontSize:,
+          }}>
+          {caseTypeHeading}
+        </TextInput>
+      </View>
       <TextInput
         onChangeText={text => searchFilterFunction(text)}
         autoCorrect={false}
@@ -197,21 +246,7 @@ function StrFLListView({route, navigation}) {
           elevation: 4,
         }}
       />
-      <View
-        style={{
-          backgroundColor: '#371A80', //rgba(93,45,145,255)
-        }}>
-        <TextInput
-          style={{
-            textAlign: 'center',
-            fontWeight: 'bold',
-            color: 'white',
-            //height:405,
-            //fontSize:,
-          }}>
-          {caseTypeHeading}
-        </TextInput>
-      </View>
+
       {/*
       <View>
         <Button
