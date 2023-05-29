@@ -71,10 +71,11 @@ function FLListView({route, navigation}) {
         alert('There is no item against the list');
       }
 
-      settableData([...tableData, ...data]);
-      settemptableData([...temptableData, ...data]);
-
-      setLoader(false);
+      if (val != 'more') {
+        settableData([...tableData, ...data]);
+        settemptableData([...temptableData, ...data]);
+        setLoader(false);
+      }
     });
   };
 

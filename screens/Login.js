@@ -235,7 +235,7 @@ function Login({navigation}) {
       axios({
         method: 'GET',
         url:
-          "https://fioridev.ke.com.pk:44300/sap/opu/odata/sap/ZPATROLLING_SRV/ValidateUserSet(Pass='" +
+          "https://fioriqa.ke.com.pk:44300/sap/opu/odata/sap/ZPATROLLING_SRV/ValidateUserSet(Pass='" +
           userPassword +
           "',Swid='" +
           UniqueId.toUpperCase() +
@@ -243,7 +243,7 @@ function Login({navigation}) {
           name +
           "')?$format=json",
         headers: {
-          Authorization: 'Basic ' + base64.encode('tooba:sapsap12'),
+          Authorization: 'Basic ' + base64.encode('tooba:abap123'),
           'Content-Type': 'application/json',
         },
       })

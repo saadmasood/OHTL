@@ -299,7 +299,7 @@ const QueriesScreen = ({navigation, route}) => {
 
   const handleConfirm = date => {
     console.warn('A date has been picked: ', date);
-    setQueryDate(moment(date).format('DD-MM-YYYY'));
+    setQueryDate(moment(date).format('DD.MM.YYYY'));
     //setBtnBackgroundColor('rgba(93,45,145,255)');
     hideDatePicker();
   };
@@ -313,9 +313,9 @@ const QueriesScreen = ({navigation, route}) => {
 
     axios({
       method: 'POST',
-      url: 'https://fioridev.ke.com.pk:44300/sap/opu/odata/sap/ZPATROLLING_SRV/QueriesSet',
+      url: 'https://fioriqa.ke.com.pk:44300/sap/opu/odata/sap/ZPATROLLING_SRV/QueriesSet',
       headers: {
-        Authorization: 'Basic ' + base64.encode('tooba:sapsap12'),
+        Authorization: 'Basic ' + base64.encode('tooba:abap123'),
         'Content-Type': 'application/json',
         Accept: 'application/json',
         'X-CSRF-Token': '',
@@ -364,6 +364,7 @@ const QueriesScreen = ({navigation, route}) => {
 
   useEffect(() => {
     console.log('route.params.data.QueryNo: ' + route.params.data.QueryNo);
+    console.log('route.params.data.Username: ' + route.params.data.Username);
 
     setQueryDate(route.params.data.CreatedDate);
     setMngrComment(route.params.data.MngrComment);
@@ -561,7 +562,7 @@ const QueriesScreen = ({navigation, route}) => {
                 styles.text_left,
                 {borderLeftWidth: 0, borderRightWidth: 0},
               ]}
-              value={moment(queryDate).format('DD-MM-YYYY')}
+              value={moment(queryDate).format('MMMM Do YYYY')}
               placeholder=""
               keyboardType="default"
             />

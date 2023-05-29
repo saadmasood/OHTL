@@ -67,9 +67,10 @@ function StrFLListView({route, navigation}) {
       if (dataslice.length == 0) {
         alert('There is no item against the list');
       }
-      settableData([...tableData, ...dataslice]);
-      settemptableData([...temptableData, ...dataslice]);
-
+      if (val != 'more') {
+        settableData([...tableData, ...dataslice]);
+        settemptableData([...temptableData, ...dataslice]);
+      }
       setLoader(false);
     });
   };
@@ -390,7 +391,7 @@ function StrFLListView({route, navigation}) {
                       </Text>
                     </View>
                     <View>
-                      {item.Status == 'Saved' ? (
+                      {item.status == 'Post' ? (
                         <View
                           style={{
                             backgroundColor: 'rgb(0, 100, 0)',

@@ -62,12 +62,13 @@ function DiscrepancyListView({route, navigation}) {
 
   const [caseTypeHeading, setCaseTypeHeading] = useState();
 
+  const [refreshing, setRefreshing] = useState(false);
+
   const loadData = val => {
     //setLoading(true);
     let data1;
     //console.log('route.params.PtlSnro:::', route.params.PtlSnro);
     //console.log('route.params.StrSnro:::', route.params.StrSnro);
-
     AsyncStorage.getItem(route.params.StrSnro).then(items => {
       var data1 = [];
       data1 = items ? JSON.parse(items) : [];
@@ -79,10 +80,12 @@ function DiscrepancyListView({route, navigation}) {
         alert('There is no item against the list');
       }
 */
-      settableData([...tableData, ...data1]);
-      settemptableData([...temptableData, ...data1]);
-      setLoader(false);
-      console.log(loader);
+      if (val != 'more') {
+        settableData([...tableData, ...data1]);
+        settemptableData([...temptableData, ...data1]);
+        setLoader(false);
+        console.log(loader);
+      }
     });
   };
 
@@ -139,6 +142,18 @@ function DiscrepancyListView({route, navigation}) {
     console.warn('A date has been picked: ', date);
     searchFilterFunctionDate(moment(date).format('YYYYMMDD'));
     hideDatePicker();
+  };
+
+  const handleRefresh = () => {
+    setRefreshing(true); // Start the refreshing animation
+
+    // Perform the necessary operations to update your data
+    // ...
+
+    alert('item removed from list.');
+
+    // Once the data is updated, set refreshing to false to stop the animation
+    setRefreshing(false);
   };
 
   const searchFilterFunction = text => {
@@ -306,6 +321,8 @@ function DiscrepancyListView({route, navigation}) {
           maxToRenderPerBatch={10}
           initialNumToRender={10}
           // onEndReachedThreshold={0.5}
+          refreshing={refreshing}
+          onRefresh={handleRefresh}
           ListFooterComponent={() => {
             return (
               <View
@@ -349,7 +366,43 @@ function DiscrepancyListView({route, navigation}) {
             // var date = +item.PreqDate.replace(/\/Date\((.*?)\)\//g, '$1');
 
             return (
-              <Swipeable>
+              <Swipeable
+                rightButtons={[
+                  <TouchableOpacity
+                    style={{
+                      // height: selectedsub.name == 'OMR' ? 120 : 100,
+                      width: 80,
+                      marginVertical: 17,
+                      alignItems: 'center',
+                      justifyContent: 'center',
+                      flexDirection: 'column',
+                    }}
+                    onPress={() => {
+                      setLoader(true);
+                      let data = tableData;
+                      data.splice(index, 1);
+                      // alert(index);
+                      settableData(data);
+                      AsyncStorage.setItem(
+                        route.params.StrSnro,
+                        JSON.stringify(data),
+                      ).then(() => {
+                        //route.params.update();
+                        handleRefresh();
+                        setLoader(false);
+                      });
+
+                      // setTimeout(() => {
+                      //   setLoader(false);
+                      // }, 500);
+                    }}>
+                    <Image
+                      style={{height: 30, width: 30}}
+                      source={require('../assets/dustbin.png')}
+                    />
+                    <Text>Delete</Text>
+                  </TouchableOpacity>,
+                ]}>
                 <TouchableOpacity
                   // disabled={true}
                   onPress={() => {
@@ -426,7 +479,7 @@ function DiscrepancyListView({route, navigation}) {
                       </Text>
                     </View>
                     <View>
-                      {item.Status == 'Saved' ? (
+                      {item.status == 'Post' ? (
                         <View
                           style={{
                             backgroundColor: 'rgb(0, 100, 0)',
@@ -557,7 +610,7 @@ function DiscrepancyListView({route, navigation}) {
                             fontSize: 13,
                             fontWeight: 'bold',
                           }}>
-                          Discrepency:
+                          Discrepency: {item.status}
                         </Text>
                         <Text
                           style={{

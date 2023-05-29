@@ -70,10 +70,10 @@ function QueriesListView({route, navigation}) {
       if (data.length == 0) {
         alert('There is no item against the list');
       }
-
-      settableData([...tableData, ...data]);
-      settemptableData([...temptableData, ...data]);
-
+      if (val != 'more') {
+        settableData([...tableData, ...data]);
+        settemptableData([...temptableData, ...data]);
+      }
       setLoader(false);
     });
   };
@@ -379,7 +379,7 @@ function QueriesListView({route, navigation}) {
                       </Text>
                     </View>
                     <View>
-                      {item.QueryStatus != 'New' ? (
+                      {item.QueryStatus == 'Post' ? (
                         <View
                           style={{
                             backgroundColor: 'rgb(0, 100, 0)',

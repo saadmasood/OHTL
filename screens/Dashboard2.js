@@ -14,6 +14,7 @@ import {
   Alert,
   Image,
   ImageBackground,
+  ScrollView,
 } from 'react-native';
 import AsyncStorage from '@react-native-community/async-storage';
 import Modal from 'react-native-modal';
@@ -109,12 +110,17 @@ function Dashboard({navigation}) {
     let FLSTR_NAV = [];
     let SIRCount = 1000;
     let funtionallocData = [];
+    console.log(empName);
+    //tooba:sapsap12
     axios({
       method: 'get',
-      url: 'https://fioridev.ke.com.pk:44300/sap/opu/odata/sap/ZPATROLLING_SRV/GET_FLsSet?$filter=(User%20eq%20%27AFFAF%27)&$expand=FLSTR_NAV&$format=json',
+      url:
+        'https://fioriqa.ke.com.pk:44300/sap/opu/odata/sap/ZPATROLLING_SRV/GET_FLsSet?$filter=(User%20eq%20%27' +
+        empName +
+        '%27)&$expand=FLSTR_NAV&$format=json',
       headers: {
         'Content-Type': 'application/json',
-        Authorization: 'Basic ' + base64.encode('tooba:sapsap12'),
+        Authorization: 'Basic ' + base64.encode('tooba:abap123'),
       },
     })
       .then(res => {
@@ -160,10 +166,10 @@ function Dashboard({navigation}) {
     var GangData = [];
     axios({
       method: 'get',
-      url: 'https://fioridev.ke.com.pk:44300/sap/opu/odata/sap/ZPATROLLING_SRV/RECT_GANGSet?$format=json',
+      url: 'https://fioriqa.ke.com.pk:44300/sap/opu/odata/sap/ZPATROLLING_SRV/RECT_GANGSet?$format=json',
       headers: {
         'Content-Type': 'application/json',
-        Authorization: 'Basic ' + base64.encode('tooba:sapsap12'),
+        Authorization: 'Basic ' + base64.encode('tooba:abap123'),
       },
     })
       .then(res => {
@@ -194,12 +200,12 @@ function Dashboard({navigation}) {
     axios({
       method: 'get',
       url:
-        'https://fioridev.ke.com.pk:44300/sap/opu/odata/sap/ZPATROLLING_SRV/QueriesSet?$filter=(Username%20eq%20%27' +
+        'https://fioriqa.ke.com.pk:44300/sap/opu/odata/sap/ZPATROLLING_SRV/QueriesSet?$filter=(Username%20eq%20%27' +
         empName +
         '%27)&$format=json',
       headers: {
         'Content-Type': 'application/json',
-        Authorization: 'Basic ' + base64.encode('tooba:sapsap12'),
+        Authorization: 'Basic ' + base64.encode('tooba:abap123'),
       },
     })
       .then(res => {
@@ -329,17 +335,17 @@ function Dashboard({navigation}) {
   };
 
   return (
-    <View style={styles.container}>
+    <View style={[styles.container, {flex: 1}]}>
       <ImageBackground
-        //        source={require('../assets/Pic1.jpg')}
+        //source={require('../assets/images/background.jpg')}
         style={{
           width: '100%',
           height: '100%',
-          flex: 1,
+          //flex: 1,
           alignItems: 'center',
           justifyContent: 'center',
         }}>
-        <View style={{marginTop: 100}}></View>
+        <View style={{marginTop: 0}}></View>
 
         <Text style={styles.logo}> Welcome {empName} !</Text>
 
@@ -377,21 +383,6 @@ function Dashboard({navigation}) {
               </TouchableOpacity>
               <Text style={styles.text_header}>Rectification</Text>
             </View>
-            <View style={styles.downleft}>
-              <TouchableOpacity
-                onPress={() => {
-                  console.log('FL List View');
-                  navigation.navigate('QueriesListView', {
-                    otherParam: 'RectificationScreen',
-                  });
-                }}>
-                <Image
-                  style={[styles.tinyLogo, {width: 120, height: 120}]}
-                  source={require('../assets/images/calender.png')}
-                />
-              </TouchableOpacity>
-              <Text style={styles.text_header}>Reply Queries</Text>
-            </View>
           </View>
           <View style={{flex: 1}}>
             <View style={styles.topright}>
@@ -412,22 +403,9 @@ function Dashboard({navigation}) {
             <View style={styles.downright}>
               <TouchableOpacity
                 onPress={() => {
-                  console.log('Discrepency Screen');
-                  navigation.navigate('DiscrepencyScreen');
-                }}>
-                <Image
-                  style={styles.tinyLogo}
-                  source={require('../assets/images/graph.png')}
-                />
-              </TouchableOpacity>
-              <Text style={styles.text_header}>Share Reports</Text>
-            </View>
-            <View style={styles.downright}>
-              <TouchableOpacity
-                onPress={() => {
                   console.log('FL List View');
-                  navigation.navigate('FLListView', {
-                    otherParam: 'PostCases',
+                  navigation.navigate('QueriesListView', {
+                    otherParam: 'RectificationScreen',
                   });
                 }}>
                 <Image
@@ -435,7 +413,7 @@ function Dashboard({navigation}) {
                   source={require('../assets/images/post.png')}
                 />
               </TouchableOpacity>
-              <Text style={styles.text_header}>Close Discrepancies</Text>
+              <Text style={styles.text_header}>Reply Queries</Text>
             </View>
           </View>
         </View>
@@ -574,11 +552,12 @@ function Dashboard({navigation}) {
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
+    //flex: 1,
     backgroundColor: 'white',
     alignItems: 'center',
     justifyContent: 'center',
     flexDirection: 'row',
+    //backgroundColor: 'red',
   },
   logo: {
     fontWeight: 'bold',
@@ -594,6 +573,7 @@ const styles = StyleSheet.create({
     shadowColor: 'black',
     shadowOpacity: 0.8,
     shadowRadius: 20,
+    //backgroundColor: 'red',
   },
   inputView: {
     flexDirection: 'row',
@@ -642,24 +622,27 @@ const styles = StyleSheet.create({
     shadowRadius: 20,
   },
   topleft: {
-    paddingTop: 50,
-    flex: 1,
+    //paddingTop: 50,
+    //flex: 1,
     alignItems: 'center',
-    //        backgroundColor: "red",
+    //backgroundColor: 'red',
   },
   topright: {
-    paddingTop: 50,
-    flex: 1,
+    //paddingTop: 50,
+    //flex: 1,
     alignItems: 'center',
+    //backgroundColor: 'blue',
   },
   downleft: {
-    paddingBottom: 20,
-    flex: 1,
+    paddingTop: 10,
+    //paddingBottom: 20,
+    //flex: 1,
     alignItems: 'center',
   },
   downright: {
-    paddingBottom: 20,
-    flex: 1,
+    paddingTop: 10,
+    //paddingBottom: 20,
+    //flex: 1,
     alignItems: 'center',
   },
   tinyLogo: {

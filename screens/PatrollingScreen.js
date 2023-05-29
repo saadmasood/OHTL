@@ -30,6 +30,7 @@ const PatrollingScreen = ({navigation, route}) => {
   const [btnBackgroundColor, setBtnBackgroundColor] = useState(
     'rgba(93,45,145,255)',
   );
+  const [tabcolor, setTabcolor] = useState('red');
 
   const [openStructure, setOpenStructure] = useState(false);
   const [valueStructure, setValueStructure] = useState();
@@ -512,7 +513,14 @@ const PatrollingScreen = ({navigation, route}) => {
 
   const handleIndexChange = index => {
     setSelectedIndex(index);
-    console.log(index);
+    console.log(typeof index);
+    if (index == 0) {
+      setTabcolor('red');
+    } else if (index == 1) {
+      setTabcolor('yellow');
+    } else {
+      setTabcolor('blue');
+    }
   };
 
   const PostPatrollingRecord = () => {
@@ -528,9 +536,9 @@ const PatrollingScreen = ({navigation, route}) => {
 
     axios({
       method: 'POST',
-      url: 'https://fioridev.ke.com.pk:44300/sap/opu/odata/sap/ZPATROLLING_SRV/FLHeaderSet',
+      url: 'https://fioriqa.ke.com.pk:44300/sap/opu/odata/sap/ZPATROLLING_SRV/FLHeaderSet',
       headers: {
-        Authorization: 'Basic ' + base64.encode('tooba:sapsap12'),
+        Authorization: 'Basic ' + base64.encode('tooba:abap123'),
         'Content-Type': 'application/json',
         Accept: 'application/json',
         'X-CSRF-Token': '',
@@ -569,17 +577,17 @@ const PatrollingScreen = ({navigation, route}) => {
       }),
     }).then(items => {
       console.log('***** UPLOADED SUCCESFULLY');
-      StoreInDevice();
+      StoreInDevice('Post');
     });
   };
-  const StoreInDevice = isDescripancyList => {
+  const StoreInDevice = (status, isDescripancyList) => {
     AsyncStorage.getItem(route.params.PtlSnro)
       .then(async items => {
         var dataslice = items ? JSON.parse(items) : {};
 
         dataslice.filter((item, index) => {
           if (item.StrFl == strFL) {
-            dataslice[index].Status = 'Saved';
+            dataslice[index].status = status;
             dataslice[index].valueStructureType = valueStructureType;
             dataslice[index].valueStructureSide = valueStructureSide;
 
@@ -664,6 +672,10 @@ const PatrollingScreen = ({navigation, route}) => {
         if (item.StrFl == route.params.data.StrFl) {
           console.log('item.StrDescr: ' + item.StrDescr);
           console.log('item.valueStructureType: ' + item.valueStructureType);
+
+          if (item.status == 'Post') {
+            setIsEditable(false);
+          }
 
           if (item.valueStructureType != undefined)
             setValueStructureType(item.valueStructureType);
@@ -798,6 +810,7 @@ const PatrollingScreen = ({navigation, route}) => {
           </View>
           <View style={{flex: 1, alignItems: 'flex-start'}}>
             <DropDownPicker
+              disabled={!isEditable}
               open={openStructureType}
               value={valueStructureType}
               items={itemsStructureType}
@@ -831,6 +844,7 @@ const PatrollingScreen = ({navigation, route}) => {
             </View>
             <View style={{flex: 1, alignItems: 'flex-start'}}>
               <DropDownPicker
+                disabled={!isEditable}
                 open={openStructureSide}
                 value={valueStructureSide}
                 items={itemsStructureSide}
@@ -854,7 +868,12 @@ const PatrollingScreen = ({navigation, route}) => {
           values={['Red', 'Yellow', 'Blue']}
           selectedIndex={selectedIndex}
           onTabPress={handleIndexChange}
-          //activeTabStyle={{backgroundColor: 'green', marginTop: 2}}
+          activeTabStyle={{
+            backgroundColor: tabcolor,
+            marginTop: 2,
+            color: 'black',
+          }}
+          tabTextStyle={{color: 'black'}}
         />
         {selectedIndex == '0' && (
           <View>
@@ -871,6 +890,7 @@ const PatrollingScreen = ({navigation, route}) => {
               </View>
               <View style={{flex: 1, alignItems: 'flex-start'}}>
                 <DropDownPicker
+                  disabled={!isEditable}
                   open={openInsulationTypeRed}
                   value={valueInsulationTypeRed}
                   items={itemsInsulationTypeRed}
@@ -897,6 +917,7 @@ const PatrollingScreen = ({navigation, route}) => {
               </View>
               <View style={{flex: 1, alignItems: 'flex-start'}}>
                 <DropDownPicker
+                  disabled={!isEditable}
                   open={openInsulatorSchemeRed}
                   value={valueInsulatorSchemeRed}
                   items={itemsInsulatorSchemeRed}
@@ -926,6 +947,7 @@ const PatrollingScreen = ({navigation, route}) => {
               </View>
               <View style={{flex: 1, alignItems: 'flex-start'}}>
                 <CheckBox
+                  disabled={!isEditable}
                   value={isCheckedRed}
                   onValueChange={handleCheckBoxRed}
                 />
@@ -954,6 +976,7 @@ const PatrollingScreen = ({navigation, route}) => {
                   </View>
                   <View style={{flex: 1, alignItems: 'flex-start'}}>
                     <DropDownPicker
+                      disabled={!isEditable}
                       open={openInsulationTypeJumperRed}
                       value={valueInsulationTypeJumperRed}
                       items={itemsInsulationTypeJumperRed}
@@ -980,6 +1003,7 @@ const PatrollingScreen = ({navigation, route}) => {
                   </View>
                   <View style={{flex: 1, alignItems: 'flex-start'}}>
                     <DropDownPicker
+                      disabled={!isEditable}
                       open={openInsulatorSchemeJumperRed}
                       value={valueInsulatorSchemeJumperRed}
                       items={itemsInsulatorSchemeJumperRed}
@@ -1012,6 +1036,7 @@ const PatrollingScreen = ({navigation, route}) => {
               </View>
               <View style={{flex: 1, alignItems: 'flex-start'}}>
                 <DropDownPicker
+                  disabled={!isEditable}
                   open={openInsulationTypeYellow}
                   value={valueInsulationTypeYellow}
                   items={itemsInsulationTypeYellow}
@@ -1038,6 +1063,7 @@ const PatrollingScreen = ({navigation, route}) => {
               </View>
               <View style={{flex: 1, alignItems: 'flex-start'}}>
                 <DropDownPicker
+                  disabled={!isEditable}
                   open={openInsulatorSchemeYellow}
                   value={valueInsulatorSchemeYellow}
                   items={itemsInsulatorSchemeYellow}
@@ -1067,6 +1093,7 @@ const PatrollingScreen = ({navigation, route}) => {
               </View>
               <View style={{flex: 1, alignItems: 'flex-start'}}>
                 <CheckBox
+                  disabled={!isEditable}
                   value={isCheckedYellow}
                   onValueChange={handleCheckBoxYellow}
                 />
@@ -1095,6 +1122,7 @@ const PatrollingScreen = ({navigation, route}) => {
                   </View>
                   <View style={{flex: 1, alignItems: 'flex-start'}}>
                     <DropDownPicker
+                      disabled={!isEditable}
                       open={openInsulationTypeJumperYellow}
                       value={valueInsulationTypeJumperYellow}
                       items={itemsInsulationTypeJumperYellow}
@@ -1121,6 +1149,7 @@ const PatrollingScreen = ({navigation, route}) => {
                   </View>
                   <View style={{flex: 1, alignItems: 'flex-start'}}>
                     <DropDownPicker
+                      disabled={!isEditable}
                       open={openInsulatorSchemeJumperYellow}
                       value={valueInsulatorSchemeJumperYellow}
                       items={itemsInsulatorSchemeJumperYellow}
@@ -1153,6 +1182,7 @@ const PatrollingScreen = ({navigation, route}) => {
               </View>
               <View style={{flex: 1, alignItems: 'flex-start'}}>
                 <DropDownPicker
+                  disabled={!isEditable}
                   open={openInsulationTypeBlue}
                   value={valueInsulationTypeBlue}
                   items={itemsInsulationTypeBlue}
@@ -1179,6 +1209,7 @@ const PatrollingScreen = ({navigation, route}) => {
               </View>
               <View style={{flex: 1, alignItems: 'flex-start'}}>
                 <DropDownPicker
+                  disabled={!isEditable}
                   open={openInsulatorSchemeBlue}
                   value={valueInsulatorSchemeBlue}
                   items={itemsInsulatorSchemeBlue}
@@ -1207,6 +1238,7 @@ const PatrollingScreen = ({navigation, route}) => {
               </View>
               <View style={{flex: 1, alignItems: 'flex-start'}}>
                 <CheckBox
+                  disabled={!isEditable}
                   value={isCheckedBlue}
                   onValueChange={handleCheckBoxBlue}
                 />
@@ -1235,6 +1267,7 @@ const PatrollingScreen = ({navigation, route}) => {
                   </View>
                   <View style={{flex: 1, alignItems: 'flex-start'}}>
                     <DropDownPicker
+                      disabled={!isEditable}
                       open={openInsulationTypeJumperBlue}
                       value={valueInsulationTypeJumperBlue}
                       items={itemsInsulationTypeJumperBlue}
@@ -1261,6 +1294,7 @@ const PatrollingScreen = ({navigation, route}) => {
                   </View>
                   <View style={{flex: 1, alignItems: 'flex-start'}}>
                     <DropDownPicker
+                      disabled={!isEditable}
                       open={openInsulatorSchemeJumperBlue}
                       value={valueInsulatorSchemeJumperBlue}
                       items={itemsInsulatorSchemeJumperBlue}
@@ -1283,7 +1317,7 @@ const PatrollingScreen = ({navigation, route}) => {
             disabled={!isEditable}
             style={[styles.loginBtn, {backgroundColor: btnBackgroundColor}]}
             onPress={() => {
-              StoreInDevice('No');
+              StoreInDevice('saved', 'No');
             }}>
             <Text style={{color: 'white', fontSize: 18}}>
               Save Insulator Details
@@ -1304,10 +1338,10 @@ const PatrollingScreen = ({navigation, route}) => {
         </View>
         <View style={{alignItems: 'center'}}>
           <TouchableOpacity
-            disabled={!isEditable}
+            //disabled={!isEditable}
             style={[styles.loginBtn, {backgroundColor: btnBackgroundColor}]}
             onPress={() => {
-              StoreInDevice('Yes');
+              StoreInDevice('saved', 'Yes');
             }}>
             <Text style={{color: 'white', fontSize: 18}}>
               Add Discrepancies

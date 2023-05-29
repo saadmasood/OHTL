@@ -36,6 +36,7 @@ const DiscrepancyScreen = ({navigation, route}) => {
   const [btnBackgroundColor, setBtnBackgroundColor] = useState(
     'rgba(93,45,145,255)',
   );
+  const [ImagedeletionLoader, setImagedeletionLoader] = useState(false);
 
   const [openDiscrepancyTower, setOpenDiscrepancyTower] = useState(false);
   const [valueDiscrepancyTower, setValueDiscrepancyTower] = useState();
@@ -415,7 +416,7 @@ const DiscrepancyScreen = ({navigation, route}) => {
   const [itemsPhase, setItemsPhase] = useState([
     {label: 'Red', value: 'Red'},
     {label: 'Blue', value: 'Blue'},
-    {label: 'Green', value: 'Green'},
+    {label: 'Yellow', value: 'Yellow'},
     {label: 'Earth wire/OGW/OPGW', value: 'Earth wire/OGW/OPGW'},
   ]);
 
@@ -516,6 +517,7 @@ const DiscrepancyScreen = ({navigation, route}) => {
 
   const PostSIRImage = () => {
     let imageData = [];
+
     let count = 1;
     console.log('Post SIR Image Data called');
     console.log('regionName: ' + regionName);
@@ -527,6 +529,8 @@ const DiscrepancyScreen = ({navigation, route}) => {
     const doubledNumbers = images.map(item => {
       imageData.push({Base64ImageString: item.base64});
     });
+
+    console.log(imageData);
 
     let data1 = {
       RegionName: regionName,
@@ -604,9 +608,9 @@ const DiscrepancyScreen = ({navigation, route}) => {
 
     axios({
       method: 'POST',
-      url: 'https://fioridev.ke.com.pk:44300/sap/opu/odata/sap/ZPATROLLING_SRV/FLHeaderSet',
+      url: 'https://fioriqa.ke.com.pk:44300/sap/opu/odata/sap/ZPATROLLING_SRV/FLHeaderSet',
       headers: {
-        Authorization: 'Basic ' + base64.encode('tooba:sapsap12'),
+        Authorization: 'Basic ' + base64.encode('tooba:abap123'),
         'Content-Type': 'application/json',
         Accept: 'application/json',
         'X-CSRF-Token': '',
@@ -628,15 +632,15 @@ const DiscrepancyScreen = ({navigation, route}) => {
             Citicality: valueCiticality,
             Remarks: remarks,
             Phase: valuePhase,
-            ImagePath: imageFolder,
+            ImagePath: '',
           },
         ],
       }),
     }).then(items => {
-      StoreInDevice();
+      StoreInDevice('Post');
     });
   };
-  const StoreInDevice = () => {
+  const StoreInDevice = status => {
     AsyncStorage.getItem(route.params.StrSnro)
       .then(items => {
         var DiscrepancyData = items ? JSON.parse(items) : [];
@@ -659,6 +663,7 @@ const DiscrepancyScreen = ({navigation, route}) => {
             remarks: remarks,
             createdDate: moment(Date.now()).format('YYYYMMDD'),
             imageFolder: imageFolder,
+            status: status,
           });
 
           AsyncStorage.setItem(
@@ -681,6 +686,7 @@ const DiscrepancyScreen = ({navigation, route}) => {
               DiscrepancyData[index].valueFaultCount = valueFaultCount;
               DiscrepancyData[index].valueCiticality = valueCiticality;
               DiscrepancyData[index].remarks = remarks;
+              DiscrepancyData[index].status = status;
               AsyncStorage.setItem(
                 route.params.StrSnro,
                 JSON.stringify(DiscrepancyData),
@@ -778,6 +784,10 @@ const DiscrepancyScreen = ({navigation, route}) => {
           if (route.params.CaseType != 'New')
             var filterData = DiscrepancyData.filter(item => {
               if (item.DiscrepancyID == data.DiscrepancyID) {
+                if (data.status == 'Post') {
+                  setIsEditable(false);
+                  console.log('data.status: ' + data.status);
+                }
                 setValueDiscrepancyType(item.valueDiscrepancyType);
                 setValueDiscrepancyTower(item.valueDiscrepancyTower);
                 setValueDiscrepancyPhase(item.valueDiscrepancyPhase);
@@ -1020,11 +1030,11 @@ const DiscrepancyScreen = ({navigation, route}) => {
           </View>
           <View style={{flex: 1, alignItems: 'flex-start'}}>
             <DropDownPicker
+              disabled={!isEditable}
               open={openDiscrepancyType}
               value={valueDiscrepancyType}
               items={itemsDiscrepancyType}
               setOpen={setOpenDiscrepancyType}
-              y
               setValue={setValueDiscrepancyType}
               setItems={setItemsDiscrepancyType}
               listMode="MODAL"
@@ -1049,6 +1059,7 @@ const DiscrepancyScreen = ({navigation, route}) => {
             </View>
             <View style={{flex: 1, alignItems: 'flex-start'}}>
               <DropDownPicker
+                disabled={!isEditable}
                 open={openDiscrepancyTower}
                 value={valueDiscrepancyTower}
                 items={itemsDiscrepancyTower}
@@ -1083,6 +1094,7 @@ const DiscrepancyScreen = ({navigation, route}) => {
               </View>
               <View style={{flex: 1, alignItems: 'flex-start'}}>
                 <DropDownPicker
+                  disabled={!isEditable}
                   open={openPhase}
                   value={valuePhase}
                   items={itemsPhase}
@@ -1111,6 +1123,7 @@ const DiscrepancyScreen = ({navigation, route}) => {
               </View>
               <View style={{flex: 1, alignItems: 'flex-start'}}>
                 <DropDownPicker
+                  disabled={!isEditable}
                   open={openDiscrepancyPhase}
                   value={valueDiscrepancyPhase}
                   items={itemsDiscrepancyPhase}
@@ -1145,6 +1158,7 @@ const DiscrepancyScreen = ({navigation, route}) => {
             </View>
             <View style={{flex: 1, alignItems: 'flex-start'}}>
               <DropDownPicker
+                disabled={!isEditable}
                 open={openDiscrepancyRoute}
                 value={valueDiscrepancyRoute}
                 items={itemsDiscrepancyRoute}
@@ -1218,6 +1232,7 @@ const DiscrepancyScreen = ({navigation, route}) => {
           </View>
           <View style={{flex: 1, alignItems: 'flex-start'}}>
             <DropDownPicker
+              disabled={!isEditable}
               open={openInBetween}
               value={valueInBetween}
               items={itemsInBetween}
@@ -1247,6 +1262,7 @@ const DiscrepancyScreen = ({navigation, route}) => {
           </View>
           <View style={{flex: 1, alignItems: 'flex-start'}}>
             <DropDownPicker
+              disabled={!isEditable}
               open={openFaultCount}
               value={valueFaultCount}
               items={itemsFaultCount}
@@ -1276,6 +1292,7 @@ const DiscrepancyScreen = ({navigation, route}) => {
           </View>
           <View style={{flex: 1, alignItems: 'flex-start'}}>
             <DropDownPicker
+              disabled={!isEditable}
               open={openCiticality}
               value={valueCiticality}
               items={itemsCiticality}
@@ -1401,7 +1418,8 @@ const DiscrepancyScreen = ({navigation, route}) => {
                         color: 'white',
                         fontSize: 12,
                         fontWeight: 'bold',
-                      }}>
+                      }}
+                      editable={isEditable}>
                       Remove
                     </Text>
                   </TouchableOpacity>
@@ -1423,17 +1441,21 @@ const DiscrepancyScreen = ({navigation, route}) => {
           }}>
           <View
             style={{flex: 1, alignItems: 'flex-start', alignItems: 'flex-end'}}>
-            <TouchableOpacity onPress={() => chooseFile('photo')}>
+            <TouchableOpacity
+              onPress={() => chooseFile('photo')}
+              disabled={!isEditable}>
               <Image
-                source={require('../assets/Gallery.png')} // source={{uri: filePath.uri}}
+                source={require('../assets/gallery4.png')} // source={{uri: filePath.uri}}
                 style={styles.imageStyle}
               />
             </TouchableOpacity>
           </View>
           <View style={{flex: 1, alignItems: 'flex-start', paddingLeft: 50}}>
-            <TouchableOpacity onPress={() => captureImage('photo', '2')}>
+            <TouchableOpacity
+              onPress={() => captureImage('photo', '2')}
+              disabled={!isEditable}>
               <Image
-                source={require('../assets/camera.png')} // source={{uri: filePath.uri}}
+                source={require('../assets/camera2.png')} // source={{uri: filePath.uri}}
                 style={styles.imageStyle}
               />
             </TouchableOpacity>
@@ -1445,7 +1467,7 @@ const DiscrepancyScreen = ({navigation, route}) => {
             disabled={!isEditable}
             style={[styles.loginBtn, {backgroundColor: btnBackgroundColor}]}
             onPress={() => {
-              StoreInDevice();
+              StoreInDevice('Saved');
             }}>
             <Text style={{color: 'white', fontSize: 18}}>Save</Text>
           </TouchableOpacity>
@@ -1454,7 +1476,8 @@ const DiscrepancyScreen = ({navigation, route}) => {
             disabled={!isEditable}
             style={[styles.loginBtn, {backgroundColor: btnBackgroundColor}]}
             onPress={() => {
-              PostSIRImage();
+              PostDiscrepancyRecord();
+              //PostSIRImage();
             }}>
             <Text style={{color: 'white', fontSize: 18}}>Submit</Text>
           </TouchableOpacity>

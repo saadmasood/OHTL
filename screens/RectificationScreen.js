@@ -40,78 +40,374 @@ const RectificationScreen = ({navigation, route}) => {
   const [openDiscrepancyTower, setOpenDiscrepancyTower] = useState(false);
   const [valueDiscrepancyTower, setValueDiscrepancyTower] = useState();
   const [itemsDiscrepancyTower, setItemsDiscrepancyTower] = useState([
-    {label: 'Access/ Encroachment', value: 'Access/ Encroachment'},
-    {label: 'Crash Barriers', value: 'Crash Barriers'},
-    {label: 'Earth wire/ OPGW', value: 'Earth wire/ OPGW'},
-    {label: 'Foundation', value: 'Foundation'},
-    {label: 'Terrain/ Topography', value: 'Terrain/ Topography'},
-    {label: 'Vibration Dampers/ Spacers', value: 'Vibration Dampers/ Spacers'},
-    {label: 'Gantry', value: 'Gantry'},
-    {label: 'Ground Clearance', value: 'Ground Clearance'},
-    {label: 'Hardware Fittings', value: 'Hardware Fittings'},
-    {label: 'Hookups', value: 'Hookups'},
-    {label: 'Insulators', value: 'Insulators'},
-    {label: 'Joints', value: 'Joints'},
-    {label: 'Jumpers', value: 'Jumpers'},
-    {label: 'PVC Wire', value: 'PVC Wire'},
-    {label: 'Road Crossing', value: 'Road Crossing'},
-    {label: 'Span Conductor', value: 'Span Conductor'},
-    {label: 'Step Bolts/ Ladders', value: 'Step Bolts/ Ladders'},
-    {label: 'Structure Numbering', value: 'Structure Numbering'},
-    {label: 'Stay Wire', value: 'Stay Wire'},
-    {label: 'Phase Indication', value: 'Phase Indication'},
+    {label: 'Crane Access- Available', value: 'Crane Access- Available'},
     {
-      label: 'Name Plates/ Danger Plates ',
-      value: 'Name Plates/ Danger Plates ',
+      label: 'Crane Access- Not available',
+      value: 'Crane Access- Not available',
     },
-    {label: 'Tower Braces', value: 'Tower Braces'},
-    {label: 'PS (STP) Condition', value: 'PS (STP) Condition'},
-    {label: 'PS (STP) Collapse', value: 'PS (STP) Collapse'},
-    {label: 'PS (RCC) Collapse', value: 'PS (RCC) Collapse'},
-    {label: 'PS (RCC) Condition', value: 'PS (RCC) Condition'},
+    {label: 'Illegal encroachment', value: 'Illegal encroachment'},
+    {label: 'Located inside boundary', value: 'Located inside boundary'},
+    {
+      label: 'Access Permission Required From Authority',
+      value: 'Access Permission Required From Authority',
+    },
+    {
+      label: 'Access Permission Required From Resident',
+      value: 'Access Permission Required From Resident',
+    },
+    {label: 'Terrain/ Topography', value: 'Terrain/ Topography'},
+    {label: 'Road Crossing', value: 'Road Crossing'},
+    {label: 'Hookups', value: 'Hookups'},
+    {label: 'EHT Circuit Crossing', value: 'EHT Circuit Crossing'},
+    {label: 'HT Circuit Crossing', value: 'HT Circuit Crossing'},
+    {label: 'LT Circuit Crossing', value: 'LT Circuit Crossing'},
     {label: 'Trees/ Bushes', value: 'Trees/ Bushes'},
+    {label: 'Foundation', value: 'Foundation'},
+    {label: 'Foundation- Cracked', value: 'Foundation- Cracked'},
+    {label: 'Foundation- Buried', value: 'Foundation- Buried'},
+    {label: 'Crash Barriers Required', value: 'Crash Barriers Required'},
+    {
+      label: 'Structure Numbering- Available',
+      value: 'Structure Numbering- Available',
+    },
+    {label: 'Structure Numbering- Faded', value: 'Structure Numbering- Faded'},
+    {
+      label: 'Structure Numbering- Incorrect',
+      value: 'Structure Numbering- Incorrect',
+    },
+    {
+      label: 'Structure Numbering- Not Available',
+      value: 'Structure Numbering- Not Available',
+    },
+    {
+      label: 'Name Plate- Available & Ok condition',
+      value: 'Name Plate- Available & Ok condition',
+    },
+    {
+      label: 'Name Plate- Rusted/ Replacement Required',
+      value: 'Name Plate- Rusted/ Replacement Required',
+    },
+    {label: 'Name Plate- Faded', value: 'Name Plate- Faded'},
+    {label: 'Name Plate- Incorrect', value: 'Name Plate- Incorrect'},
+    {label: 'Name Plate- Not Available', value: 'Name Plate- Not Available'},
+    {
+      label: 'Phase Indication Plate- Available & Ok condition',
+      value: 'Phase Indication Plate- Available & Ok condition',
+    },
+    {
+      label: 'Phase Indication Plate- Rusted/ Replacement Required',
+      value: 'Phase Indication Plate- Rusted/ Replacement Required',
+    },
+    {
+      label: 'Phase Indication Plate- Faded',
+      value: 'Phase Indication Plate- Faded',
+    },
+    {
+      label: 'Phase Indication Plate- Incorrect',
+      value: 'Phase Indication Plate- Incorrect',
+    },
+    {
+      label: 'Phase Indication Plate- Not Available',
+      value: 'Phase Indication Plate- Not Available',
+    },
+    {label: 'Bird Nest- Tower Cage', value: 'Bird Nest- Tower Cage'},
+    {
+      label: 'Bird Nest- Monopole/ PLDP Shaft',
+      value: 'Bird Nest- Monopole/ PLDP Shaft',
+    },
+    {label: 'Bird Nest- Gantry', value: 'Bird Nest- Gantry'},
+    {label: 'Earth Wire/ OPGW- Damaged', value: 'Earth Wire/ OPGW- Damaged'},
+    {label: 'Earth Wire/ OPGW- Missing', value: 'Earth Wire/ OPGW- Missing'},
+    {label: 'Step Bolts- Rusted', value: 'Step Bolts- Rusted'},
+    {label: 'Step Bolts- Missing', value: 'Step Bolts- Missing'},
+    {label: 'Step Ladders- Rusted', value: 'Step Ladders- Rusted'},
+    {label: 'Step Ladders- Missing', value: 'Step Ladders- Missing'},
+    {label: 'Tower Condition ', value: 'Tower Condition '},
+    {label: 'Tower Braces- Missing', value: 'Tower Braces- Missing'},
+    {label: 'Tower Braces- Rusted', value: 'Tower Braces- Rusted'},
+    {label: 'Tower Nut Bolts- Missing', value: 'Tower Nut Bolts- Missing'},
+    {label: 'Tower Nut Bolts- Rusted', value: 'Tower Nut Bolts- Rusted'},
+    {label: 'Joint Plates- Missing', value: 'Joint Plates- Missing'},
+    {label: 'Joint Plates- Rusted', value: 'Joint Plates- Rusted'},
+    {label: 'Monopole Condition', value: 'Monopole Condition'},
+    {
+      label: 'Monopole Anchor Bolt Nuts- Missing',
+      value: 'Monopole Anchor Bolt Nuts- Missing',
+    },
+    {
+      label: 'Monopole Anchor Bolt Nuts- Rusted',
+      value: 'Monopole Anchor Bolt Nuts- Rusted',
+    },
+    {
+      label: 'Monopole Anchor Bolt Cover- Missing',
+      value: 'Monopole Anchor Bolt Cover- Missing',
+    },
+    {
+      label: 'Monopole Anchor Bolt Cover- Damaged',
+      value: 'Monopole Anchor Bolt Cover- Damaged',
+    },
+    {label: 'PS (STP) Condition', value: 'PS (STP) Condition'},
+    {label: 'PS (STP) Poles Rusted', value: 'PS (STP) Poles Rusted'},
+    {label: 'PS (STP) Channel Rusted', value: 'PS (STP) Channel Rusted'},
+    {label: 'PS (STP) Poles Damaged', value: 'PS (STP) Poles Damaged'},
+    {label: 'PS (STP) Channel Damaged', value: 'PS (STP) Channel Damaged'},
+    {
+      label: 'PS (STP) Eye Bolt Rusted/ Damaged',
+      value: 'PS (STP) Eye Bolt Rusted/ Damaged',
+    },
+    {label: 'PS (STP) Eye Bolt Missing', value: 'PS (STP) Eye Bolt Missing'},
+    {label: 'PS (RCC) Condition', value: 'PS (RCC) Condition'},
+    {label: 'PS (RCC) Poles Damaged', value: 'PS (RCC) Poles Damaged'},
+    {
+      label: 'PS (RCC) Channel Damaged/ Dislocated',
+      value: 'PS (RCC) Channel Damaged/ Dislocated',
+    },
+    {
+      label: 'PS (RCC) Channel plates rusted/ damaged',
+      value: 'PS (RCC) Channel plates rusted/ damaged',
+    },
+    {
+      label: 'PS (RCC) Eye Bolt Rusted/ Damaged',
+      value: 'PS (RCC) Eye Bolt Rusted/ Damaged',
+    },
+    {
+      label: 'PS (RCC) Eye Bolt Rusted/ Damaged',
+      value: 'PS (RCC) Eye Bolt Rusted/ Damaged',
+    },
+    {
+      label: 'PS (RCC) Flying Stay Deteriorated',
+      value: 'PS (RCC) Flying Stay Deteriorated',
+    },
+    {label: 'Stay Wire- Missing', value: 'Stay Wire- Missing'},
+    {label: 'Stay Wire- Deteriorated', value: 'Stay Wire- Deteriorated'},
+    {
+      label: 'Structure Grounding- Missing',
+      value: 'Structure Grounding- Missing',
+    },
+    {
+      label: 'Structure Grounding- Damaged',
+      value: 'Structure Grounding- Damaged',
+    },
+    {
+      label: 'Trench- Sub-soil water accumulation',
+      value: 'Trench- Sub-soil water accumulation',
+    },
+    {
+      label: 'Trench- Rain water accumulation',
+      value: 'Trench- Rain water accumulation',
+    },
+    {label: 'Trench- Deterioration', value: 'Trench- Deterioration'},
+    {
+      label: 'Cable Gantry/ PLDP- Boundary Wall Damaged',
+      value: 'Cable Gantry/ PLDP- Boundary Wall Damaged',
+    },
+    {
+      label: 'Cable Gantry/ PLDP- Barbed Wire Missing',
+      value: 'Cable Gantry/ PLDP- Barbed Wire Missing',
+    },
+    {
+      label: 'Cable Gantry/ PLDP- Painting Required',
+      value: 'Cable Gantry/ PLDP- Painting Required',
+    },
+    {
+      label: 'Cable Gantry/ PLDP- Lighting Required',
+      value: 'Cable Gantry/ PLDP- Lighting Required',
+    },
+    {
+      label: 'Foundation of Sealing End- Deteriorated',
+      value: 'Foundation of Sealing End- Deteriorated',
+    },
+    {
+      label: 'RCC Structure for Sealing End- Deteriorated',
+      value: 'RCC Structure for Sealing End- Deteriorated',
+    },
+    {
+      label: 'Steel Structures for Sealing End- Rusted',
+      value: 'Steel Structures for Sealing End- Rusted',
+    },
+    {
+      label: 'Steel Structures for Sealing End- Nut Bolts Rusted',
+      value: 'Steel Structures for Sealing End- Nut Bolts Rusted',
+    },
+    {label: 'Trench- Slabs Missing', value: 'Trench- Slabs Missing'},
+    {label: 'Trench- Slabs Damaged', value: 'Trench- Slabs Damaged'},
+    {label: 'Bunker- Opening Damaged', value: 'Bunker- Opening Damaged'},
+    {
+      label: 'Bunker- Wall/ Roof Deteriorated',
+      value: 'Bunker- Wall/ Roof Deteriorated',
+    },
+    {
+      label: 'Bunker- Sub-soil water accumulation',
+      value: 'Bunker- Sub-soil water accumulation',
+    },
+    {
+      label: 'Bunker- Rain water accumulation',
+      value: 'Bunker- Rain water accumulation',
+    },
+    {label: 'Any other discrepancy', value: 'Any other discrepancy'},
   ]);
 
   const [openDiscrepancyPhase, setOpenDiscrepancyPhase] = useState(false);
   const [valueDiscrepancyPhase, setValueDiscrepancyPhase] = useState();
   const [itemsDiscrepancyPhase, setItemsDiscrepancyPhase] = useState([
-    {label: 'Bird Nest', value: 'Bird Nest'},
-    {label: 'Corona Ring', value: 'Corona Ring'},
-    {label: 'Earth wire/ OPGW', value: 'Earth wire/ OPGW'},
-    {label: 'Foundation', value: 'Foundation'},
-    {label: 'Terrain/ Topography', value: 'Terrain/ Topography'},
-    {label: 'Vibration Dampers/ Spacers', value: 'Vibration Dampers/ Spacers'},
-    {label: 'Gantry', value: 'Gantry'},
-    {label: 'Ground Clearance', value: 'Ground Clearance'},
-    {label: 'Hardware Fittings', value: 'Hardware Fittings'},
-    {label: 'Hookups', value: 'Hookups'},
-    {label: 'Insulators', value: 'Insulators'},
-    {label: 'Joints', value: 'Joints'},
-    {label: 'Jumpers', value: 'Jumpers'},
-    {label: 'PVC Wire', value: 'PVC Wire'},
-    {label: 'Road Crossing', value: 'Road Crossing'},
-    {label: 'Span Conductor', value: 'Span Conductor'},
-    {label: 'Step Bolts/ Ladders', value: 'Step Bolts/ Ladders'},
-    {label: 'Structure Numbering', value: 'Structure Numbering'},
-    {label: 'Stay Wire', value: 'Stay Wire'},
-    {label: 'Phase Indication', value: 'Phase Indication'},
+    {label: 'Span Conductor- Damaged', value: 'Span Conductor- Damaged'},
     {
-      label: 'Name Plates/ Danger Plates ',
-      value: 'Name Plates/ Danger Plates ',
+      label: 'Span Conductor- Bolted Joint',
+      value: 'Span Conductor- Bolted Joint',
     },
-    {label: 'Tower Braces', value: 'Tower Braces'},
-    {label: 'PS (STP) Condition', value: 'PS (STP) Condition'},
-    {label: 'PS (STP) Collapse', value: 'PS (STP) Collapse'},
-    {label: 'PS (RCC) Collapse', value: 'PS (RCC) Collapse'},
-    {label: 'PS (RCC) Condition', value: 'PS (RCC) Condition'},
-    {label: 'Trees/ Bushes', value: 'Trees/ Bushes'},
+    {
+      label: 'Span Conductor- Shunt Joint',
+      value: 'Span Conductor- Shunt Joint',
+    },
+    {label: 'Jumper Conductor- Damaged', value: 'Jumper Conductor- Damaged'},
+    {
+      label: 'Jumper Conductor- PG/SC Installed',
+      value: 'Jumper Conductor- PG/SC Installed',
+    },
+    {label: 'Partial Jumper', value: 'Partial Jumper'},
+    {label: 'Double Jumper', value: 'Double Jumper'},
+    {
+      label: 'Jumper installed on main conductor',
+      value: 'Jumper installed on main conductor',
+    },
+    {label: 'Jumper terminal disengaged', value: 'Jumper terminal disengaged'},
+    {
+      label: 'Jumper terminal nut bolts missing',
+      value: 'Jumper terminal nut bolts missing',
+    },
+    {
+      label: 'Jumper terminal nut bolts rusted',
+      value: 'Jumper terminal nut bolts rusted',
+    },
+    {label: 'Bi- metallic', value: 'Bi- metallic'},
+    {label: 'Insulator- Damaged', value: 'Insulator- Damaged'},
+    {label: 'Insulator- Flashed Over', value: 'Insulator- Flashed Over'},
+    {label: 'Insulator- Rusted', value: 'Insulator- Rusted'},
+    {label: 'Hardware Fittings- Rusted', value: 'Hardware Fittings- Rusted'},
+    {
+      label: 'Hardware Fittings- Flashed Over',
+      value: 'Hardware Fittings- Flashed Over',
+    },
+    {label: 'Vibration Damper- Missing', value: 'Vibration Damper- Missing'},
+    {label: 'Vibration Damper- Damaged', value: 'Vibration Damper- Damaged'},
+    {label: 'Spacer- Missing', value: 'Spacer- Missing'},
+    {label: 'Spacer- Damaged', value: 'Spacer- Damaged'},
+    {label: 'Corona Ring- Missing', value: 'Corona Ring- Missing'},
+    {label: 'Corona Ring- Misaligned ', value: 'Corona Ring- Misaligned '},
+    {label: 'Bird Nest- Cross Arm', value: 'Bird Nest- Cross Arm'},
+    {
+      label: 'Bird Nest- Insulator String',
+      value: 'Bird Nest- Insulator String',
+    },
+    {
+      label: 'Bird Nest- Cable Sealing End',
+      value: 'Bird Nest- Cable Sealing End',
+    },
+    {label: 'PVC Wire- Cross Arm', value: 'PVC Wire- Cross Arm'},
+    {label: 'PVC Wire- Insulator String', value: 'PVC Wire- Insulator String'},
+    {label: 'PVC Wire- Span Conductor', value: 'PVC Wire- Span Conductor'},
+    {label: 'PVC Wire- Jumper', value: 'PVC Wire- Jumper'},
+    {label: 'Thread/ Rope- Cross Arm', value: 'Thread/ Rope- Cross Arm'},
+    {
+      label: 'Thread/ Rope- Insulator String',
+      value: 'Thread/ Rope- Insulator String',
+    },
+    {
+      label: 'Thread/ Rope- Span Conductor',
+      value: 'Thread/ Rope- Span Conductor',
+    },
+    {label: 'Thread/ Rope- Jumper', value: 'Thread/ Rope- Jumper'},
+    {
+      label: 'Ground clearance compromised due to encroachment',
+      value: 'Ground clearance compromised due to encroachment',
+    },
+    {
+      label: 'Ground clearance compromised due loose conductor sag',
+      value: 'Ground clearance compromised due loose conductor sag',
+    },
+    {label: 'Chattering', value: 'Chattering'},
+    {label: 'Red Hot', value: 'Red Hot'},
+    {label: 'Any other discrepancy', value: 'Any other discrepancy'},
+    {label: 'Oil Seepage', value: 'Oil Seepage'},
+    {label: 'Oil Seepage- Teflon', value: 'Oil Seepage- Teflon'},
+    {label: 'Oil Seepage- Tank', value: 'Oil Seepage- Tank'},
+    {label: 'Oil Seepage- Sealing End', value: 'Oil Seepage- Sealing End'},
+    {label: 'Oil Seepage- Plumb', value: 'Oil Seepage- Plumb'},
+    {label: 'Oil Seepage- Valve', value: 'Oil Seepage- Valve'},
+    {label: 'Oil Leakage', value: 'Oil Leakage'},
+    {label: 'Earthing', value: 'Earthing'},
+    {
+      label: 'Earthing for Cable Sealing End- Missing',
+      value: 'Earthing for Cable Sealing End- Missing',
+    },
+    {
+      label: 'Earthing for Cable Sealing End Structure- Missing',
+      value: 'Earthing for Cable Sealing End Structure- Missing',
+    },
+    {
+      label: 'Earthing for Oil Tank- Missing',
+      value: 'Earthing for Oil Tank- Missing',
+    },
+    {
+      label: 'Earthing for Link Box- Missing ',
+      value: 'Earthing for Link Box- Missing ',
+    },
+    {label: 'Link box- Missing', value: 'Link box- Missing'},
+    {label: 'Link box- Rusted', value: 'Link box- Rusted'},
+    {label: 'Link box- Damaged', value: 'Link box- Damaged'},
+    {label: 'Route Markers- Missing', value: 'Route Markers- Missing'},
+    {label: 'Route Markers- Damaged', value: 'Route Markers- Damaged'},
+    {label: 'Route Markers- Incorrect', value: 'Route Markers- Incorrect'},
+    {label: 'Route Markers- Missing', value: 'Route Markers- Missing'},
+    {
+      label: 'Route Markers- Available & Ok Condition',
+      value: 'Route Markers- Available & Ok Condition',
+    },
+    {label: 'Cable Trays- Rusted', value: 'Cable Trays- Rusted'},
+    {label: 'Cable Trays- Damaged', value: 'Cable Trays- Damaged'},
+    {
+      label: 'Cable Sealing End- Porcelain Damaged',
+      value: 'Cable Sealing End- Porcelain Damaged',
+    },
+    {label: 'Pressure gauge- Faulty', value: 'Pressure gauge- Faulty'},
+    {
+      label: 'Pressure gauge- Glass Cover Broken',
+      value: 'Pressure gauge- Glass Cover Broken',
+    },
+  ]);
+
+  const [openDiscrepancyRoute, setOpenDiscrepancyRoute] = useState(false);
+  const [valueDiscrepancyRoute, setValueDiscrepancyRoute] = useState();
+  const [itemsDiscrepancyRoute, setItemsDiscrepancyRoute] = useState([
+    {label: 'Illegal encroachment', value: 'Illegal encroachment'},
+    {label: 'Located inside boundary', value: 'Located inside boundary'},
+    {
+      label: 'Access Permission Required From Authority',
+      value: 'Access Permission Required From Authority',
+    },
+    {
+      label: 'Access Permission Required From Resident',
+      value: 'Access Permission Required From Resident',
+    },
+    {label: 'Nala Crossing', value: 'Nala Crossing'},
+    {
+      label: 'Dump yard over EHT cable circuit route',
+      value: 'Dump yard over EHT cable circuit route',
+    },
+    {label: 'Open Nala', value: 'Open Nala'},
+    {label: 'Excavation ongoing- Legal', value: 'Excavation ongoing- Legal'},
+    {
+      label: 'Excavation ongoing- Illegal',
+      value: 'Excavation ongoing- Illegal',
+    },
   ]);
 
   const [openDiscrepancyType, setOpenDiscrepancyType] = useState(false);
   const [valueDiscrepancyType, setValueDiscrepancyType] = useState();
   const [itemsDiscrepancyType, setItemsDiscrepancyType] = useState([
-    {label: 'Tower Related', value: 'Tower Related'},
-    {label: 'Phase Related', value: 'Phase Related'},
+    {label: 'OH/ UG Structure related', value: 'OH/ UG Structure related'},
+    {label: 'OH/ UG Phase related', value: 'OH/ UG Phase related'},
+    {label: 'UG Route related', value: 'UG Route related'},
   ]);
 
   const [openRectificationStatus, setOpenRectificationStatus] = useState(false);
@@ -315,9 +611,9 @@ const RectificationScreen = ({navigation, route}) => {
 
     axios({
       method: 'POST',
-      url: 'https://fioridev.ke.com.pk:44300/sap/opu/odata/sap/ZPATROLLING_SRV/FLHeaderSet',
+      url: 'https://fioriqa.ke.com.pk:44300/sap/opu/odata/sap/ZPATROLLING_SRV/FLHeaderSet',
       headers: {
-        Authorization: 'Basic ' + base64.encode('tooba:sapsap12'),
+        Authorization: 'Basic ' + base64.encode('tooba:abap123'),
         'Content-Type': 'application/json',
         Accept: 'application/json',
         'X-CSRF-Token': '',
@@ -384,27 +680,34 @@ const RectificationScreen = ({navigation, route}) => {
   };
 
   useEffect(() => {
-    moment.locale('en-gb');
-    console.log(moment.locale());
+    //moment.locale('en-gb');
+    //console.log(moment.locale());
     console.log('route.params.CaseType: ' + route.params.CaseType);
     console.log('route.params.Fl: ' + route.params.Fl);
     console.log('route.params.PtlSnro: ' + route.params.PtlSnro);
     console.log(' Fl: route.params.Fl: ' + route.params.Fl);
     console.log('route.params.StrFl: ' + route.params.StrFl);
+    console.log('route.params.StrSnro: ' + route.params.StrSnro);
 
     console.log(
       'route.params.isDiscrepancyScreenRequest: ' +
         route.params.isDiscrepancyScreenRequest,
     );
 
+    console.log('data.DiscrepancyID: ' + data.DiscrepancyID);
+
     AsyncStorage.getItem(route.params.StrSnro).then(items => {
       var DiscrepancyData = items ? JSON.parse(items) : [];
 
       var filterData = DiscrepancyData.filter(item => {
         if (item.DiscrepancyID == data.DiscrepancyID) {
+          console.log(
+            'item.valueDiscrepancyTower: ' + item.valueDiscrepancyTower,
+          );
           setValueDiscrepancyType(item.valueDiscrepancyType);
           setValueDiscrepancyTower(item.valueDiscrepancyTower);
           setValueDiscrepancyPhase(item.valueDiscrepancyPhase);
+          setValueDiscrepancyRoute(item.valueDiscrepancyRoute);
 
           if (item.rectificationDate != undefined) {
             setRectificationDate(item.rectificationDate);
@@ -630,7 +933,6 @@ const RectificationScreen = ({navigation, route}) => {
               value={valueDiscrepancyType}
               items={itemsDiscrepancyType}
               setOpen={setOpenDiscrepancyType}
-              y
               setValue={setValueDiscrepancyType}
               setItems={setItemsDiscrepancyType}
               listMode="MODAL"
@@ -641,7 +943,7 @@ const RectificationScreen = ({navigation, route}) => {
           </View>
         </View>
 
-        {valueDiscrepancyType == 'Tower Related' && (
+        {valueDiscrepancyType == 'OH/ UG Structure related' && (
           <View
             style={{
               flexDirection: 'row',
@@ -651,7 +953,7 @@ const RectificationScreen = ({navigation, route}) => {
               paddingTop: 10,
             }}>
             <View style={{flex: 1, alignItems: 'flex-start'}}>
-              <Text style={styles.pic_text_left}>Discrepancy:</Text>
+              <Text style={styles.pic_text_left}>Discrepancy tower:</Text>
             </View>
             <View style={{flex: 1, alignItems: 'flex-start'}}>
               <DropDownPicker
@@ -672,7 +974,7 @@ const RectificationScreen = ({navigation, route}) => {
           </View>
         )}
 
-        {valueDiscrepancyType == 'Phase Related' && (
+        {valueDiscrepancyType == 'OH/ UG Phase related' && (
           <View
             style={{
               flexDirection: 'row',
@@ -692,6 +994,37 @@ const RectificationScreen = ({navigation, route}) => {
                 setOpen={setOpenDiscrepancyPhase}
                 setValue={setValueDiscrepancyPhase}
                 setItems={setItemsDiscrepancyPhase}
+                listMode="MODAL"
+                searchable
+                disabled={true}
+                onChangeValue={item => {
+                  console.log(item);
+                }}
+              />
+            </View>
+          </View>
+        )}
+
+        {valueDiscrepancyType == 'UG Route related' && (
+          <View
+            style={{
+              flexDirection: 'row',
+              flex: 0.1,
+              width: '96%',
+              top: 1,
+              paddingTop: 10,
+            }}>
+            <View style={{flex: 1, alignItems: 'flex-start'}}>
+              <Text style={styles.pic_text_left}>Discrepancy:</Text>
+            </View>
+            <View style={{flex: 1, alignItems: 'flex-start'}}>
+              <DropDownPicker
+                open={openDiscrepancyRoute}
+                value={valueDiscrepancyRoute}
+                items={itemsDiscrepancyRoute}
+                setOpen={setOpenDiscrepancyRoute}
+                setValue={setValueDiscrepancyRoute}
+                setItems={setItemsDiscrepancyRoute}
                 listMode="MODAL"
                 searchable
                 disabled={true}
