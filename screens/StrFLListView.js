@@ -64,6 +64,8 @@ function StrFLListView({route, navigation}) {
       var dataslice = [];
       dataslice = items ? JSON.parse(items) : [];
 
+      //dataslice.sort((a, b) => b.StrSnro - a.StrSnro);
+
       if (dataslice.length == 0) {
         alert('There is no item against the list');
       }

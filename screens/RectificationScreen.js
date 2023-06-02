@@ -953,7 +953,7 @@ const RectificationScreen = ({navigation, route}) => {
               paddingTop: 10,
             }}>
             <View style={{flex: 1, alignItems: 'flex-start'}}>
-              <Text style={styles.pic_text_left}>Discrepancy tower:</Text>
+              <Text style={styles.pic_text_left}>Discrepancy:</Text>
             </View>
             <View style={{flex: 1, alignItems: 'flex-start'}}>
               <DropDownPicker
