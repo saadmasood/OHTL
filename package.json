@@ -23,6 +23,7 @@
     "base-64": "^1.0.0",
     "browserslist": "^4.19.1",
     "buffer": "^6.0.3",
+    "crypto-js": "^4.1.1",
     "moment": "^2.29.1",
     "react": "17.0.2",
     "react-native": "0.67.2",

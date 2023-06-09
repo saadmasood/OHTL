@@ -19,6 +19,8 @@ import Modal from 'react-native-modal';
 import SplashScreen from 'react-native-splash-screen';
 import AsyncStorage from '@react-native-community/async-storage';
 
+import {myGlobalVariable} from './globals';
+
 //import Config from 'react-native-config';
 import Moment from 'moment';
 import DeviceInfo from 'react-native-device-info';
@@ -28,6 +30,7 @@ import moment from 'moment';
 import base64 from 'react-native-base64';
 
 import axios from 'axios';
+import {MD5} from 'crypto-js';
 
 // var AES = require('react-native-aes');
 // var CryptoJS = require('crypto-js');
@@ -163,6 +166,7 @@ function Login({navigation}) {
   };
 
   const getRecord = (imIbc, imGang, imUser) => {
+    //'mobility_rfc:Z@p12345'
     console.log('getRecord: date: ' + ImDate);
     console.log('ibc: ' + imIbc);
     console.log('gang: ' + imGang);
@@ -171,7 +175,9 @@ function Login({navigation}) {
     axios({
       method: 'get',
       url:
-        'https://fioriprd.ke.com.pk:44300/sap/opu/odata/sap/ZDCRC_SRV/DCRCListSet?$filter=%20ImDate%20eq%20%27' +
+        'https://' +
+        myGlobalVariable[0] +
+        '.ke.com.pk:44300/sap/opu/odata/sap/ZDCRC_SRV/DCRCListSet?$filter=%20ImDate%20eq%20%27' +
         ImDate +
         '%27%20and%20ImIbc%20eq%20%27' +
         imIbc +
@@ -182,7 +188,7 @@ function Login({navigation}) {
         '%27%20and%20ImHistory%20eq%20%27%27&$format=json',
       headers: {
         'Content-Type': 'application/json',
-        Authorization: 'Basic ' + base64.encode('mobility_rfc:Z@p12345'),
+        Authorization: 'Basic ' + base64.encode(myGlobalVariable[1]),
       },
     })
       .then(res => {
@@ -209,6 +215,9 @@ function Login({navigation}) {
 
     console.log('password: ' + userPassword);
 
+    const md5Name = MD5(name).toString();
+    const md5Password = MD5(userPassword).toString();
+
     /*    
         if (name == '') {
           // loader();
@@ -226,8 +235,8 @@ function Login({navigation}) {
           return;
         }
     */
-    console.log(name);
-    console.log(userPassword);
+    console.log('md5Name:' + md5Name);
+    console.log('md5Password:' + md5Password);
     console.log(UniqueId.toUpperCase());
     console.log(isLoginServiceCall);
 
@@ -235,15 +244,17 @@ function Login({navigation}) {
       axios({
         method: 'GET',
         url:
-          "https://fioriqa.ke.com.pk:44300/sap/opu/odata/sap/ZPATROLLING_SRV/ValidateUserSet(Pass='" +
-          userPassword +
+          'https://' +
+          myGlobalVariable[0] +
+          ".ke.com.pk:44300/sap/opu/odata/sap/ZPATROLLING_SRV/USERVALIDATESet(Pass='" +
+          md5Password +
           "',Swid='" +
           UniqueId.toUpperCase() +
           "',User='" +
-          name +
+          md5Name +
           "')?$format=json",
         headers: {
-          Authorization: 'Basic ' + base64.encode('tooba:abap123'),
+          Authorization: 'Basic ' + base64.encode(myGlobalVariable[1]),
           'Content-Type': 'application/json',
         },
       })

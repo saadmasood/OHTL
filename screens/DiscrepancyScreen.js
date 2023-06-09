@@ -13,6 +13,8 @@ import {
   Dimensions,
 } from 'react-native';
 
+import {myGlobalVariable} from './globals';
+
 import {ScrollView} from 'react-native-gesture-handler';
 import DropDownPicker from 'react-native-dropdown-picker';
 import SegmentedControlTab from 'react-native-segmented-control-tab';
@@ -593,9 +595,15 @@ const DiscrepancyScreen = ({navigation, route}) => {
   const PostDiscrepancyRecord = () => {
     console.log('route.params.Fl: ' + route.params.Fl);
     console.log('route.params.StrFl: ' + route.params.StrFl);
-    console.log('imageFolder: ' + imageFolder);
+    console.log('empName: ' + empName);
 
-    let discrepancyDropdown;
+    let discrepancyDropdown, DiscrNum;
+    if (route.params.CaseType == 'New') {
+      DiscrNum = discrepancyID;
+    } else {
+      DiscrNum = data.DiscrepancyID;
+    }
+    console.log('DiscrNum: ' + DiscrNum);
 
     if (valueDiscrepancyType == 'OH/ UG Structure related') {
       discrepancyDropdown = valueDiscrepancyTower;
@@ -608,9 +616,12 @@ const DiscrepancyScreen = ({navigation, route}) => {
 
     axios({
       method: 'POST',
-      url: 'https://fioriqa.ke.com.pk:44300/sap/opu/odata/sap/ZPATROLLING_SRV/FLHeaderSet',
+      url:
+        'https://' +
+        myGlobalVariable[0] +
+        '.ke.com.pk:44300/sap/opu/odata/sap/ZPATROLLING_SRV/FLHeaderSet',
       headers: {
-        Authorization: 'Basic ' + base64.encode('tooba:abap123'),
+        Authorization: 'Basic ' + base64.encode(myGlobalVariable[1]),
         'Content-Type': 'application/json',
         Accept: 'application/json',
         'X-CSRF-Token': '',
@@ -632,7 +643,8 @@ const DiscrepancyScreen = ({navigation, route}) => {
             Citicality: valueCiticality,
             Remarks: remarks,
             Phase: valuePhase,
-            ImagePath: '',
+            ImagePath: imageFolder,
+            DiscrNum: DiscrNum.toString(),
           },
         ],
       }),
@@ -727,6 +739,8 @@ const DiscrepancyScreen = ({navigation, route}) => {
     AsyncStorage.getItem('UserDetail')
       .then(items => {
         var data1 = items ? JSON.parse(items) : [];
+        console.log('data1[0].userName): ' + data1[0].userName);
+        setEmpName(data1[0].userName);
       })
       .then(userDetailItems => {
         var systemImageData = [];
@@ -1476,8 +1490,8 @@ const DiscrepancyScreen = ({navigation, route}) => {
             disabled={!isEditable}
             style={[styles.loginBtn, {backgroundColor: btnBackgroundColor}]}
             onPress={() => {
-              PostDiscrepancyRecord();
-              //PostSIRImage();
+              //PostDiscrepancyRecord();
+              PostSIRImage();
             }}>
             <Text style={{color: 'white', fontSize: 18}}>Submit</Text>
           </TouchableOpacity>

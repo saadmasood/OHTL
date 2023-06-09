@@ -20,12 +20,16 @@ import AsyncStorage from '@react-native-community/async-storage';
 import axios from 'axios';
 import base64 from 'react-native-base64';
 
+import {myGlobalVariable} from './globals';
+
 const PatrollingScreen = ({navigation, route}) => {
   const [isEditable, setIsEditable] = useState(true);
   const [isMeterReadingEditable, setIsMeterReadingEditable] = useState(true);
   const [isDCRemarksEditable, setIsDCRemarksEditable] = useState(false);
 
   const [selectedIndex, setSelectedIndex] = useState(0);
+  const [selectedStructureSide, setSelectedStructureSide] = useState(2);
+
   const [MeterReading, setMeterReading] = useState();
   const [btnBackgroundColor, setBtnBackgroundColor] = useState(
     'rgba(93,45,145,255)',
@@ -127,6 +131,72 @@ const PatrollingScreen = ({navigation, route}) => {
     },
   ]);
 
+  const [openInsulationTypeRedA, setOpenInsulationTypeRedA] = useState(false);
+  const [valueInsulationTypeRedA, setValueInsulationTypeRedA] = useState();
+  const [itemsInsulationTypeRedA, setItemsInsulationTypeRedA] = useState([
+    {
+      label: 'Disc',
+      value: 'Disc',
+    },
+    {
+      label: 'Brown Long Rod',
+      value: 'Brown Long Rod',
+    },
+    {
+      label: 'Grey Long Rod',
+      value: 'Grey Long Rod',
+    },
+    {
+      label: 'RTV Coated Disc',
+      value: 'RTV Coated Disc',
+    },
+    {
+      label: 'RTV Coated Brown Long Rod',
+      value: 'RTV Coated Brown Long Rod',
+    },
+    {
+      label: 'RTV Coated Grey Long Rod',
+      value: 'RTV Coated Grey Long Rod',
+    },
+    {
+      label: 'Composite Long Rod',
+      value: 'Composite Long Rod',
+    },
+  ]);
+
+  const [openInsulationTypeRedB, setOpenInsulationTypeRedB] = useState(false);
+  const [valueInsulationTypeRedB, setValueInsulationTypeRedB] = useState();
+  const [itemsInsulationTypeRedB, setItemsInsulationTypeRedB] = useState([
+    {
+      label: 'Disc',
+      value: 'Disc',
+    },
+    {
+      label: 'Brown Long Rod',
+      value: 'Brown Long Rod',
+    },
+    {
+      label: 'Grey Long Rod',
+      value: 'Grey Long Rod',
+    },
+    {
+      label: 'RTV Coated Disc',
+      value: 'RTV Coated Disc',
+    },
+    {
+      label: 'RTV Coated Brown Long Rod',
+      value: 'RTV Coated Brown Long Rod',
+    },
+    {
+      label: 'RTV Coated Grey Long Rod',
+      value: 'RTV Coated Grey Long Rod',
+    },
+    {
+      label: 'Composite Long Rod',
+      value: 'Composite Long Rod',
+    },
+  ]);
+
   const [openInsulationTypeJumperRed, setOpenInsulationTypeJumperRed] =
     useState(false);
   const [valueInsulationTypeJumperRed, setValueInsulationTypeJumperRed] =
@@ -192,6 +262,64 @@ const PatrollingScreen = ({navigation, route}) => {
     },
   ]);
 
+  const [openInsulatorSchemeRedA, setOpenInsulatorSchemeRedA] = useState(false);
+  const [valueInsulatorSchemeRedA, setValueInsulatorSchemeRedA] = useState();
+  const [itemsInsulatorSchemeRedA, setItemsInsulatorSchemeRedA] = useState([
+    {
+      label: 'SSS',
+      value: 'SSS',
+    },
+    {
+      label: 'DSS',
+      value: 'DSS',
+    },
+    {
+      label: 'TSS',
+      value: 'TSS',
+    },
+    {
+      label: 'STS',
+      value: 'STS',
+    },
+    {
+      label: 'DTS',
+      value: 'DTS',
+    },
+    {
+      label: 'TTS',
+      value: 'TTS',
+    },
+  ]);
+
+  const [openInsulatorSchemeRedB, setOpenInsulatorSchemeRedB] = useState(false);
+  const [valueInsulatorSchemeRedB, setValueInsulatorSchemeRedB] = useState();
+  const [itemsInsulatorSchemeRedB, setItemsInsulatorSchemeRedB] = useState([
+    {
+      label: 'SSS',
+      value: 'SSS',
+    },
+    {
+      label: 'DSS',
+      value: 'DSS',
+    },
+    {
+      label: 'TSS',
+      value: 'TSS',
+    },
+    {
+      label: 'STS',
+      value: 'STS',
+    },
+    {
+      label: 'DTS',
+      value: 'DTS',
+    },
+    {
+      label: 'TTS',
+      value: 'TTS',
+    },
+  ]);
+
   const [openInsulatorSchemeJumperRed, setOpenInsulatorSchemeJumperRed] =
     useState(false);
   const [valueInsulatorSchemeJumperRed, setValueInsulatorSchemeJumperRed] =
@@ -228,6 +356,76 @@ const PatrollingScreen = ({navigation, route}) => {
     useState(false);
   const [valueInsulationTypeYellow, setValueInsulationTypeYellow] = useState();
   const [itemsInsulationTypeYellow, setItemsInsulationTypeYellow] = useState([
+    {
+      label: 'Disc',
+      value: 'Disc',
+    },
+    {
+      label: 'Brown Long Rod',
+      value: 'Brown Long Rod',
+    },
+    {
+      label: 'Grey Long Rod',
+      value: 'Grey Long Rod',
+    },
+    {
+      label: 'RTV Coated Disc',
+      value: 'RTV Coated Disc',
+    },
+    {
+      label: 'RTV Coated Brown Long Rod',
+      value: 'RTV Coated Brown Long Rod',
+    },
+    {
+      label: 'RTV Coated Grey Long Rod',
+      value: 'RTV Coated Grey Long Rod',
+    },
+    {
+      label: 'Composite Long Rod',
+      value: 'Composite Long Rod',
+    },
+  ]);
+
+  const [openInsulationTypeYellowA, setOpenInsulationTypeYellowA] =
+    useState(false);
+  const [valueInsulationTypeYellowA, setValueInsulationTypeYellowA] =
+    useState();
+  const [itemsInsulationTypeYellowA, setItemsInsulationTypeYellowA] = useState([
+    {
+      label: 'Disc',
+      value: 'Disc',
+    },
+    {
+      label: 'Brown Long Rod',
+      value: 'Brown Long Rod',
+    },
+    {
+      label: 'Grey Long Rod',
+      value: 'Grey Long Rod',
+    },
+    {
+      label: 'RTV Coated Disc',
+      value: 'RTV Coated Disc',
+    },
+    {
+      label: 'RTV Coated Brown Long Rod',
+      value: 'RTV Coated Brown Long Rod',
+    },
+    {
+      label: 'RTV Coated Grey Long Rod',
+      value: 'RTV Coated Grey Long Rod',
+    },
+    {
+      label: 'Composite Long Rod',
+      value: 'Composite Long Rod',
+    },
+  ]);
+
+  const [openInsulationTypeYellowB, setOpenInsulationTypeYellowB] =
+    useState(false);
+  const [valueInsulationTypeYellowB, setValueInsulationTypeYellowB] =
+    useState();
+  const [itemsInsulationTypeYellowB, setItemsInsulationTypeYellowB] = useState([
     {
       label: 'Disc',
       value: 'Disc',
@@ -325,6 +523,70 @@ const PatrollingScreen = ({navigation, route}) => {
     },
   ]);
 
+  const [openInsulatorSchemeYellowA, setOpenInsulatorSchemeYellowA] =
+    useState(false);
+  const [valueInsulatorSchemeYellowA, setValueInsulatorSchemeYellowA] =
+    useState();
+  const [itemsInsulatorSchemeYellowA, setItemsInsulatorSchemeYellowA] =
+    useState([
+      {
+        label: 'SSS',
+        value: 'SSS',
+      },
+      {
+        label: 'DSS',
+        value: 'DSS',
+      },
+      {
+        label: 'TSS',
+        value: 'TSS',
+      },
+      {
+        label: 'STS',
+        value: 'STS',
+      },
+      {
+        label: 'DTS',
+        value: 'DTS',
+      },
+      {
+        label: 'TTS',
+        value: 'TTS',
+      },
+    ]);
+
+  const [openInsulatorSchemeYellowB, setOpenInsulatorSchemeYellowB] =
+    useState(false);
+  const [valueInsulatorSchemeYellowB, setValueInsulatorSchemeYellowB] =
+    useState();
+  const [itemsInsulatorSchemeYellowB, setItemsInsulatorSchemeYellowB] =
+    useState([
+      {
+        label: 'SSS',
+        value: 'SSS',
+      },
+      {
+        label: 'DSS',
+        value: 'DSS',
+      },
+      {
+        label: 'TSS',
+        value: 'TSS',
+      },
+      {
+        label: 'STS',
+        value: 'STS',
+      },
+      {
+        label: 'DTS',
+        value: 'DTS',
+      },
+      {
+        label: 'TTS',
+        value: 'TTS',
+      },
+    ]);
+
   const [openInsulatorSchemeJumperYellow, setOpenInsulatorSchemeJumperYellow] =
     useState(false);
   const [
@@ -364,6 +626,72 @@ const PatrollingScreen = ({navigation, route}) => {
   const [openInsulationTypeBlue, setOpenInsulationTypeBlue] = useState(false);
   const [valueInsulationTypeBlue, setValueInsulationTypeBlue] = useState();
   const [itemsInsulationTypeBlue, setItemsInsulationTypeBlue] = useState([
+    {
+      label: 'Disc',
+      value: 'Disc',
+    },
+    {
+      label: 'Brown Long Rod',
+      value: 'Brown Long Rod',
+    },
+    {
+      label: 'Grey Long Rod',
+      value: 'Grey Long Rod',
+    },
+    {
+      label: 'RTV Coated Disc',
+      value: 'RTV Coated Disc',
+    },
+    {
+      label: 'RTV Coated Brown Long Rod',
+      value: 'RTV Coated Brown Long Rod',
+    },
+    {
+      label: 'RTV Coated Grey Long Rod',
+      value: 'RTV Coated Grey Long Rod',
+    },
+    {
+      label: 'Composite Long Rod',
+      value: 'Composite Long Rod',
+    },
+  ]);
+
+  const [openInsulationTypeBlueA, setOpenInsulationTypeBlueA] = useState(false);
+  const [valueInsulationTypeBlueA, setValueInsulationTypeBlueA] = useState();
+  const [itemsInsulationTypeBlueA, setItemsInsulationTypeBlueA] = useState([
+    {
+      label: 'Disc',
+      value: 'Disc',
+    },
+    {
+      label: 'Brown Long Rod',
+      value: 'Brown Long Rod',
+    },
+    {
+      label: 'Grey Long Rod',
+      value: 'Grey Long Rod',
+    },
+    {
+      label: 'RTV Coated Disc',
+      value: 'RTV Coated Disc',
+    },
+    {
+      label: 'RTV Coated Brown Long Rod',
+      value: 'RTV Coated Brown Long Rod',
+    },
+    {
+      label: 'RTV Coated Grey Long Rod',
+      value: 'RTV Coated Grey Long Rod',
+    },
+    {
+      label: 'Composite Long Rod',
+      value: 'Composite Long Rod',
+    },
+  ]);
+
+  const [openInsulationTypeBlueB, setOpenInsulationTypeBlueB] = useState(false);
+  const [valueInsulationTypeBlueB, setValueInsulationTypeBlueB] = useState();
+  const [itemsInsulationTypeBlueB, setItemsInsulationTypeBlueB] = useState([
     {
       label: 'Disc',
       value: 'Disc',
@@ -459,6 +787,66 @@ const PatrollingScreen = ({navigation, route}) => {
     },
   ]);
 
+  const [openInsulatorSchemeBlueA, setOpenInsulatorSchemeBlueA] =
+    useState(false);
+  const [valueInsulatorSchemeBlueA, setValueInsulatorSchemeBlueA] = useState();
+  const [itemsInsulatorSchemeBlueA, setItemsInsulatorSchemeBlueA] = useState([
+    {
+      label: 'SSS',
+      value: 'SSS',
+    },
+    {
+      label: 'DSS',
+      value: 'DSS',
+    },
+    {
+      label: 'TSS',
+      value: 'TSS',
+    },
+    {
+      label: 'STS',
+      value: 'STS',
+    },
+    {
+      label: 'DTS',
+      value: 'DTS',
+    },
+    {
+      label: 'TTS',
+      value: 'TTS',
+    },
+  ]);
+
+  const [openInsulatorSchemeBlueB, setOpenInsulatorSchemeBlueB] =
+    useState(false);
+  const [valueInsulatorSchemeBlueB, setValueInsulatorSchemeBlueB] = useState();
+  const [itemsInsulatorSchemeBlueB, setItemsInsulatorSchemeBlueB] = useState([
+    {
+      label: 'SSS',
+      value: 'SSS',
+    },
+    {
+      label: 'DSS',
+      value: 'DSS',
+    },
+    {
+      label: 'TSS',
+      value: 'TSS',
+    },
+    {
+      label: 'STS',
+      value: 'STS',
+    },
+    {
+      label: 'DTS',
+      value: 'DTS',
+    },
+    {
+      label: 'TTS',
+      value: 'TTS',
+    },
+  ]);
+
   const [openInsulatorSchemeJumperBlue, setOpenInsulatorSchemeJumperBlue] =
     useState(false);
   const [valueInsulatorSchemeJumperBlue, setValueInsulatorSchemeJumperBlue] =
@@ -523,12 +911,36 @@ const PatrollingScreen = ({navigation, route}) => {
     }
   };
 
+  const handleStructureSide = index => {
+    setSelectedStructureSide(index);
+    console.log(typeof index);
+    console.log(index);
+    /*
+    if (index == 0) {
+      setTabcolor('red');
+    } else if (index == 1) {
+      setTabcolor('yellow');
+    } else {
+      setTabcolor('blue');
+    }
+    */
+  };
+
   const PostPatrollingRecord = () => {
     console.log('route.params.data.PtlSnro: ' + route.params.data.PtlSnro);
     console.log('route.params.data.StrSnro: ' + route.params.data.StrSnro);
     console.log('route.params.data.Fl: ' + route.params.data.Fl);
     console.log('route.params.data.Fl: ' + route.params.data.StrFl);
     console.log('valueStructureSide: ' + valueStructureSide);
+    console.log(
+      'valueInsulatorSchemeJumperRed: ' + valueInsulatorSchemeJumperRed,
+    );
+    console.log(
+      'valueInsulatorSchemeJumperBlue: ' + valueInsulatorSchemeJumperBlue,
+    );
+    console.log(
+      'valueInsulatorSchemeJumperYellow: ' + valueInsulatorSchemeJumperYellow,
+    );
 
     const isCheckedDataRed = isCheckedRed != true ? 'T' : 'F';
     const isCheckedDataBlue = isCheckedBlue != true ? 'T' : 'F';
@@ -536,9 +948,12 @@ const PatrollingScreen = ({navigation, route}) => {
 
     axios({
       method: 'POST',
-      url: 'https://fioriqa.ke.com.pk:44300/sap/opu/odata/sap/ZPATROLLING_SRV/FLHeaderSet',
+      url:
+        'https://' +
+        myGlobalVariable[0] +
+        '.ke.com.pk:44300/sap/opu/odata/sap/ZPATROLLING_SRV/FLHeaderSet',
       headers: {
-        Authorization: 'Basic ' + base64.encode('tooba:abap123'),
+        Authorization: 'Basic ' + base64.encode(myGlobalVariable[1]),
         'Content-Type': 'application/json',
         Accept: 'application/json',
         'X-CSRF-Token': '',
@@ -555,23 +970,44 @@ const PatrollingScreen = ({navigation, route}) => {
             StrType: valueStructureType,
             Side: valueStructureSide,
             PhaseR: 'X',
+
             InsulTypeR: valueInsulationTypeRed,
+            InsulTypeRA: valueInsulationTypeRedA,
+            InsulTypeRB: valueInsulationTypeRedB,
+
             InsulSchemeR: valueInsulatorSchemeRed,
+            InsulSchemeRA: valueInsulatorSchemeRedA,
+            InsulSchemeRB: valueInsulatorSchemeRedB,
+
             IsJumperR: isCheckedDataRed,
             JumpInsulTypeR: valueInsulationTypeJumperRed,
-            JumpInsulSchemeR: valueInsulatorSchemeRed,
+            JumpInsulSchemeR: valueInsulatorSchemeJumperRed,
             PhaseY: 'X',
+
             InsulTypeY: valueInsulationTypeYellow,
+            InsulTypeYA: valueInsulationTypeYellowA,
+            InsulTypeYB: valueInsulationTypeYellowB,
+
             InsulSchemeY: valueInsulatorSchemeYellow,
+            InsulSchemeYA: valueInsulatorSchemeYellowA,
+            InsulSchemeYB: valueInsulatorSchemeYellowB,
+
             IsJumperY: isCheckedDataYellow,
             JumpInsulTypeY: valueInsulationTypeJumperYellow,
-            JumpInsulSchemeY: valueInsulatorSchemeYellow,
+            JumpInsulSchemeY: valueInsulatorSchemeJumperYellow,
             PhaseB: 'X',
+
             InsulTypeB: valueInsulationTypeBlue,
+            InsulTypeBA: valueInsulationTypeBlueA,
+            InsulTypeBB: valueInsulationTypeBlueB,
+
             InsulSchemeB: valueInsulatorSchemeBlue,
+            InsulSchemeBA: valueInsulatorSchemeBlueA,
+            InsulSchemeBB: valueInsulatorSchemeBlueB,
+
             IsJumperB: isCheckedDataBlue,
             JumpInsulTypeB: valueInsulationTypeJumperBlue,
-            JumpInsulSchemeB: valueInsulatorSchemeBlue,
+            JumpInsulSchemeB: valueInsulatorSchemeJumperBlue,
           },
         ],
       }),
@@ -592,29 +1028,60 @@ const PatrollingScreen = ({navigation, route}) => {
             dataslice[index].valueStructureSide = valueStructureSide;
 
             dataslice[index].valueInsulationTypeRed = valueInsulationTypeRed;
+            dataslice[index].valueInsulationTypeRedA = valueInsulationTypeRedA;
+            dataslice[index].valueInsulationTypeRedB = valueInsulationTypeRedB;
+
             dataslice[index].valueInsulationTypeJumperRed =
               valueInsulationTypeJumperRed;
             dataslice[index].isCheckedRed = isCheckedRed;
+
             dataslice[index].valueInsulatorSchemeRed = valueInsulatorSchemeRed;
+            dataslice[index].valueInsulatorSchemeRedA =
+              valueInsulatorSchemeRedA;
+            dataslice[index].valueInsulatorSchemeRedB =
+              valueInsulatorSchemeRedB;
+
             dataslice[index].valueInsulatorSchemeJumperRed =
               valueInsulatorSchemeJumperRed;
 
             dataslice[index].valueInsulationTypeYellow =
               valueInsulationTypeYellow;
+            dataslice[index].valueInsulationTypeYellowA =
+              valueInsulationTypeYellowA;
+            dataslice[index].valueInsulationTypeYellowB =
+              valueInsulationTypeYellowB;
+
             dataslice[index].valueInsulationTypeJumperYellow =
               valueInsulationTypeJumperYellow;
             dataslice[index].isCheckedYellow = isCheckedYellow;
+
             dataslice[index].valueInsulatorSchemeYellow =
               valueInsulatorSchemeYellow;
+            dataslice[index].valueInsulatorSchemeYellowA =
+              valueInsulatorSchemeYellowA;
+            dataslice[index].valueInsulatorSchemeYellowB =
+              valueInsulatorSchemeYellowB;
+
             dataslice[index].valueInsulatorSchemeJumperYellow =
               valueInsulatorSchemeJumperYellow;
 
             dataslice[index].valueInsulationTypeBlue = valueInsulationTypeBlue;
+            dataslice[index].valueInsulationTypeBlueA =
+              valueInsulationTypeBlueA;
+            dataslice[index].valueInsulationTypeBlueB =
+              valueInsulationTypeBlueB;
+
             dataslice[index].valueInsulationTypeJumperBlue =
               valueInsulationTypeJumperBlue;
             dataslice[index].isCheckedBlue = isCheckedBlue;
+
             dataslice[index].valueInsulatorSchemeBlue =
               valueInsulatorSchemeBlue;
+            dataslice[index].valueInsulatorSchemeBlueA =
+              valueInsulatorSchemeBlueA;
+            dataslice[index].valueInsulatorSchemeBlueB =
+              valueInsulatorSchemeBlueB;
+
             dataslice[index].valueInsulatorSchemeJumperBlue =
               valueInsulatorSchemeJumperBlue;
 
@@ -677,19 +1144,38 @@ const PatrollingScreen = ({navigation, route}) => {
             setIsEditable(false);
           }
 
-          if (item.valueStructureType != undefined)
+          if (item.valueStructureType != undefined) {
             setValueStructureType(item.valueStructureType);
+            if (item.valueStructureType.indexOf('Angle') >= 0) {
+              setSelectedStructureSide(0);
+            }
+          }
           if (item.valueStructureSide != undefined)
             setValueStructureSide(item.valueStructureSide);
 
           if (item.valueInsulationTypeRed != undefined)
             setValueInsulationTypeRed(item.valueInsulationTypeRed);
+
+          if (item.valueInsulationTypeRedA != undefined)
+            setValueInsulationTypeRedA(item.valueInsulationTypeRedA);
+
+          if (item.valueInsulationTypeRedB != undefined)
+            setValueInsulationTypeRedB(item.valueInsulationTypeRedB);
+
           if (item.valueInsulationTypeJumperRed != undefined)
             setValueInsulationTypeJumperRed(item.valueInsulationTypeJumperRed);
           if (item.isCheckedRed != undefined)
             setIsCheckedRed(item.isCheckedRed);
+
           if (item.valueInsulatorSchemeRed != undefined)
             setValueInsulatorSchemeRed(item.valueInsulatorSchemeRed);
+
+          if (item.valueInsulatorSchemeRedA != undefined)
+            setValueInsulatorSchemeRedA(item.valueInsulatorSchemeRedA);
+
+          if (item.valueInsulatorSchemeRedB != undefined)
+            setValueInsulatorSchemeRedB(item.valueInsulatorSchemeRedB);
+
           if (item.valueInsulatorSchemeJumperRed != undefined)
             setValueInsulatorSchemeJumperRed(
               item.valueInsulatorSchemeJumperRed,
@@ -697,6 +1183,13 @@ const PatrollingScreen = ({navigation, route}) => {
 
           if (item.valueInsulationTypeYellow != undefined)
             setValueInsulationTypeYellow(item.valueInsulationTypeYellow);
+
+          if (item.valueInsulationTypeYellowA != undefined)
+            setValueInsulationTypeYellowA(item.valueInsulationTypeYellowA);
+
+          if (item.valueInsulationTypeYellowB != undefined)
+            setValueInsulationTypeYellowB(item.valueInsulationTypeYellowB);
+
           if (item.valueInsulationTypeJumperYellow != undefined)
             setValueInsulationTypeJumperYellow(
               item.valueInsulationTypeJumperYellow,
@@ -705,6 +1198,13 @@ const PatrollingScreen = ({navigation, route}) => {
             setIsCheckedYellow(item.isCheckedYellow);
           if (item.valueInsulatorSchemeYellow != undefined)
             setValueInsulatorSchemeYellow(item.valueInsulatorSchemeYellow);
+
+          if (item.valueInsulatorSchemeYellowA != undefined)
+            setValueInsulatorSchemeYellowA(item.valueInsulatorSchemeYellowA);
+
+          if (item.valueInsulatorSchemeYellowB != undefined)
+            setValueInsulatorSchemeYellowB(item.valueInsulatorSchemeYellowB);
+
           if (item.valueInsulatorSchemeJumperYellow != undefined)
             setValueInsulatorSchemeJumperYellow(
               item.valueInsulatorSchemeJumperYellow,
@@ -712,6 +1212,13 @@ const PatrollingScreen = ({navigation, route}) => {
 
           if (item.valueInsulationTypeBlue != undefined)
             setValueInsulationTypeBlue(item.valueInsulationTypeBlue);
+
+          if (item.valueInsulationTypeBlueA != undefined)
+            setValueInsulationTypeBlueA(item.valueInsulationTypeBlueA);
+
+          if (item.valueInsulationTypeBlueB != undefined)
+            setValueInsulationTypeBlueB(item.valueInsulationTypeBlueB);
+
           if (item.valueInsulationTypeJumperBlue != undefined)
             setValueInsulationTypeJumperBlue(
               item.valueInsulationTypeJumperBlue,
@@ -720,6 +1227,13 @@ const PatrollingScreen = ({navigation, route}) => {
             setIsCheckedBlue(item.isCheckedBlue);
           if (item.valueInsulatorSchemeBlue != undefined)
             setValueInsulatorSchemeBlue(item.valueInsulatorSchemeBlue);
+
+          if (item.valueInsulatorSchemeBlueA != undefined)
+            setValueInsulatorSchemeBlueA(item.valueInsulatorSchemeBlueA);
+
+          if (item.valueInsulatorSchemeBlueB != undefined)
+            setValueInsulatorSchemeBlueB(item.valueInsulatorSchemeBlueB);
+
           if (item.valueInsulatorSchemeJumperBlue != undefined)
             setValueInsulatorSchemeJumperBlue(
               item.valueInsulatorSchemeJumperBlue,
@@ -822,6 +1336,9 @@ const PatrollingScreen = ({navigation, route}) => {
               onChangeValue={item => {
                 if (valueStructureType.indexOf('Angle') < 0) {
                   setValueStructureSide('');
+                  setSelectedStructureSide(2);
+                } else {
+                  setSelectedStructureSide(0);
                 }
               }}
               //disabled={isDCRemarksEditable}
@@ -833,136 +1350,45 @@ const PatrollingScreen = ({navigation, route}) => {
         {valueStructureType.indexOf('Angle') >= 0 && (
           <View
             style={{
-              flexDirection: 'row',
-              flex: 0.1,
-              width: '96%',
-              top: 1,
               paddingTop: 10,
             }}>
-            <View style={{flex: 1, alignItems: 'flex-start'}}>
-              <Text style={styles.pic_text_left}>Structure Side:</Text>
-            </View>
-            <View style={{flex: 1, alignItems: 'flex-start'}}>
-              <DropDownPicker
-                disabled={!isEditable}
-                open={openStructureSide}
-                value={valueStructureSide}
-                items={itemsStructureSide}
-                setOpen={setOpenStructureSide}
-                setValue={setValueStructureSide}
-                setItems={setItemsStructureSide}
-                listMode="MODAL"
-                searchable
-                //disabled={isDCRemarksEditable}
-                //onChangeValue={item => {}}
-              />
-            </View>
+            <SegmentedControlTab
+              values={['Side A', 'Side B']}
+              selectedIndex={selectedStructureSide}
+              onTabPress={handleStructureSide}
+              activeTabStyle={{
+                backgroundColor: '#44bcd8',
+                marginTop: 2,
+                color: 'black',
+              }}
+              tabTextStyle={{color: 'black'}}
+            />
           </View>
         )}
 
-        <View style={styles.header}>
-          <Text style={[styles.logo]}> Phase Insulators Data Collection</Text>
-        </View>
-
-        <SegmentedControlTab
-          values={['Red', 'Yellow', 'Blue']}
-          selectedIndex={selectedIndex}
-          onTabPress={handleIndexChange}
-          activeTabStyle={{
-            backgroundColor: tabcolor,
-            marginTop: 2,
-            color: 'black',
-          }}
-          tabTextStyle={{color: 'black'}}
-        />
-        {selectedIndex == '0' && (
+        {/* Normal start */}
+        {selectedStructureSide == '2' && (
           <View>
-            <View
-              style={{
-                flexDirection: 'row',
-                flex: 0.1,
-                width: '96%',
-                top: 1,
-                paddingTop: 10,
-              }}>
-              <View style={{flex: 1, alignItems: 'flex-start'}}>
-                <Text style={styles.pic_text_left}>Insulator Type:</Text>
-              </View>
-              <View style={{flex: 1, alignItems: 'flex-start'}}>
-                <DropDownPicker
-                  disabled={!isEditable}
-                  open={openInsulationTypeRed}
-                  value={valueInsulationTypeRed}
-                  items={itemsInsulationTypeRed}
-                  setOpen={setOpenInsulationTypeRed}
-                  setValue={setValueInsulationTypeRed}
-                  setItems={setItemsInsulationTypeRed}
-                  listMode="MODAL"
-                  searchable
-                  //disabled={isDCRemarksEditable}
-                  //onChangeValue={item => {}}
-                />
-              </View>
-            </View>
-            <View
-              style={{
-                flexDirection: 'row',
-                flex: 0.1,
-                width: '96%',
-                top: 1,
-                paddingTop: 10,
-              }}>
-              <View style={{flex: 1, alignItems: 'flex-start'}}>
-                <Text style={styles.pic_text_left}>Insulator Scheme:</Text>
-              </View>
-              <View style={{flex: 1, alignItems: 'flex-start'}}>
-                <DropDownPicker
-                  disabled={!isEditable}
-                  open={openInsulatorSchemeRed}
-                  value={valueInsulatorSchemeRed}
-                  items={itemsInsulatorSchemeRed}
-                  setOpen={setOpenInsulatorSchemeRed}
-                  setValue={setValueInsulatorSchemeRed}
-                  setItems={setItemsInsulatorSchemeRed}
-                  listMode="MODAL"
-                  searchable
-                  //disabled={isDCRemarksEditable}
-                  //onChangeValue={item => {}}
-                />
-              </View>
+            <View style={styles.header}>
+              <Text style={[styles.logo]}>
+                {' '}
+                Normal Phase Insulators Data Collection
+              </Text>
             </View>
 
-            <View
-              style={{
-                flexDirection: 'row',
-                flex: 0.1,
-                width: '96%',
-                top: 1,
-                paddingTop: 10,
-              }}>
-              <View style={{flex: 1, alignItems: 'flex-start'}}>
-                <Text style={styles.pic_text_left}>
-                  Jumper string installed?:
-                </Text>
-              </View>
-              <View style={{flex: 1, alignItems: 'flex-start'}}>
-                <CheckBox
-                  disabled={!isEditable}
-                  value={isCheckedRed}
-                  onValueChange={handleCheckBoxRed}
-                />
-                <Text>{isCheckedRed ? 'Checked' : 'Unchecked'}</Text>
-              </View>
-            </View>
-
-            {isCheckedRed == true && (
+            <SegmentedControlTab
+              values={['Red', 'Yellow', 'Blue']}
+              selectedIndex={selectedIndex}
+              onTabPress={handleIndexChange}
+              activeTabStyle={{
+                backgroundColor: tabcolor,
+                marginTop: 2,
+                color: 'black',
+              }}
+              tabTextStyle={{color: 'black'}}
+            />
+            {selectedIndex == '0' && (
               <View>
-                <View style={styles.header}>
-                  <Text style={[styles.logo]}>
-                    {' '}
-                    Jumper Insulators Data Collection
-                  </Text>
-                </View>
                 <View
                   style={{
                     flexDirection: 'row',
@@ -977,12 +1403,12 @@ const PatrollingScreen = ({navigation, route}) => {
                   <View style={{flex: 1, alignItems: 'flex-start'}}>
                     <DropDownPicker
                       disabled={!isEditable}
-                      open={openInsulationTypeJumperRed}
-                      value={valueInsulationTypeJumperRed}
-                      items={itemsInsulationTypeJumperRed}
-                      setOpen={setOpenInsulationTypeJumperRed}
-                      setValue={setValueInsulationTypeJumperRed}
-                      setItems={setItemsInsulationTypeJumperRed}
+                      open={openInsulationTypeRed}
+                      value={valueInsulationTypeRed}
+                      items={itemsInsulationTypeRed}
+                      setOpen={setOpenInsulationTypeRed}
+                      setValue={setValueInsulationTypeRed}
+                      setItems={setItemsInsulationTypeRed}
                       listMode="MODAL"
                       searchable
                       //disabled={isDCRemarksEditable}
@@ -1004,12 +1430,12 @@ const PatrollingScreen = ({navigation, route}) => {
                   <View style={{flex: 1, alignItems: 'flex-start'}}>
                     <DropDownPicker
                       disabled={!isEditable}
-                      open={openInsulatorSchemeJumperRed}
-                      value={valueInsulatorSchemeJumperRed}
-                      items={itemsInsulatorSchemeJumperRed}
-                      setOpen={setOpenInsulatorSchemeJumperRed}
-                      setValue={setValueInsulatorSchemeJumperRed}
-                      setItems={setItemsInsulatorSchemeJumperRed}
+                      open={openInsulatorSchemeRed}
+                      value={valueInsulatorSchemeRed}
+                      items={itemsInsulatorSchemeRed}
+                      setOpen={setOpenInsulatorSchemeRed}
+                      setValue={setValueInsulatorSchemeRed}
+                      setItems={setItemsInsulatorSchemeRed}
                       listMode="MODAL"
                       searchable
                       //disabled={isDCRemarksEditable}
@@ -1017,98 +1443,102 @@ const PatrollingScreen = ({navigation, route}) => {
                     />
                   </View>
                 </View>
+
+                <View
+                  style={{
+                    flexDirection: 'row',
+                    flex: 0.1,
+                    width: '96%',
+                    top: 1,
+                    paddingTop: 10,
+                  }}>
+                  <View style={{flex: 1, alignItems: 'flex-start'}}>
+                    <Text style={styles.pic_text_left}>
+                      Jumper string installed?:
+                    </Text>
+                  </View>
+                  <View style={{flex: 1, alignItems: 'flex-start'}}>
+                    <CheckBox
+                      disabled={!isEditable}
+                      value={isCheckedRed}
+                      onValueChange={handleCheckBoxRed}
+                    />
+                    <Text>{isCheckedRed ? 'Checked' : 'Unchecked'}</Text>
+                  </View>
+                </View>
+
+                {isCheckedRed == true && (
+                  <View>
+                    <View style={styles.header}>
+                      <Text style={[styles.logo]}>
+                        {' '}
+                        Jumper Insulators Data Collection
+                      </Text>
+                    </View>
+                    <View
+                      style={{
+                        flexDirection: 'row',
+                        flex: 0.1,
+                        width: '96%',
+                        top: 1,
+                        paddingTop: 10,
+                      }}>
+                      <View style={{flex: 1, alignItems: 'flex-start'}}>
+                        <Text style={styles.pic_text_left}>
+                          Insulator Type:
+                        </Text>
+                      </View>
+                      <View style={{flex: 1, alignItems: 'flex-start'}}>
+                        <DropDownPicker
+                          disabled={!isEditable}
+                          open={openInsulationTypeJumperRed}
+                          value={valueInsulationTypeJumperRed}
+                          items={itemsInsulationTypeJumperRed}
+                          setOpen={setOpenInsulationTypeJumperRed}
+                          setValue={setValueInsulationTypeJumperRed}
+                          setItems={setItemsInsulationTypeJumperRed}
+                          listMode="MODAL"
+                          searchable
+                          //disabled={isDCRemarksEditable}
+                          //onChangeValue={item => {}}
+                        />
+                      </View>
+                    </View>
+                    <View
+                      style={{
+                        flexDirection: 'row',
+                        flex: 0.1,
+                        width: '96%',
+                        top: 1,
+                        paddingTop: 10,
+                      }}>
+                      <View style={{flex: 1, alignItems: 'flex-start'}}>
+                        <Text style={styles.pic_text_left}>
+                          Insulator Scheme:
+                        </Text>
+                      </View>
+                      <View style={{flex: 1, alignItems: 'flex-start'}}>
+                        <DropDownPicker
+                          disabled={!isEditable}
+                          open={openInsulatorSchemeJumperRed}
+                          value={valueInsulatorSchemeJumperRed}
+                          items={itemsInsulatorSchemeJumperRed}
+                          setOpen={setOpenInsulatorSchemeJumperRed}
+                          setValue={setValueInsulatorSchemeJumperRed}
+                          setItems={setItemsInsulatorSchemeJumperRed}
+                          listMode="MODAL"
+                          searchable
+                          //disabled={isDCRemarksEditable}
+                          //onChangeValue={item => {}}
+                        />
+                      </View>
+                    </View>
+                  </View>
+                )}
               </View>
             )}
-          </View>
-        )}
-        {selectedIndex == '1' && (
-          <View>
-            <View
-              style={{
-                flexDirection: 'row',
-                flex: 0.1,
-                width: '96%',
-                top: 1,
-                paddingTop: 10,
-              }}>
-              <View style={{flex: 1, alignItems: 'flex-start'}}>
-                <Text style={styles.pic_text_left}>Insulator Type:</Text>
-              </View>
-              <View style={{flex: 1, alignItems: 'flex-start'}}>
-                <DropDownPicker
-                  disabled={!isEditable}
-                  open={openInsulationTypeYellow}
-                  value={valueInsulationTypeYellow}
-                  items={itemsInsulationTypeYellow}
-                  setOpen={setOpenInsulationTypeYellow}
-                  setValue={setValueInsulationTypeYellow}
-                  setItems={setItemsInsulationTypeYellow}
-                  listMode="MODAL"
-                  searchable
-                  //disabled={isDCRemarksEditable}
-                  //onChangeValue={item => {}}
-                />
-              </View>
-            </View>
-            <View
-              style={{
-                flexDirection: 'row',
-                flex: 0.1,
-                width: '96%',
-                top: 1,
-                paddingTop: 10,
-              }}>
-              <View style={{flex: 1, alignItems: 'flex-start'}}>
-                <Text style={styles.pic_text_left}>Insulator Scheme:</Text>
-              </View>
-              <View style={{flex: 1, alignItems: 'flex-start'}}>
-                <DropDownPicker
-                  disabled={!isEditable}
-                  open={openInsulatorSchemeYellow}
-                  value={valueInsulatorSchemeYellow}
-                  items={itemsInsulatorSchemeYellow}
-                  setOpen={setOpenInsulatorSchemeYellow}
-                  setValue={setValueInsulatorSchemeYellow}
-                  setItems={setItemsInsulatorSchemeYellow}
-                  listMode="MODAL"
-                  searchable
-                  //disabled={isDCRemarksEditable}
-                  //onChangeValue={item => {}}
-                />
-              </View>
-            </View>
-
-            <View
-              style={{
-                flexDirection: 'row',
-                flex: 0.1,
-                width: '96%',
-                top: 1,
-                paddingTop: 10,
-              }}>
-              <View style={{flex: 1, alignItems: 'flex-start'}}>
-                <Text style={styles.pic_text_left}>
-                  Jumper string installed?:
-                </Text>
-              </View>
-              <View style={{flex: 1, alignItems: 'flex-start'}}>
-                <CheckBox
-                  disabled={!isEditable}
-                  value={isCheckedYellow}
-                  onValueChange={handleCheckBoxYellow}
-                />
-                <Text>{isCheckedYellow ? 'Checked' : 'Unchecked'}</Text>
-              </View>
-            </View>
-
-            {isCheckedYellow == true && (
+            {selectedIndex == '1' && (
               <View>
-                <View style={styles.header}>
-                  <Text style={[styles.logo]}>
-                    {' '}
-                    Jumper Insulators Data Collection
-                  </Text>
-                </View>
                 <View
                   style={{
                     flexDirection: 'row',
@@ -1123,12 +1553,12 @@ const PatrollingScreen = ({navigation, route}) => {
                   <View style={{flex: 1, alignItems: 'flex-start'}}>
                     <DropDownPicker
                       disabled={!isEditable}
-                      open={openInsulationTypeJumperYellow}
-                      value={valueInsulationTypeJumperYellow}
-                      items={itemsInsulationTypeJumperYellow}
-                      setOpen={setOpenInsulationTypeJumperYellow}
-                      setValue={setValueInsulationTypeJumperYellow}
-                      setItems={setItemsInsulationTypeJumperYellow}
+                      open={openInsulationTypeYellow}
+                      value={valueInsulationTypeYellow}
+                      items={itemsInsulationTypeYellow}
+                      setOpen={setOpenInsulationTypeYellow}
+                      setValue={setValueInsulationTypeYellow}
+                      setItems={setItemsInsulationTypeYellow}
                       listMode="MODAL"
                       searchable
                       //disabled={isDCRemarksEditable}
@@ -1150,12 +1580,12 @@ const PatrollingScreen = ({navigation, route}) => {
                   <View style={{flex: 1, alignItems: 'flex-start'}}>
                     <DropDownPicker
                       disabled={!isEditable}
-                      open={openInsulatorSchemeJumperYellow}
-                      value={valueInsulatorSchemeJumperYellow}
-                      items={itemsInsulatorSchemeJumperYellow}
-                      setOpen={setOpenInsulatorSchemeJumperYellow}
-                      setValue={setValueInsulatorSchemeJumperYellow}
-                      setItems={setItemsInsulatorSchemeJumperYellow}
+                      open={openInsulatorSchemeYellow}
+                      value={valueInsulatorSchemeYellow}
+                      items={itemsInsulatorSchemeYellow}
+                      setOpen={setOpenInsulatorSchemeYellow}
+                      setValue={setValueInsulatorSchemeYellow}
+                      setItems={setItemsInsulatorSchemeYellow}
                       listMode="MODAL"
                       searchable
                       //disabled={isDCRemarksEditable}
@@ -1163,97 +1593,102 @@ const PatrollingScreen = ({navigation, route}) => {
                     />
                   </View>
                 </View>
+
+                <View
+                  style={{
+                    flexDirection: 'row',
+                    flex: 0.1,
+                    width: '96%',
+                    top: 1,
+                    paddingTop: 10,
+                  }}>
+                  <View style={{flex: 1, alignItems: 'flex-start'}}>
+                    <Text style={styles.pic_text_left}>
+                      Jumper string installed?:
+                    </Text>
+                  </View>
+                  <View style={{flex: 1, alignItems: 'flex-start'}}>
+                    <CheckBox
+                      disabled={!isEditable}
+                      value={isCheckedYellow}
+                      onValueChange={handleCheckBoxYellow}
+                    />
+                    <Text>{isCheckedYellow ? 'Checked' : 'Unchecked'}</Text>
+                  </View>
+                </View>
+
+                {isCheckedYellow == true && (
+                  <View>
+                    <View style={styles.header}>
+                      <Text style={[styles.logo]}>
+                        {' '}
+                        Jumper Insulators Data Collection
+                      </Text>
+                    </View>
+                    <View
+                      style={{
+                        flexDirection: 'row',
+                        flex: 0.1,
+                        width: '96%',
+                        top: 1,
+                        paddingTop: 10,
+                      }}>
+                      <View style={{flex: 1, alignItems: 'flex-start'}}>
+                        <Text style={styles.pic_text_left}>
+                          Insulator Type:
+                        </Text>
+                      </View>
+                      <View style={{flex: 1, alignItems: 'flex-start'}}>
+                        <DropDownPicker
+                          disabled={!isEditable}
+                          open={openInsulationTypeJumperYellow}
+                          value={valueInsulationTypeJumperYellow}
+                          items={itemsInsulationTypeJumperYellow}
+                          setOpen={setOpenInsulationTypeJumperYellow}
+                          setValue={setValueInsulationTypeJumperYellow}
+                          setItems={setItemsInsulationTypeJumperYellow}
+                          listMode="MODAL"
+                          searchable
+                          //disabled={isDCRemarksEditable}
+                          //onChangeValue={item => {}}
+                        />
+                      </View>
+                    </View>
+                    <View
+                      style={{
+                        flexDirection: 'row',
+                        flex: 0.1,
+                        width: '96%',
+                        top: 1,
+                        paddingTop: 10,
+                      }}>
+                      <View style={{flex: 1, alignItems: 'flex-start'}}>
+                        <Text style={styles.pic_text_left}>
+                          Insulator Scheme:
+                        </Text>
+                      </View>
+                      <View style={{flex: 1, alignItems: 'flex-start'}}>
+                        <DropDownPicker
+                          disabled={!isEditable}
+                          open={openInsulatorSchemeJumperYellow}
+                          value={valueInsulatorSchemeJumperYellow}
+                          items={itemsInsulatorSchemeJumperYellow}
+                          setOpen={setOpenInsulatorSchemeJumperYellow}
+                          setValue={setValueInsulatorSchemeJumperYellow}
+                          setItems={setItemsInsulatorSchemeJumperYellow}
+                          listMode="MODAL"
+                          searchable
+                          //disabled={isDCRemarksEditable}
+                          //onChangeValue={item => {}}
+                        />
+                      </View>
+                    </View>
+                  </View>
+                )}
               </View>
             )}
-          </View>
-        )}
-        {selectedIndex == '2' && (
-          <View>
-            <View
-              style={{
-                flexDirection: 'row',
-                flex: 0.1,
-                width: '96%',
-                top: 1,
-                paddingTop: 10,
-              }}>
-              <View style={{flex: 1, alignItems: 'flex-start'}}>
-                <Text style={styles.pic_text_left}>Insulator Type:</Text>
-              </View>
-              <View style={{flex: 1, alignItems: 'flex-start'}}>
-                <DropDownPicker
-                  disabled={!isEditable}
-                  open={openInsulationTypeBlue}
-                  value={valueInsulationTypeBlue}
-                  items={itemsInsulationTypeBlue}
-                  setOpen={setOpenInsulationTypeBlue}
-                  setValue={setValueInsulationTypeBlue}
-                  setItems={setItemsInsulationTypeBlue}
-                  listMode="MODAL"
-                  searchable
-                  //disabled={isDCRemarksEditable}
-                  //onChangeValue={item => {}}
-                />
-              </View>
-            </View>
-            <View
-              style={{
-                flexDirection: 'row',
-                flex: 0.1,
-                width: '96%',
-                top: 1,
-                paddingTop: 10,
-              }}>
-              <View style={{flex: 1, alignItems: 'flex-start'}}>
-                <Text style={styles.pic_text_left}>Insulator Scheme:</Text>
-              </View>
-              <View style={{flex: 1, alignItems: 'flex-start'}}>
-                <DropDownPicker
-                  disabled={!isEditable}
-                  open={openInsulatorSchemeBlue}
-                  value={valueInsulatorSchemeBlue}
-                  items={itemsInsulatorSchemeBlue}
-                  setOpen={setOpenInsulatorSchemeBlue}
-                  setValue={setValueInsulatorSchemeBlue}
-                  setItems={setItemsInsulatorSchemeBlue}
-                  listMode="MODAL"
-                  searchable
-                  //disabled={isDCRemarksEditable}
-                  //onChangeValue={item => {}}
-                />
-              </View>
-            </View>
-            <View
-              style={{
-                flexDirection: 'row',
-                flex: 0.1,
-                width: '96%',
-                top: 1,
-                paddingTop: 10,
-              }}>
-              <View style={{flex: 1, alignItems: 'flex-start'}}>
-                <Text style={styles.pic_text_left}>
-                  Jumper string installed?:
-                </Text>
-              </View>
-              <View style={{flex: 1, alignItems: 'flex-start'}}>
-                <CheckBox
-                  disabled={!isEditable}
-                  value={isCheckedBlue}
-                  onValueChange={handleCheckBoxBlue}
-                />
-                <Text>{isCheckedBlue ? 'Checked' : 'Unchecked'}</Text>
-              </View>
-            </View>
-
-            {isCheckedBlue == true && (
+            {selectedIndex == '2' && (
               <View>
-                <View style={styles.header}>
-                  <Text style={[styles.logo]}>
-                    {' '}
-                    Jumper Insulators Data Collection
-                  </Text>
-                </View>
                 <View
                   style={{
                     flexDirection: 'row',
@@ -1268,12 +1703,12 @@ const PatrollingScreen = ({navigation, route}) => {
                   <View style={{flex: 1, alignItems: 'flex-start'}}>
                     <DropDownPicker
                       disabled={!isEditable}
-                      open={openInsulationTypeJumperBlue}
-                      value={valueInsulationTypeJumperBlue}
-                      items={itemsInsulationTypeJumperBlue}
-                      setOpen={setOpenInsulationTypeJumperBlue}
-                      setValue={setValueInsulationTypeJumperBlue}
-                      setItems={setItemsInsulationTypeJumperBlue}
+                      open={openInsulationTypeBlue}
+                      value={valueInsulationTypeBlue}
+                      items={itemsInsulationTypeBlue}
+                      setOpen={setOpenInsulationTypeBlue}
+                      setValue={setValueInsulationTypeBlue}
+                      setItems={setItemsInsulationTypeBlue}
                       listMode="MODAL"
                       searchable
                       //disabled={isDCRemarksEditable}
@@ -1295,12 +1730,778 @@ const PatrollingScreen = ({navigation, route}) => {
                   <View style={{flex: 1, alignItems: 'flex-start'}}>
                     <DropDownPicker
                       disabled={!isEditable}
-                      open={openInsulatorSchemeJumperBlue}
-                      value={valueInsulatorSchemeJumperBlue}
-                      items={itemsInsulatorSchemeJumperBlue}
-                      setOpen={setOpenInsulatorSchemeJumperBlue}
-                      setValue={setValueInsulatorSchemeJumperBlue}
-                      setItems={setItemsInsulatorSchemeJumperBlue}
+                      open={openInsulatorSchemeBlue}
+                      value={valueInsulatorSchemeBlue}
+                      items={itemsInsulatorSchemeBlue}
+                      setOpen={setOpenInsulatorSchemeBlue}
+                      setValue={setValueInsulatorSchemeBlue}
+                      setItems={setItemsInsulatorSchemeBlue}
+                      listMode="MODAL"
+                      searchable
+                      //disabled={isDCRemarksEditable}
+                      //onChangeValue={item => {}}
+                    />
+                  </View>
+                </View>
+                <View
+                  style={{
+                    flexDirection: 'row',
+                    flex: 0.1,
+                    width: '96%',
+                    top: 1,
+                    paddingTop: 10,
+                  }}>
+                  <View style={{flex: 1, alignItems: 'flex-start'}}>
+                    <Text style={styles.pic_text_left}>
+                      Jumper string installed?:
+                    </Text>
+                  </View>
+                  <View style={{flex: 1, alignItems: 'flex-start'}}>
+                    <CheckBox
+                      disabled={!isEditable}
+                      value={isCheckedBlue}
+                      onValueChange={handleCheckBoxBlue}
+                    />
+                    <Text>{isCheckedBlue ? 'Checked' : 'Unchecked'}</Text>
+                  </View>
+                </View>
+
+                {isCheckedBlue == true && (
+                  <View>
+                    <View style={styles.header}>
+                      <Text style={[styles.logo]}>
+                        {' '}
+                        Jumper Insulators Data Collection
+                      </Text>
+                    </View>
+                    <View
+                      style={{
+                        flexDirection: 'row',
+                        flex: 0.1,
+                        width: '96%',
+                        top: 1,
+                        paddingTop: 10,
+                      }}>
+                      <View style={{flex: 1, alignItems: 'flex-start'}}>
+                        <Text style={styles.pic_text_left}>
+                          Insulator Type:
+                        </Text>
+                      </View>
+                      <View style={{flex: 1, alignItems: 'flex-start'}}>
+                        <DropDownPicker
+                          disabled={!isEditable}
+                          open={openInsulationTypeJumperBlue}
+                          value={valueInsulationTypeJumperBlue}
+                          items={itemsInsulationTypeJumperBlue}
+                          setOpen={setOpenInsulationTypeJumperBlue}
+                          setValue={setValueInsulationTypeJumperBlue}
+                          setItems={setItemsInsulationTypeJumperBlue}
+                          listMode="MODAL"
+                          searchable
+                          //disabled={isDCRemarksEditable}
+                          //onChangeValue={item => {}}
+                        />
+                      </View>
+                    </View>
+                    <View
+                      style={{
+                        flexDirection: 'row',
+                        flex: 0.1,
+                        width: '96%',
+                        top: 1,
+                        paddingTop: 10,
+                      }}>
+                      <View style={{flex: 1, alignItems: 'flex-start'}}>
+                        <Text style={styles.pic_text_left}>
+                          Insulator Scheme:
+                        </Text>
+                      </View>
+                      <View style={{flex: 1, alignItems: 'flex-start'}}>
+                        <DropDownPicker
+                          disabled={!isEditable}
+                          open={openInsulatorSchemeJumperBlue}
+                          value={valueInsulatorSchemeJumperBlue}
+                          items={itemsInsulatorSchemeJumperBlue}
+                          setOpen={setOpenInsulatorSchemeJumperBlue}
+                          setValue={setValueInsulatorSchemeJumperBlue}
+                          setItems={setItemsInsulatorSchemeJumperBlue}
+                          listMode="MODAL"
+                          searchable
+                          //disabled={isDCRemarksEditable}
+                          //onChangeValue={item => {}}
+                        />
+                      </View>
+                    </View>
+                  </View>
+                )}
+              </View>
+            )}
+          </View>
+        )}
+        {/* Normal End */}
+
+        {/* Angular Side A start */}
+        {selectedStructureSide == '0' && (
+          <View>
+            <View style={styles.header}>
+              <Text style={[styles.logo]}>
+                {' '}
+                Phase Insulators Data Collection
+              </Text>
+            </View>
+
+            <SegmentedControlTab
+              values={['Red', 'Yellow', 'Blue']}
+              selectedIndex={selectedIndex}
+              onTabPress={handleIndexChange}
+              activeTabStyle={{
+                backgroundColor: tabcolor,
+                marginTop: 2,
+                color: 'black',
+              }}
+              tabTextStyle={{color: 'black'}}
+            />
+            {selectedIndex == '0' && (
+              <View>
+                <View
+                  style={{
+                    flexDirection: 'row',
+                    flex: 0.1,
+                    width: '96%',
+                    top: 1,
+                    paddingTop: 10,
+                  }}>
+                  <View style={{flex: 1, alignItems: 'flex-start'}}>
+                    <Text style={styles.pic_text_left}>Insulator Type:</Text>
+                  </View>
+                  <View style={{flex: 1, alignItems: 'flex-start'}}>
+                    <DropDownPicker
+                      disabled={!isEditable}
+                      open={openInsulationTypeRedA}
+                      value={valueInsulationTypeRedA}
+                      items={itemsInsulationTypeRedA}
+                      setOpen={setOpenInsulationTypeRedA}
+                      setValue={setValueInsulationTypeRedA}
+                      setItems={setItemsInsulationTypeRedA}
+                      listMode="MODAL"
+                      searchable
+                      //disabled={isDCRemarksEditable}
+                      //onChangeValue={item => {}}
+                    />
+                  </View>
+                </View>
+                <View
+                  style={{
+                    flexDirection: 'row',
+                    flex: 0.1,
+                    width: '96%',
+                    top: 1,
+                    paddingTop: 10,
+                  }}>
+                  <View style={{flex: 1, alignItems: 'flex-start'}}>
+                    <Text style={styles.pic_text_left}>Insulator Scheme:</Text>
+                  </View>
+                  <View style={{flex: 1, alignItems: 'flex-start'}}>
+                    <DropDownPicker
+                      disabled={!isEditable}
+                      open={openInsulatorSchemeRedA}
+                      value={valueInsulatorSchemeRedA}
+                      items={itemsInsulatorSchemeRedA}
+                      setOpen={setOpenInsulatorSchemeRedA}
+                      setValue={setValueInsulatorSchemeRedA}
+                      setItems={setItemsInsulatorSchemeRedA}
+                      listMode="MODAL"
+                      searchable
+                      //disabled={isDCRemarksEditable}
+                      //onChangeValue={item => {}}
+                    />
+                  </View>
+                </View>
+
+                <View
+                  style={{
+                    flexDirection: 'row',
+                    flex: 0.1,
+                    width: '96%',
+                    top: 1,
+                    paddingTop: 10,
+                  }}>
+                  <View style={{flex: 1, alignItems: 'flex-start'}}>
+                    <Text style={styles.pic_text_left}>
+                      Jumper string installed?:
+                    </Text>
+                  </View>
+                  <View style={{flex: 1, alignItems: 'flex-start'}}>
+                    <CheckBox
+                      disabled={!isEditable}
+                      value={isCheckedRed}
+                      onValueChange={handleCheckBoxRed}
+                    />
+                    <Text>{isCheckedRed ? 'Checked' : 'Unchecked'}</Text>
+                  </View>
+                </View>
+
+                {isCheckedRed == true && (
+                  <View>
+                    <View style={styles.header}>
+                      <Text style={[styles.logo]}>
+                        {' '}
+                        Jumper Insulators Data Collection
+                      </Text>
+                    </View>
+                    <View
+                      style={{
+                        flexDirection: 'row',
+                        flex: 0.1,
+                        width: '96%',
+                        top: 1,
+                        paddingTop: 10,
+                      }}>
+                      <View style={{flex: 1, alignItems: 'flex-start'}}>
+                        <Text style={styles.pic_text_left}>
+                          Insulator Type:
+                        </Text>
+                      </View>
+                      <View style={{flex: 1, alignItems: 'flex-start'}}>
+                        <DropDownPicker
+                          disabled={!isEditable}
+                          open={openInsulationTypeJumperRed}
+                          value={valueInsulationTypeJumperRed}
+                          items={itemsInsulationTypeJumperRed}
+                          setOpen={setOpenInsulationTypeJumperRed}
+                          setValue={setValueInsulationTypeJumperRed}
+                          setItems={setItemsInsulationTypeJumperRed}
+                          listMode="MODAL"
+                          searchable
+                          //disabled={isDCRemarksEditable}
+                          //onChangeValue={item => {}}
+                        />
+                      </View>
+                    </View>
+                    <View
+                      style={{
+                        flexDirection: 'row',
+                        flex: 0.1,
+                        width: '96%',
+                        top: 1,
+                        paddingTop: 10,
+                      }}>
+                      <View style={{flex: 1, alignItems: 'flex-start'}}>
+                        <Text style={styles.pic_text_left}>
+                          Insulator Scheme:
+                        </Text>
+                      </View>
+                      <View style={{flex: 1, alignItems: 'flex-start'}}>
+                        <DropDownPicker
+                          disabled={!isEditable}
+                          open={openInsulatorSchemeJumperRed}
+                          value={valueInsulatorSchemeJumperRed}
+                          items={itemsInsulatorSchemeJumperRed}
+                          setOpen={setOpenInsulatorSchemeJumperRed}
+                          setValue={setValueInsulatorSchemeJumperRed}
+                          setItems={setItemsInsulatorSchemeJumperRed}
+                          listMode="MODAL"
+                          searchable
+                          //disabled={isDCRemarksEditable}
+                          //onChangeValue={item => {}}
+                        />
+                      </View>
+                    </View>
+                  </View>
+                )}
+              </View>
+            )}
+            {selectedIndex == '1' && (
+              <View>
+                <View
+                  style={{
+                    flexDirection: 'row',
+                    flex: 0.1,
+                    width: '96%',
+                    top: 1,
+                    paddingTop: 10,
+                  }}>
+                  <View style={{flex: 1, alignItems: 'flex-start'}}>
+                    <Text style={styles.pic_text_left}>Insulator Type:</Text>
+                  </View>
+                  <View style={{flex: 1, alignItems: 'flex-start'}}>
+                    <DropDownPicker
+                      disabled={!isEditable}
+                      open={openInsulationTypeYellowA}
+                      value={valueInsulationTypeYellowA}
+                      items={itemsInsulationTypeYellowA}
+                      setOpen={setOpenInsulationTypeYellowA}
+                      setValue={setValueInsulationTypeYellowA}
+                      setItems={setItemsInsulationTypeYellowA}
+                      listMode="MODAL"
+                      searchable
+                      //disabled={isDCRemarksEditable}
+                      //onChangeValue={item => {}}
+                    />
+                  </View>
+                </View>
+                <View
+                  style={{
+                    flexDirection: 'row',
+                    flex: 0.1,
+                    width: '96%',
+                    top: 1,
+                    paddingTop: 10,
+                  }}>
+                  <View style={{flex: 1, alignItems: 'flex-start'}}>
+                    <Text style={styles.pic_text_left}>Insulator Scheme:</Text>
+                  </View>
+                  <View style={{flex: 1, alignItems: 'flex-start'}}>
+                    <DropDownPicker
+                      disabled={!isEditable}
+                      open={openInsulatorSchemeYellowA}
+                      value={valueInsulatorSchemeYellowA}
+                      items={itemsInsulatorSchemeYellowA}
+                      setOpen={setOpenInsulatorSchemeYellowA}
+                      setValue={setValueInsulatorSchemeYellowA}
+                      setItems={setItemsInsulatorSchemeYellowA}
+                      listMode="MODAL"
+                      searchable
+                      //disabled={isDCRemarksEditable}
+                      //onChangeValue={item => {}}
+                    />
+                  </View>
+                </View>
+
+                <View
+                  style={{
+                    flexDirection: 'row',
+                    flex: 0.1,
+                    width: '96%',
+                    top: 1,
+                    paddingTop: 10,
+                  }}>
+                  <View style={{flex: 1, alignItems: 'flex-start'}}>
+                    <Text style={styles.pic_text_left}>
+                      Jumper string installed?:
+                    </Text>
+                  </View>
+                  <View style={{flex: 1, alignItems: 'flex-start'}}>
+                    <CheckBox
+                      disabled={!isEditable}
+                      value={isCheckedYellow}
+                      onValueChange={handleCheckBoxYellow}
+                    />
+                    <Text>{isCheckedYellow ? 'Checked' : 'Unchecked'}</Text>
+                  </View>
+                </View>
+
+                {isCheckedYellow == true && (
+                  <View>
+                    <View style={styles.header}>
+                      <Text style={[styles.logo]}>
+                        {' '}
+                        Jumper Insulators Data Collection
+                      </Text>
+                    </View>
+                    <View
+                      style={{
+                        flexDirection: 'row',
+                        flex: 0.1,
+                        width: '96%',
+                        top: 1,
+                        paddingTop: 10,
+                      }}>
+                      <View style={{flex: 1, alignItems: 'flex-start'}}>
+                        <Text style={styles.pic_text_left}>
+                          Insulator Type:
+                        </Text>
+                      </View>
+                      <View style={{flex: 1, alignItems: 'flex-start'}}>
+                        <DropDownPicker
+                          disabled={!isEditable}
+                          open={openInsulationTypeJumperYellow}
+                          value={valueInsulationTypeJumperYellow}
+                          items={itemsInsulationTypeJumperYellow}
+                          setOpen={setOpenInsulationTypeJumperYellow}
+                          setValue={setValueInsulationTypeJumperYellow}
+                          setItems={setItemsInsulationTypeJumperYellow}
+                          listMode="MODAL"
+                          searchable
+                          //disabled={isDCRemarksEditable}
+                          //onChangeValue={item => {}}
+                        />
+                      </View>
+                    </View>
+                    <View
+                      style={{
+                        flexDirection: 'row',
+                        flex: 0.1,
+                        width: '96%',
+                        top: 1,
+                        paddingTop: 10,
+                      }}>
+                      <View style={{flex: 1, alignItems: 'flex-start'}}>
+                        <Text style={styles.pic_text_left}>
+                          Insulator Scheme:
+                        </Text>
+                      </View>
+                      <View style={{flex: 1, alignItems: 'flex-start'}}>
+                        <DropDownPicker
+                          disabled={!isEditable}
+                          open={openInsulatorSchemeJumperYellow}
+                          value={valueInsulatorSchemeJumperYellow}
+                          items={itemsInsulatorSchemeJumperYellow}
+                          setOpen={setOpenInsulatorSchemeJumperYellow}
+                          setValue={setValueInsulatorSchemeJumperYellow}
+                          setItems={setItemsInsulatorSchemeJumperYellow}
+                          listMode="MODAL"
+                          searchable
+                          //disabled={isDCRemarksEditable}
+                          //onChangeValue={item => {}}
+                        />
+                      </View>
+                    </View>
+                  </View>
+                )}
+              </View>
+            )}
+            {selectedIndex == '2' && (
+              <View>
+                <View
+                  style={{
+                    flexDirection: 'row',
+                    flex: 0.1,
+                    width: '96%',
+                    top: 1,
+                    paddingTop: 10,
+                  }}>
+                  <View style={{flex: 1, alignItems: 'flex-start'}}>
+                    <Text style={styles.pic_text_left}>Insulator Type:</Text>
+                  </View>
+                  <View style={{flex: 1, alignItems: 'flex-start'}}>
+                    <DropDownPicker
+                      disabled={!isEditable}
+                      open={openInsulationTypeBlueA}
+                      value={valueInsulationTypeBlueA}
+                      items={itemsInsulationTypeBlueA}
+                      setOpen={setOpenInsulationTypeBlueA}
+                      setValue={setValueInsulationTypeBlueA}
+                      setItems={setItemsInsulationTypeBlueA}
+                      listMode="MODAL"
+                      searchable
+                      //disabled={isDCRemarksEditable}
+                      //onChangeValue={item => {}}
+                    />
+                  </View>
+                </View>
+                <View
+                  style={{
+                    flexDirection: 'row',
+                    flex: 0.1,
+                    width: '96%',
+                    top: 1,
+                    paddingTop: 10,
+                  }}>
+                  <View style={{flex: 1, alignItems: 'flex-start'}}>
+                    <Text style={styles.pic_text_left}>Insulator Scheme:</Text>
+                  </View>
+                  <View style={{flex: 1, alignItems: 'flex-start'}}>
+                    <DropDownPicker
+                      disabled={!isEditable}
+                      open={openInsulatorSchemeBlueA}
+                      value={valueInsulatorSchemeBlueA}
+                      items={itemsInsulatorSchemeBlueA}
+                      setOpen={setOpenInsulatorSchemeBlueA}
+                      setValue={setValueInsulatorSchemeBlueA}
+                      setItems={setItemsInsulatorSchemeBlueA}
+                      listMode="MODAL"
+                      searchable
+                      //disabled={isDCRemarksEditable}
+                      //onChangeValue={item => {}}
+                    />
+                  </View>
+                </View>
+                <View
+                  style={{
+                    flexDirection: 'row',
+                    flex: 0.1,
+                    width: '96%',
+                    top: 1,
+                    paddingTop: 10,
+                  }}>
+                  <View style={{flex: 1, alignItems: 'flex-start'}}>
+                    <Text style={styles.pic_text_left}>
+                      Jumper string installed?:
+                    </Text>
+                  </View>
+                  <View style={{flex: 1, alignItems: 'flex-start'}}>
+                    <CheckBox
+                      disabled={!isEditable}
+                      value={isCheckedBlue}
+                      onValueChange={handleCheckBoxBlue}
+                    />
+                    <Text>{isCheckedBlue ? 'Checked' : 'Unchecked'}</Text>
+                  </View>
+                </View>
+
+                {isCheckedBlue == true && (
+                  <View>
+                    <View style={styles.header}>
+                      <Text style={[styles.logo]}>
+                        {' '}
+                        Jumper Insulators Data Collection
+                      </Text>
+                    </View>
+                    <View
+                      style={{
+                        flexDirection: 'row',
+                        flex: 0.1,
+                        width: '96%',
+                        top: 1,
+                        paddingTop: 10,
+                      }}>
+                      <View style={{flex: 1, alignItems: 'flex-start'}}>
+                        <Text style={styles.pic_text_left}>
+                          Insulator Type:
+                        </Text>
+                      </View>
+                      <View style={{flex: 1, alignItems: 'flex-start'}}>
+                        <DropDownPicker
+                          disabled={!isEditable}
+                          open={openInsulationTypeJumperBlue}
+                          value={valueInsulationTypeJumperBlue}
+                          items={itemsInsulationTypeJumperBlue}
+                          setOpen={setOpenInsulationTypeJumperBlue}
+                          setValue={setValueInsulationTypeJumperBlue}
+                          setItems={setItemsInsulationTypeJumperBlue}
+                          listMode="MODAL"
+                          searchable
+                          //disabled={isDCRemarksEditable}
+                          //onChangeValue={item => {}}
+                        />
+                      </View>
+                    </View>
+                    <View
+                      style={{
+                        flexDirection: 'row',
+                        flex: 0.1,
+                        width: '96%',
+                        top: 1,
+                        paddingTop: 10,
+                      }}>
+                      <View style={{flex: 1, alignItems: 'flex-start'}}>
+                        <Text style={styles.pic_text_left}>
+                          Insulator Scheme:
+                        </Text>
+                      </View>
+                      <View style={{flex: 1, alignItems: 'flex-start'}}>
+                        <DropDownPicker
+                          disabled={!isEditable}
+                          open={openInsulatorSchemeJumperBlue}
+                          value={valueInsulatorSchemeJumperBlue}
+                          items={itemsInsulatorSchemeJumperBlue}
+                          setOpen={setOpenInsulatorSchemeJumperBlue}
+                          setValue={setValueInsulatorSchemeJumperBlue}
+                          setItems={setItemsInsulatorSchemeJumperBlue}
+                          listMode="MODAL"
+                          searchable
+                          //disabled={isDCRemarksEditable}
+                          //onChangeValue={item => {}}
+                        />
+                      </View>
+                    </View>
+                  </View>
+                )}
+              </View>
+            )}
+          </View>
+        )}
+        {/* Angular Side A End */}
+
+        {/* Angular Side B start */}
+        {selectedStructureSide == '1' && (
+          <View>
+            <View style={styles.header}>
+              <Text style={[styles.logo]}>
+                {' '}
+                Phase Insulators Data Collection
+              </Text>
+            </View>
+
+            <SegmentedControlTab
+              values={['Red', 'Yellow', 'Blue']}
+              selectedIndex={selectedIndex}
+              onTabPress={handleIndexChange}
+              activeTabStyle={{
+                backgroundColor: tabcolor,
+                marginTop: 2,
+                color: 'black',
+              }}
+              tabTextStyle={{color: 'black'}}
+            />
+            {selectedIndex == '0' && (
+              <View>
+                <View
+                  style={{
+                    flexDirection: 'row',
+                    flex: 0.1,
+                    width: '96%',
+                    top: 1,
+                    paddingTop: 10,
+                  }}>
+                  <View style={{flex: 1, alignItems: 'flex-start'}}>
+                    <Text style={styles.pic_text_left}>Insulator Type:</Text>
+                  </View>
+                  <View style={{flex: 1, alignItems: 'flex-start'}}>
+                    <DropDownPicker
+                      disabled={!isEditable}
+                      open={openInsulationTypeRedB}
+                      value={valueInsulationTypeRedB}
+                      items={itemsInsulationTypeRedB}
+                      setOpen={setOpenInsulationTypeRedB}
+                      setValue={setValueInsulationTypeRedB}
+                      setItems={setItemsInsulationTypeRedB}
+                      listMode="MODAL"
+                      searchable
+                      //disabled={isDCRemarksEditable}
+                      //onChangeValue={item => {}}
+                    />
+                  </View>
+                </View>
+                <View
+                  style={{
+                    flexDirection: 'row',
+                    flex: 0.1,
+                    width: '96%',
+                    top: 1,
+                    paddingTop: 10,
+                  }}>
+                  <View style={{flex: 1, alignItems: 'flex-start'}}>
+                    <Text style={styles.pic_text_left}>Insulator Scheme:</Text>
+                  </View>
+                  <View style={{flex: 1, alignItems: 'flex-start'}}>
+                    <DropDownPicker
+                      disabled={!isEditable}
+                      open={openInsulatorSchemeRedB}
+                      value={valueInsulatorSchemeRedB}
+                      items={itemsInsulatorSchemeRedB}
+                      setOpen={setOpenInsulatorSchemeRedB}
+                      setValue={setValueInsulatorSchemeRedB}
+                      setItems={setItemsInsulatorSchemeRedB}
+                      listMode="MODAL"
+                      searchable
+                      //disabled={isDCRemarksEditable}
+                      //onChangeValue={item => {}}
+                    />
+                  </View>
+                </View>
+              </View>
+            )}
+            {selectedIndex == '1' && (
+              <View>
+                <View
+                  style={{
+                    flexDirection: 'row',
+                    flex: 0.1,
+                    width: '96%',
+                    top: 1,
+                    paddingTop: 10,
+                  }}>
+                  <View style={{flex: 1, alignItems: 'flex-start'}}>
+                    <Text style={styles.pic_text_left}>Insulator Type:</Text>
+                  </View>
+                  <View style={{flex: 1, alignItems: 'flex-start'}}>
+                    <DropDownPicker
+                      disabled={!isEditable}
+                      open={openInsulationTypeYellowB}
+                      value={valueInsulationTypeYellowB}
+                      items={itemsInsulationTypeYellowB}
+                      setOpen={setOpenInsulationTypeYellowB}
+                      setValue={setValueInsulationTypeYellowB}
+                      setItems={setItemsInsulationTypeYellowB}
+                      listMode="MODAL"
+                      searchable
+                      //disabled={isDCRemarksEditable}
+                      //onChangeValue={item => {}}
+                    />
+                  </View>
+                </View>
+                <View
+                  style={{
+                    flexDirection: 'row',
+                    flex: 0.1,
+                    width: '96%',
+                    top: 1,
+                    paddingTop: 10,
+                  }}>
+                  <View style={{flex: 1, alignItems: 'flex-start'}}>
+                    <Text style={styles.pic_text_left}>Insulator Scheme:</Text>
+                  </View>
+                  <View style={{flex: 1, alignItems: 'flex-start'}}>
+                    <DropDownPicker
+                      disabled={!isEditable}
+                      open={openInsulatorSchemeYellowB}
+                      value={valueInsulatorSchemeYellowB}
+                      items={itemsInsulatorSchemeYellowB}
+                      setOpen={setOpenInsulatorSchemeYellowB}
+                      setValue={setValueInsulatorSchemeYellowB}
+                      setItems={setItemsInsulatorSchemeYellowB}
+                      listMode="MODAL"
+                      searchable
+                      //disabled={isDCRemarksEditable}
+                      //onChangeValue={item => {}}
+                    />
+                  </View>
+                </View>
+              </View>
+            )}
+            {selectedIndex == '2' && (
+              <View>
+                <View
+                  style={{
+                    flexDirection: 'row',
+                    flex: 0.1,
+                    width: '96%',
+                    top: 1,
+                    paddingTop: 10,
+                  }}>
+                  <View style={{flex: 1, alignItems: 'flex-start'}}>
+                    <Text style={styles.pic_text_left}>B Insulator Type:</Text>
+                  </View>
+                  <View style={{flex: 1, alignItems: 'flex-start'}}>
+                    <DropDownPicker
+                      disabled={!isEditable}
+                      open={openInsulationTypeBlueB}
+                      value={valueInsulationTypeBlueB}
+                      items={itemsInsulationTypeBlueB}
+                      setOpen={setOpenInsulationTypeBlueB}
+                      setValue={setValueInsulationTypeBlueB}
+                      setItems={setItemsInsulationTypeBlueB}
+                      listMode="MODAL"
+                      searchable
+                      //disabled={isDCRemarksEditable}
+                      //onChangeValue={item => {}}
+                    />
+                  </View>
+                </View>
+                <View
+                  style={{
+                    flexDirection: 'row',
+                    flex: 0.1,
+                    width: '96%',
+                    top: 1,
+                    paddingTop: 10,
+                  }}>
+                  <View style={{flex: 1, alignItems: 'flex-start'}}>
+                    <Text style={styles.pic_text_left}>
+                      B Insulator Scheme:
+                    </Text>
+                  </View>
+                  <View style={{flex: 1, alignItems: 'flex-start'}}>
+                    <DropDownPicker
+                      disabled={!isEditable}
+                      open={openInsulatorSchemeBlueB}
+                      value={valueInsulatorSchemeBlueB}
+                      items={itemsInsulatorSchemeBlueB}
+                      setOpen={setOpenInsulatorSchemeBlueB}
+                      setValue={setValueInsulatorSchemeBlueB}
+                      setItems={setItemsInsulatorSchemeBlueB}
                       listMode="MODAL"
                       searchable
                       //disabled={isDCRemarksEditable}
@@ -1312,6 +2513,8 @@ const PatrollingScreen = ({navigation, route}) => {
             )}
           </View>
         )}
+        {/* Angular Side B End */}
+
         <View style={{alignItems: 'center'}}>
           <TouchableOpacity
             disabled={!isEditable}

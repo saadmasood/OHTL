@@ -3,6 +3,8 @@
 /* eslint-disable react-native/no-inline-styles */
 import React, {useState, useEffect} from 'react';
 
+import {myGlobalVariable} from './globals';
+
 import {
   View,
   Text,
@@ -115,12 +117,14 @@ function Dashboard({navigation}) {
     axios({
       method: 'get',
       url:
-        'https://fioriqa.ke.com.pk:44300/sap/opu/odata/sap/ZPATROLLING_SRV/GET_FLsSet?$filter=(User%20eq%20%27' +
+        'https://' +
+        myGlobalVariable[0] +
+        '.ke.com.pk:44300/sap/opu/odata/sap/ZPATROLLING_SRV/GET_FLsSet?$filter=(User%20eq%20%27' +
         empName +
         '%27)&$expand=FLSTR_NAV&$format=json',
       headers: {
         'Content-Type': 'application/json',
-        Authorization: 'Basic ' + base64.encode('tooba:abap123'),
+        Authorization: 'Basic ' + base64.encode(myGlobalVariable[1]),
       },
     })
       .then(res => {
@@ -131,6 +135,7 @@ function Dashboard({navigation}) {
                 PtlSnro: singleResult.Qmnum,
                 Fl: singleResult.Fl,
                 StrSnro: SIRCount.toString() + '-' + subSingleResult.StrFl,
+                Level: subSingleResult.Level,
                 StrFl: subSingleResult.StrFl,
                 StrDescr: subSingleResult.StrDescr,
                 Status: 'New',
@@ -166,10 +171,13 @@ function Dashboard({navigation}) {
     var GangData = [];
     axios({
       method: 'get',
-      url: 'https://fioriqa.ke.com.pk:44300/sap/opu/odata/sap/ZPATROLLING_SRV/RECT_GANGSet?$format=json',
+      url:
+        'https://' +
+        myGlobalVariable[0] +
+        '.ke.com.pk:44300/sap/opu/odata/sap/ZPATROLLING_SRV/RECT_GANGSet?$format=json',
       headers: {
         'Content-Type': 'application/json',
-        Authorization: 'Basic ' + base64.encode('tooba:abap123'),
+        Authorization: 'Basic ' + base64.encode(myGlobalVariable[1]),
       },
     })
       .then(res => {
@@ -200,12 +208,14 @@ function Dashboard({navigation}) {
     axios({
       method: 'get',
       url:
-        'https://fioriqa.ke.com.pk:44300/sap/opu/odata/sap/ZPATROLLING_SRV/QueriesSet?$filter=(Username%20eq%20%27' +
+        'https://' +
+        myGlobalVariable[0] +
+        '.ke.com.pk:44300/sap/opu/odata/sap/ZPATROLLING_SRV/QueriesSet?$filter=(Username%20eq%20%27' +
         empName +
         '%27)&$format=json',
       headers: {
         'Content-Type': 'application/json',
-        Authorization: 'Basic ' + base64.encode('tooba:abap123'),
+        Authorization: 'Basic ' + base64.encode(myGlobalVariable[1]),
       },
     })
       .then(res => {
@@ -377,7 +387,7 @@ function Dashboard({navigation}) {
                   });
                 }}>
                 <Image
-                  style={styles.tinyLogo}
+                  style={[styles.tinyLogo, {width: 120, height: 120}]}
                   source={require('../assets/images/abc.png')}
                 />
               </TouchableOpacity>

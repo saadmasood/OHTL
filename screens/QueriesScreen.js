@@ -24,6 +24,7 @@ import axios from 'axios';
 import base64 from 'react-native-base64';
 import DateTimePickerModal from 'react-native-modal-datetime-picker';
 import moment from 'moment';
+import {myGlobalVariable} from './globals';
 
 const QueriesScreen = ({navigation, route}) => {
   const [isEditable, setIsEditable] = useState(true);
@@ -313,9 +314,12 @@ const QueriesScreen = ({navigation, route}) => {
 
     axios({
       method: 'POST',
-      url: 'https://fioriqa.ke.com.pk:44300/sap/opu/odata/sap/ZPATROLLING_SRV/QueriesSet',
+      url:
+        'https://' +
+        myGlobalVariable[0] +
+        '.ke.com.pk:44300/sap/opu/odata/sap/ZPATROLLING_SRV/QueriesSet',
       headers: {
-        Authorization: 'Basic ' + base64.encode('tooba:abap123'),
+        Authorization: 'Basic ' + base64.encode(myGlobalVariable[1]),
         'Content-Type': 'application/json',
         Accept: 'application/json',
         'X-CSRF-Token': '',

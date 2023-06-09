@@ -18,6 +18,7 @@ import AsyncStorage from '@react-native-community/async-storage';
 
 import DateTimePickerModal from 'react-native-modal-datetime-picker';
 import moment from 'moment';
+import Circle from './Circle';
 
 const base64 = require('base-64');
 import Swipeable from 'react-native-swipeable';
@@ -466,9 +467,39 @@ function StrFLListView({route, navigation}) {
                         style={{
                           fontSize: 10,
                           //fontWeight: 'bold',
+
                           color: '#0873C3',
                         }}
                       />
+                      <View
+                        style={{
+                          width: 60,
+                          marginLeft: 5,
+                          flexDirection: 'row',
+                          justifyContent: 'space-between',
+                        }}>
+                        {item.Level == '1' ? (
+                          <Circle customcolor="black" />
+                        ) : (
+                          <Circle customcolor="lightgrey" />
+                        )}
+                        {item.Level == '2' ? (
+                          <Circle customcolor="black" />
+                        ) : (
+                          <Circle customcolor="lightgrey" />
+                        )}
+                        {item.Level == '3' ? (
+                          <Circle customcolor="black" />
+                        ) : (
+                          <Circle customcolor="lightgrey" />
+                        )}
+                        {item.Level == '4' ? (
+                          <Circle customcolor="black" />
+                        ) : (
+                          <Circle customcolor="lightgrey" />
+                        )}
+                      </View>
+
                       <View
                         style={{
                           flexDirection: 'row',

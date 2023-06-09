@@ -24,6 +24,7 @@ import axios from 'axios';
 import base64 from 'react-native-base64';
 import DateTimePickerModal from 'react-native-modal-datetime-picker';
 import moment from 'moment';
+import {myGlobalVariable} from './globals';
 
 const RectificationScreen = ({navigation, route}) => {
   const [isEditable, setIsEditable] = useState(true);
@@ -611,9 +612,12 @@ const RectificationScreen = ({navigation, route}) => {
 
     axios({
       method: 'POST',
-      url: 'https://fioriqa.ke.com.pk:44300/sap/opu/odata/sap/ZPATROLLING_SRV/FLHeaderSet',
+      url:
+        'https://' +
+        myGlobalVariable[0] +
+        '.ke.com.pk:44300/sap/opu/odata/sap/ZPATROLLING_SRV/FLHeaderSet',
       headers: {
-        Authorization: 'Basic ' + base64.encode('tooba:abap123'),
+        Authorization: 'Basic ' + base64.encode(myGlobalVariable[1]),
         'Content-Type': 'application/json',
         Accept: 'application/json',
         'X-CSRF-Token': '',
@@ -623,6 +627,8 @@ const RectificationScreen = ({navigation, route}) => {
         Fl: route.params.Fl,
         HEADERDSCR_NAV: [
           {
+            DiscrNum: data.DiscrepancyID.toString(),
+            //Discrepency: discrepancyDropdown,
             Qmnum: route.params.PtlSnro,
             Fl: route.params.Fl,
             Structure: route.params.StrFl,
@@ -687,7 +693,7 @@ const RectificationScreen = ({navigation, route}) => {
     console.log('route.params.PtlSnro: ' + route.params.PtlSnro);
     console.log(' Fl: route.params.Fl: ' + route.params.Fl);
     console.log('route.params.StrFl: ' + route.params.StrFl);
-    console.log('route.params.StrSnro: ' + route.params.StrSnro);
+    console.log('route.params.DiscrepancyID: ' + route.params.DiscrepancyID);
 
     console.log(
       'route.params.isDiscrepancyScreenRequest: ' +
