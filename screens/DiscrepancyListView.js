@@ -170,7 +170,9 @@ function DiscrepancyListView({route, navigation}) {
       var arrayholder = temptableData;
 
       const newData = arrayholder.filter(item => {
-        const itemData = `${item.ConsumerNo.toUpperCase()}  ${item.Vkont.toUpperCase()} ${item.Mtno.toUpperCase()} ${item.Mru.toUpperCase()}`;
+        const itemData = `${
+          item.DiscrepancyID
+        }  ${item.valueDiscrepancyType.toUpperCase()} ${item.valueDiscrepancyTower.toUpperCase()} ${item.valueDiscrepancyPhase.toUpperCase()} ${item.valueDiscrepancyRoute.toUpperCase()}`;
 
         const textData = text.toUpperCase();
 
@@ -610,7 +612,7 @@ function DiscrepancyListView({route, navigation}) {
                             fontSize: 13,
                             fontWeight: 'bold',
                           }}>
-                          Discrepency: {item.status}
+                          Discrepency:
                         </Text>
                         <Text
                           style={{

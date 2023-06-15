@@ -139,7 +139,9 @@ function FirstScreen({navigation}) {
           justifyContent: 'center',
         }}>
         <View style={styles.header}>
-          <Text style={styles.text_header}>OHTL Mobile App</Text>
+          <Text style={styles.text_header}>
+            Transmission Line Patrolling App
+          </Text>
         </View>
         <TouchableOpacity>
           <Text style={styles.loginText} />

@@ -417,8 +417,8 @@ const DiscrepancyScreen = ({navigation, route}) => {
   const [valuePhase, setValuePhase] = useState();
   const [itemsPhase, setItemsPhase] = useState([
     {label: 'Red', value: 'Red'},
-    {label: 'Blue', value: 'Blue'},
     {label: 'Yellow', value: 'Yellow'},
+    {label: 'Blue', value: 'Blue'},
     {label: 'Earth wire/OGW/OPGW', value: 'Earth wire/OGW/OPGW'},
   ]);
 
@@ -643,7 +643,7 @@ const DiscrepancyScreen = ({navigation, route}) => {
             Citicality: valueCiticality,
             Remarks: remarks,
             Phase: valuePhase,
-            ImagePath: imageFolder,
+            ImagePath: 'imageFolder',
             DiscrNum: DiscrNum.toString(),
           },
         ],
@@ -1490,8 +1490,8 @@ const DiscrepancyScreen = ({navigation, route}) => {
             disabled={!isEditable}
             style={[styles.loginBtn, {backgroundColor: btnBackgroundColor}]}
             onPress={() => {
-              //PostDiscrepancyRecord();
-              PostSIRImage();
+              PostDiscrepancyRecord();
+              //PostSIRImage();
             }}>
             <Text style={{color: 'white', fontSize: 18}}>Submit</Text>
           </TouchableOpacity>

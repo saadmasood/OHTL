@@ -127,7 +127,7 @@ function StrFLListView({route, navigation}) {
       var arrayholder = temptableData;
 
       const newData = arrayholder.filter(item => {
-        const itemData = `${item.ConsumerNo.toUpperCase()}  ${item.Vkont.toUpperCase()} ${item.Mtno.toUpperCase()} ${item.Mru.toUpperCase()}`;
+        const itemData = `${item.StrFl.toUpperCase()}  ${item.StrDescr.toUpperCase()}`;
 
         const textData = text.toUpperCase();
 
