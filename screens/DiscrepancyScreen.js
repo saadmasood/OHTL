@@ -562,7 +562,8 @@ const DiscrepancyScreen = ({navigation, route}) => {
  */
     axios({
       method: 'POST',
-      url: 'https://stagingdev.ke.com.pk:8095/api/discrepancy',
+      //url: 'https://stagingdev.ke.com.pk:8095/api/discrepancy',
+      url: 'http://dc-rc:8040/api/discrepancy',
       headers: {
         'content-type': 'application/json',
         //'Access-Control-Allow-Origin': '*',
@@ -643,7 +644,7 @@ const DiscrepancyScreen = ({navigation, route}) => {
             Citicality: valueCiticality,
             Remarks: remarks,
             Phase: valuePhase,
-            ImagePath: 'imageFolder',
+            ImagePath: imageFolder,
             DiscrNum: DiscrNum.toString(),
           },
         ],
@@ -772,7 +773,9 @@ const DiscrepancyScreen = ({navigation, route}) => {
             setDiscrepancyID(DiscrepancyData.length + 1);
             console.log('regioncalled: ' + regionName);
             setImageFolder(
-              'https://stagingdev:8095/PTR_ImageData/' +
+              //'https://stagingdev:8095/PTR_ImageData/' +
+              //'http://dc-rc:8040/PTR_ImageData/' +
+              'https://ohtl.ke.com.pk:8040/PTR_ImageData' +
                 moment().year() +
                 '/' +
                 (moment().month() + 1) +
@@ -815,7 +818,9 @@ const DiscrepancyScreen = ({navigation, route}) => {
                 setValuePhase(item.valuePhase);
                 console.log('regionName:Called: ' + regionName);
                 setImageFolder(
-                  'https://stagingdev:8095/PTR_ImageData/' +
+                  //'https://stagingdev:8095/PTR_ImageData/' +
+                  //'http://dc-rc:8040//PTR_ImageData/' +
+                  'https://ohtl.ke.com.pk:8040/PTR_ImageData' +
                     moment().year() +
                     '/' +
                     (moment().month() + 1) +

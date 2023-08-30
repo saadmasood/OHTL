@@ -12,7 +12,7 @@
         android:usesCleartextTraffic="false"
         tools:targetApi="28"
         tools:ignore="GoogleAppIndexingWarning"
-        android:debuggable="false"
+        
         >
         <activity android:name="com.facebook.react.devsupport.DevSettingsActivity" />
     </application>
