@@ -563,7 +563,9 @@ const DiscrepancyScreen = ({navigation, route}) => {
     axios({
       method: 'POST',
       //url: 'https://stagingdev.ke.com.pk:8095/api/discrepancy',
-      url: 'http://dc-rc:8040/api/discrepancy',
+      //url: 'http://dc-rc:8040/api/discrepancy',
+      url: 'https://ohtl.ke.com.pk:8040/api/discrepancy',
+
       headers: {
         'content-type': 'application/json',
         //'Access-Control-Allow-Origin': '*',
@@ -575,7 +577,7 @@ const DiscrepancyScreen = ({navigation, route}) => {
         console.log(
           '******************Post SIR Image updated*********************************',
         );
-        console.log(res.data.Data);
+        console.log('res.data.Message:' + res.data.Message);
         PostDiscrepancyRecord();
       })
       .catch(error => {
@@ -1495,8 +1497,8 @@ const DiscrepancyScreen = ({navigation, route}) => {
             disabled={!isEditable}
             style={[styles.loginBtn, {backgroundColor: btnBackgroundColor}]}
             onPress={() => {
-              PostDiscrepancyRecord();
-              //PostSIRImage();
+              //PostDiscrepancyRecord();
+              PostSIRImage();
             }}>
             <Text style={{color: 'white', fontSize: 18}}>Submit</Text>
           </TouchableOpacity>
