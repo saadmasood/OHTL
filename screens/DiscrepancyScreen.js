@@ -777,7 +777,7 @@ const DiscrepancyScreen = ({navigation, route}) => {
             setImageFolder(
               //'https://stagingdev:8095/PTR_ImageData/' +
               //'http://dc-rc:8040/PTR_ImageData/' +
-              'https://ohtl.ke.com.pk:8040/PTR_ImageData' +
+              'https://ohtl.ke.com.pk:8040/PTR_ImageData/' +
                 moment().year() +
                 '/' +
                 (moment().month() + 1) +
@@ -822,7 +822,7 @@ const DiscrepancyScreen = ({navigation, route}) => {
                 setImageFolder(
                   //'https://stagingdev:8095/PTR_ImageData/' +
                   //'http://dc-rc:8040//PTR_ImageData/' +
-                  'https://ohtl.ke.com.pk:8040/PTR_ImageData' +
+                  'https://ohtl.ke.com.pk:8040/PTR_ImageData/' +
                     moment().year() +
                     '/' +
                     (moment().month() + 1) +
