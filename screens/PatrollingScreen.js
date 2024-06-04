@@ -948,10 +948,7 @@ const PatrollingScreen = ({navigation, route}) => {
 
     axios({
       method: 'POST',
-      url:
-        'https://' +
-        myGlobalVariable[0] +
-        '.ke.com.pk:44300/sap/opu/odata/sap/ZPATROLLING_SRV/FLHeaderSet',
+      url: 'https://' + myGlobalVariable[0] + '/FLHeaderSet',
       headers: {
         Authorization: 'Basic ' + base64.encode(myGlobalVariable[1]),
         'Content-Type': 'application/json',

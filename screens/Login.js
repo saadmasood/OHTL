@@ -177,7 +177,7 @@ function Login({navigation}) {
       url:
         'https://' +
         myGlobalVariable[0] +
-        '.ke.com.pk:44300/sap/opu/odata/sap/ZDCRC_SRV/DCRCListSet?$filter=%20ImDate%20eq%20%27' +
+        '/DCRCListSet?$filter=%20ImDate%20eq%20%27' +
         ImDate +
         '%27%20and%20ImIbc%20eq%20%27' +
         imIbc +
@@ -246,7 +246,7 @@ function Login({navigation}) {
         url:
           'https://' +
           myGlobalVariable[0] +
-          ".ke.com.pk:44300/sap/opu/odata/sap/ZPATROLLING_SRV/USERVALIDATESet(Pass='" +
+          "/USERVALIDATESet(Pass='" +
           md5Password +
           "',Swid='" +
           UniqueId.toUpperCase() +

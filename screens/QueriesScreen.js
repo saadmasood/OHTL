@@ -314,10 +314,7 @@ const QueriesScreen = ({navigation, route}) => {
 
     axios({
       method: 'POST',
-      url:
-        'https://' +
-        myGlobalVariable[0] +
-        '.ke.com.pk:44300/sap/opu/odata/sap/ZPATROLLING_SRV/QueriesSet',
+      url: 'https://' + myGlobalVariable[0] + '/QueriesSet',
       headers: {
         Authorization: 'Basic ' + base64.encode(myGlobalVariable[1]),
         'Content-Type': 'application/json',

@@ -564,7 +564,7 @@ const DiscrepancyScreen = ({navigation, route}) => {
       method: 'POST',
       //url: 'https://stagingdev.ke.com.pk:8095/api/discrepancy',
       //url: 'http://dc-rc:8040/api/discrepancy',
-      url: 'https://ohtl.ke.com.pk:8040/api/discrepancy',
+      url: 'https://' + myGlobalVariable[2] + '/api/discrepancy',
 
       headers: {
         'content-type': 'application/json',
@@ -619,10 +619,7 @@ const DiscrepancyScreen = ({navigation, route}) => {
 
     axios({
       method: 'POST',
-      url:
-        'https://' +
-        myGlobalVariable[0] +
-        '.ke.com.pk:44300/sap/opu/odata/sap/ZPATROLLING_SRV/FLHeaderSet',
+      url: 'https://' + myGlobalVariable[0] + '/FLHeaderSet',
       headers: {
         Authorization: 'Basic ' + base64.encode(myGlobalVariable[1]),
         'Content-Type': 'application/json',
@@ -777,7 +774,9 @@ const DiscrepancyScreen = ({navigation, route}) => {
             setImageFolder(
               //'https://stagingdev:8095/PTR_ImageData/' +
               //'http://dc-rc:8040/PTR_ImageData/' +
-              'https://ohtl.ke.com.pk:8040/PTR_ImageData/' +
+              'https://' +
+                myGlobalVariable[2] +
+                '/PTR_ImageData/' +
                 moment().year() +
                 '/' +
                 (moment().month() + 1) +
@@ -822,7 +821,9 @@ const DiscrepancyScreen = ({navigation, route}) => {
                 setImageFolder(
                   //'https://stagingdev:8095/PTR_ImageData/' +
                   //'http://dc-rc:8040//PTR_ImageData/' +
-                  'https://ohtl.ke.com.pk:8040/PTR_ImageData/' +
+                  'https://' +
+                    myGlobalVariable[2] +
+                    '/PTR_ImageData/' +
                     moment().year() +
                     '/' +
                     (moment().month() + 1) +

@@ -119,7 +119,7 @@ function Dashboard({navigation}) {
       url:
         'https://' +
         myGlobalVariable[0] +
-        '.ke.com.pk:44300/sap/opu/odata/sap/ZPATROLLING_SRV/GET_FLsSet?$filter=(User%20eq%20%27' +
+        '/GET_FLsSet?$filter=(User%20eq%20%27' +
         empName +
         '%27)&$expand=FLSTR_NAV&$format=json',
       headers: {
@@ -171,10 +171,7 @@ function Dashboard({navigation}) {
     var GangData = [];
     axios({
       method: 'get',
-      url:
-        'https://' +
-        myGlobalVariable[0] +
-        '.ke.com.pk:44300/sap/opu/odata/sap/ZPATROLLING_SRV/RECT_GANGSet?$format=json',
+      url: 'https://' + myGlobalVariable[0] + '/RECT_GANGSet?$format=json',
       headers: {
         'Content-Type': 'application/json',
         Authorization: 'Basic ' + base64.encode(myGlobalVariable[1]),
@@ -210,7 +207,7 @@ function Dashboard({navigation}) {
       url:
         'https://' +
         myGlobalVariable[0] +
-        '.ke.com.pk:44300/sap/opu/odata/sap/ZPATROLLING_SRV/QueriesSet?$filter=(Username%20eq%20%27' +
+        '/QueriesSet?$filter=(Username%20eq%20%27' +
         empName +
         '%27)&$format=json',
       headers: {
