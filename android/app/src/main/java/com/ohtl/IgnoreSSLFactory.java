@@ -1,5 +1,5 @@
 //IgnoreSSLFactory.java
-package com.ohtl; //Change this
+package com.ohtl;
 
 import com.facebook.react.modules.network.OkHttpClientFactory;
 import com.facebook.react.modules.network.OkHttpClientFactory;

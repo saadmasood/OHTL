@@ -560,6 +560,7 @@ const DiscrepancyScreen = ({navigation, route}) => {
         JSON.stringify(data1),
       )
  */
+
     axios({
       method: 'POST',
       //url: 'https://stagingdev.ke.com.pk:8095/api/discrepancy',

@@ -1010,6 +1010,7 @@ const PatrollingScreen = ({navigation, route}) => {
       }),
     }).then(items => {
       console.log('***** UPLOADED SUCCESFULLY');
+      console.log(items.data.d.HEADERSTR_NAV.results);
       StoreInDevice('Post');
     });
   };

@@ -638,7 +638,7 @@ const RectificationScreen = ({navigation, route}) => {
         ],
       }),
     }).then(items => {
-      console.log('**Updated');
+      console.log('**Updated************');
       StoreInDevice();
     });
   };
